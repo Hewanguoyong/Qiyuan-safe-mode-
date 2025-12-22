@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>她们帮不了你。</title>
+    <style>
+        /* 重置浏览器默认边距，并确保html和body占满全屏高度 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #000000; /* 纯黑色背景 */
+            overflow: hidden; /* 隐藏滚动条，保持页面简洁 */
+        }
+
+        /* 使用 Flexbox 将内容在页面中垂直和水平居中 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 设置中心文字的样式 */
+        .centered-text {
+            color: #ffffff; /* 白色字体 */
+            /* 使用 clamp() 函数设置响应式字体大小：
+               最小 2rem，首选视窗宽度的 8%，最大 6rem。
+               这样保证了在手机和电脑大屏上都是“大号字体”。
+            */
+            font-size: clamp(2rem, 8vw, 6rem); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* 使用系统默认无衬线字体，简洁有力 */
+            font-weight: bold; /* 加粗 */
+            text-align: center; /* 确保如果文字换行也能居中对齐 */
+            padding: 20px; /* 防止文字在小屏幕上紧贴边缘 */
+            user-select: none; /* 可选：禁止用户选中文字，增加一种疏离的氛围感 */
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #ffffff; /* 白色，与背景形成对比 */
+            font-size: 14px; 
+            font-family: 'Georgia', serif; /* 保持系列页面的衬线体风格 */
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明，不抢视觉重心 */
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="page-number">EX</div>
+
+    <div class="centered-text">
+        她们帮不了你。
+    </div>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

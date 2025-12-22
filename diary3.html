@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>叁</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* --- 配色方案：血竭红 (Oxide Red / Deep Crimson) --- */
+            --bg-color: #4a1818; 
+            --text-main: #e6dada; 
+            --text-dim: #a67c7c;  
+            --accent: #8c2f2f;    
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+            line-height: 2;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* 布局容器 */
+        .layout-container {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* 左侧固定区域 */
+        .header-area {
+            padding-top: 80px;
+            padding-left: 40px;
+            position: sticky;
+            top: 0;
+            height: fit-content;
+        }
+
+        /* 标题：叁 */
+        h1.title-char {
+            font-size: 9rem;
+            font-weight: 300;
+            line-height: 0.9;
+            color: var(--accent);
+            opacity: 1;
+            font-family: "KaiTi", "楷体", serif;
+            margin-bottom: 15px;
+            margin-left: -8px;
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+        }
+
+        /* 日期 */
+        .date-info {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            border-left: 2px solid var(--accent);
+            padding-left: 15px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* 右侧正文区域 */
+        .content-area {
+            padding-top: 110px;
+            padding-right: 60px;
+            padding-bottom: 100px;
+            padding-left: 50px;
+            max-width: 780px;
+        }
+
+        .diary-text p {
+            margin-bottom: 32px;
+            text-align: justify;
+            font-size: 1.08rem;
+        }
+
+        /* --- 重点修改：针对重复“恶心”段落的样式 --- */
+        .diary-text p.obsessive {
+            font-size: 2.2rem;  /* 极大，带来视觉冲击和压迫感 */
+            font-weight: 700;   /* 极粗 */
+            line-height: 1.1;   /* 行距极紧，制造窒息感 */
+            letter-spacing: -0.03em; /* 字间距微挤压 */
+            color: var(--accent); /* 使用亮血红色，不再是苍白色 */
+            opacity: 1;         /* 完全不透明 */
+            word-break: break-all; /* 确保换行 */
+            margin-top: 50px;   /* 增加上下边距，使其更加孤立突出 */
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.4); /* 增加立体感和阴影，像刻在背景上 */
+        }
+
+        /* 首字下沉（Drop Cap） */
+        .diary-text p:first-child::first-letter {
+            float: left;
+            font-size: 4.8rem;
+            line-height: 0.8;
+            padding-right: 14px;
+            padding-top: 8px;
+            color: #d45d5d;
+            font-family: "KaiTi", "楷体", serif;
+        }
+
+        /* --- 私人页面标识 --- */
+        .private-mark {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            font-family: "KaiTi", "楷体", serif;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            opacity: 0.4;
+            letter-spacing: 0.3em;
+            pointer-events: none;
+            z-index: 100;
+            user-select: none;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .layout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header-area {
+                padding: 50px 30px 20px 30px;
+                position: relative;
+                border-bottom: 1px solid rgba(140, 47, 47, 0.3);
+            }
+
+            h1.title-char {
+                font-size: 6rem;
+            }
+
+            .content-area {
+                padding: 40px 30px;
+                padding-top: 40px;
+                padding-bottom: 80px;
+            }
+            
+            /* 移动端稍微减小一点，但依然要很大 */
+            .diary-text p.obsessive {
+                font-size: 1.8rem;
+            }
+
+            .private-mark {
+                bottom: 20px;
+                right: 20px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="private-mark">私人页面</div>
+
+    <div class="layout-container">
+        <aside class="header-area">
+            <h1 class="title-char">叁</h1>
+            <div class="date-info">
+                2015.5.16<br>雨
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <article class="diary-text">
+                <p>“卿。”昨天怀特先生突然这样叫我，好恶心。<br>补充道是魏晋时期的典故，我知道，如此一来就更恶心了。<br>还好这次立刻拒绝了，否则之后一定会变本加厉。</p>
+
+                <p>被这么一恶心，我突然想起一件事，鬼使神差地试着在莲心会登录Julian White的账号。<br>或许我希望能抓到什么把柄？不过就算抓到了，现在的我又能做什么呢？只能等待吗？<br>抱着试一试的心态，没想到他居然真的拿那一天作为密码。</p>
+
+                <p class="obsessive">恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心恶心。</p>
+
+                <p>没能吐出来，反倒想起一个人。<br>前几个月，他在博客上发布了很多对怀特犀利的批评，最起码怀特是个烂人这一点，他没有说错。<br>而他死了。</p>
+
+                <p>还好当时房间里只有哥哥在，否则看见我冲出房间，妈妈一定会说教我。<br>我当时在园子里乱跑，最后随便推开一扇门就进去了。</p>
+
+                <p>正好看到那幅书法——《白虎行》。<br>还有那两个字，荆卿。<br>荆卿，便是荆轲。<br>“荆卿。”我念着。<br>如果有人能帮我刺杀讨厌的人就好了。</p>
+
+                <p>或者我自己能像荆卿一样······<br>这个想法刚出现，我自己也吓了一跳。<br>但是，</p>
+
+                <p>“荆卿。”<br>“箐卿。”</p>
+
+                <p>何其相似的名字。</p>
+
+                <p>母亲，您给我取这个名字时，您是否也隐秘地期待着，有一个人为您完成一场悲壮的行刺？</p>
+
+                <p>可我让您失望了。<br>我甚至没能成为一件合格的凶器。<br>我只是在这深深院落里，辨认着每一件古董，弹奏着乐曲，在每一个需要我在场的场合里，露出合宜的表情。<br>比起荆卿，我更像是被囚禁的燕丹。</p>
+
+                <p>心口闷得发慌，配合着雨夜湿腐的空气，让我不愿再思考。</p>
+
+                <p>我撞破了件极危险，也极肮脏的事。<br>我发觉了件极讽刺，也极残酷的事。</p>
+
+                <p>母亲，如果您真的期待过一个“荆卿”，那么您失败了。<br>或许我是您唯一的失败作。</p>
+
+                <p>但我不想继续在您身边提醒着这一点了。<br>哪怕只有一点机会降临。<br>我也要离开憩园，离开您。</p>
+            </article>
+        </main>
+    </div>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

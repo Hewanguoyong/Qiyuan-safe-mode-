@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>朱利安·怀特 | 权利、尊严与跨文化理解</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 全局设置 --- */
+        :root {
+            --primary-text: #2c3e50;
+            --secondary-text: #596e79;
+            --accent-color: #8e6e53; /* 优雅的棕褐色/古铜色 */
+            --bg-color: #fdfbf7; 
+            --section-bg: rgba(255, 255, 255, 0.95); /* 内容区微透明白，透出背景 */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Serif SC', "Songti SC", serif;
+            color: var(--primary-text);
+            line-height: 1.9;
+            font-size: 16px;
+            /* 背景图片设置 */
+            background-image: url('白莲花背景.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        a { text-decoration: none; color: var(--accent-color); transition: opacity 0.3s; }
+        a:hover { opacity: 0.7; }
+
+        /* --- 布局容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+            background-color: var(--section-bg); /* 内容区背景 */
+            box-shadow: 0 0 50px rgba(0,0,0,0.05); /* 柔和阴影 */
+            min-height: 100vh; /* 确保填满屏幕 */
+        }
+
+        /* --- 头部 --- */
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+        
+        /* 新增：搜索框样式 */
+        .search-container {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            border: none;
+            border-bottom: 1px solid var(--accent-color);
+            background: transparent;
+            padding: 5px;
+            font-family: 'Noto Serif SC', serif;
+            color: var(--primary-text);
+            width: 150px;
+            font-size: 14px;
+            outline: none;
+            transition: width 0.3s ease;
+        }
+        .search-input:focus {
+            width: 200px;
+        }
+        .search-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 16px;
+        }
+
+        .name-en {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        .name-cn {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .tagline {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-color);
+            margin-top: 15px;
+        }
+
+        /* --- 导航 --- */
+        nav {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+        }
+        nav a {
+            margin: 0 15px;
+            color: #999;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        nav a.active { color: var(--primary-text); border-bottom: 1px solid var(--primary-text); }
+
+        /* --- 首屏 Hero --- */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 80px;
+            padding: 40px 0;
+        }
+        .hero-text {
+            flex: 1;
+        }
+        .hero-quote {
+            font-size: 22px;
+            font-style: italic;
+            color: #444;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 25px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .hero-intro {
+            font-size: 15px;
+            color: var(--secondary-text);
+            text-align: justify;
+        }
+        .hero-image-box {
+            flex: 0 0 350px;
+            height: 450px;
+            position: relative;
+        }
+        .hero-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            box-shadow: 20px 20px 0px #eee;
+            filter: grayscale(20%);
+        }
+
+        /* --- 通用板块标题 --- */
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        /* --- 经典案例 --- */
+        .expertise-section {
+            margin-bottom: 80px;
+            padding: 20px 0;
+        }
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .expertise-item h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .expertise-item p {
+            font-size: 14px;
+            color: #666;
+            text-align: justify;
+        }
+
+        /* --- 最新动态 --- */
+        .projects-section {
+            margin-bottom: 60px;
+        }
+        .project-item {
+            display: block; 
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .project-content h4 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #222;
+            font-weight: 500;
+        }
+        .project-content h4 a {
+            color: #222;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+        }
+        .project-content h4 a:hover {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+        }
+        .project-content p {
+            font-size: 15px;
+            color: #555;
+            text-align: justify;
+        }
+
+        /* --- 慈善活动链接 --- */
+        .charity-link-block {
+            text-align: center;
+            padding: 60px 0;
+            border-top: 1px solid #eee;
+        }
+        .charity-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .charity-btn:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+            opacity: 1;
+        }
+
+        /* --- 页脚 --- */
+        footer {
+            border-top: 1px solid #eee;
+            padding: 40px 0;
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8e6e53; /* 使用页面的主色调 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.8; /* 稍微透明 */
+            font-weight: bold;
+        }
+
+        /* 响应式 */
+        @media (max-width: 800px) {
+            .hero-section { flex-direction: column-reverse; gap: 30px; }
+            .hero-image-box { width: 100%; height: auto; aspect-ratio: 3/4; }
+            .expertise-grid { grid-template-columns: 1fr; }
+            .container { padding: 0 20px; }
+            .name-en { font-size: 36px; }
+            .search-container { position: static; margin-bottom: 20px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">21/41</div>
+
+    <div class="container">
+        <header>
+            <div class="search-container">
+                <input type="text" class="search-input" id="julianSearchInput" placeholder="Search...">
+                <button class="search-btn" id="julianSearchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="name-en">Julian White</div>
+            <div class="name-cn">朱利安·怀特</div>
+            <div class="tagline">权利、尊严与跨文化理解 | 律师 · 倡议者 · 桥梁建造者</div>
+        </header>
+
+        <nav>
+            <a href="#" class="active">简介</a>
+            <a href="#cases">经典案例</a>
+            <a href="#news">最新动态</a>
+            <a href="julian_white_charity.html">慈善活动</a>
+        </nav>
+        
+        <section class="hero-section">
+            <div class="hero-text">
+                <div class="hero-quote">
+                    “我相信，法律的力量不仅在于约束，更在于解放；不仅在于辩护，更在于理解。真正的正义，始于对每一个独特个体生命经验的尊重，并致力于在不同文明之间，建立起共情与合作的桥梁。”
+                </div>
+                <div class="hero-intro">
+                    <p>朱利安·怀特女士（生于1971年5月17日），是一位享有国际声誉的人权律师、社会活动家及艺术赞助人。她以其在跨国司法合作、少数群体权益保护以及推动跨文化对话领域的卓越贡献而广受尊敬。怀特女士坚信，人权理念与深厚的文化理解相结合，才能产生持久而深刻的变革力量。</p>
+                    <p style="margin-top: 20px;">她于2006年首次来华，近十年来一直都保持着文化和工作上的交流。</p>
+                </div>
+            </div>
+            <div class="hero-image-box">
+                <img src="Julian.jpg" alt="Julian White Portrait">
+            </div>
+        </section>
+
+        <section class="expertise-section" id="cases">
+            <h2 class="section-title">经典案例</h2>
+            <div class="expertise-grid">
+                <div class="expertise-item">
+                    <h3>跨国人权诉讼与倡导</h3>
+                    <p>专注于涉及言论自由、性别平等、难民及移民权利的国际案件，常为弱势群体在国际法庭及人权理事会发声。</p>
+                </div>
+                <div class="expertise-item">
+                    <h3>身份认同与自由表达</h3>
+                    <p>作为一位公开的跨性别女性，她不仅是权利的辩护者，更是鲜活生命的见证。她致力于在全球范围内推动性别认同与表达自由的合法化与社会接纳，倡导“以法律为盾，以教育为桥”的综合策略。</p>
+                </div>
+                <div class="expertise-item">
+                    <h3>文化间对话与艺术赋能</h3>
+                    <p>她深信艺术是跨越鸿沟的通用语言。长期支持并亲自参与将非西方传统文化、哲学（尤其专注于东亚古典思想）与现代艺术形式相结合的项目，认为这是“在不同灵魂间建立深层共情的最优雅途径”。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects-section" id="news">
+            <h2 class="section-title">最新动态</h2>
+            
+            <div class="project-item">
+                <div class="project-content">
+                    <h4>箫声暖青屿：韩响与朱利安·怀特跨界赴山区送暖</h4>
+                    <p>音乐人韩响与国际人权律师朱利安·怀特近日一同前往西南青屿山区，为当地留守儿童学校带去音乐工作坊与法律援助咨询，完成了一次艺术与公益的跨界实践。</p>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-content">
+                    <h4>朱利安·怀特代理女工程师职场歧视案获胜</h4>
+                    <p>在一起备受关注的民事纠纷中，朱利安·怀特女士成功代理一位因“潜在育儿倾向”而在晋升中遭拒的女性高级工程师，不仅为其赢得赔偿与晋升机会，更推动涉事公司修订了其内部评估手册。</p>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <div class="project-content">
+                    <h4><a href="news_mainstream_culture_festival.html">遇见千年智慧：朱利安·怀特现身国学文化节畅谈“人文” <i class="fas fa-external-link-alt" style="font-size: 12px;"></i></a></h4>
+                    <p>在近日举办的恭都国学文化节高峰论坛上，国际人权律师朱利安·怀特作为特邀嘉宾发表主题演讲，从跨文化视角探讨了东方古典哲学中“仁”、“和”。</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="charity-link-block">
+            <a href="julian_white_charity.html" class="charity-btn">探索慈善活动</a>
+        </div>
+
+        <footer>
+            &copy; 2015 Julian White Office. All Rights Reserved.<br>
+            London • New York • Hong Kong
+        </footer>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('julianSearchInput');
+        const searchBtn = document.getElementById('julianSearchBtn');
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张景_百度百科</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 (保持与 lan_rui_wiki 一致) --- */
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* --- 顶部导航模拟 --- */
+        .wiki-nav {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .wiki-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin-right: 20px;
+        }
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            height: 32px;
+            border: 1px solid #ccc;
+            padding: 0 10px;
+            background: #f8f8f8;
+        }
+
+        /* --- 主容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 40px;
+            border: 1px solid #e1e1e1;
+            position: relative;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* --- 左侧内容区 --- */
+        .main-content {
+            flex: 1;
+        }
+
+        /* 标题 */
+        h1.entry-title {
+            font-size: 34px;
+            font-weight: normal;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+        .sub-title {
+            font-size: 20px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 10px;
+        }
+
+        /* 摘要 */
+        .summary {
+            background-color: #fff;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        /* 目录 */
+        h2.section-header {
+            font-size: 20px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #000;
+        }
+        .section-header::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 20px;
+            background-color: #4e6ef2; /* 百度蓝 */
+            vertical-align: middle;
+            margin-right: 8px;
+            margin-bottom: 2px;
+        }
+
+        p { margin-bottom: 15px; }
+        
+        /* 强调文字 */
+        strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* --- 右侧信息栏 (Infobox) --- */
+        .infobox {
+            width: 280px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            font-size: 12px;
+            flex-shrink: 0;
+            height: fit-content;
+        }
+        .infobox-title {
+            background-color: #eef2fb;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #a9c6e3;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .infobox-image {
+            width: 100%;
+            height: 350px;
+            background-color: #ddd;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden;
+        }
+        .infobox-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+            line-height: 1.5;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 4px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .info-value {
+            color: #333;
+        }
+
+        /* --- 底部参考 --- */
+        .references {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e; /* 暗金色，融入背景 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container { flex-direction: column-reverse; padding: 20px; }
+            .infobox { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">35/41</div>
+
+    <div class="wiki-nav">
+        <div class="wiki-logo">BAIKE <span style="font-size:14px; font-weight:normal; color:#666;">百科</span></div>
+        <input type="text" class="search-bar" id="wikiSearchInput" placeholder="张景">
+        <div style="margin-left: auto; color: #666; cursor: pointer;"><i class="fas fa-user"></i> 登录</div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <h1 class="entry-title">张景 <span class="sub-title">(瞰世科技创始人、董事长)</span></h1>
+            
+            <div class="summary">
+                张景（Zhang Jing，1967年10月28日－），中国企业家，瞰世科技（Kanshi Tech）创始人、董事长兼首席执行官。他是中国互联网舆情大数据分析与数字风险管控领域的早期开拓者之一，其领导下的瞰世科技以强大的数据挖掘和智能分析能力著称，为众多企业与机构提供“全域感知与决策支持”服务。
+            </div>
+
+            <h2 class="section-header">人物经历</h2>
+            
+            <p><strong>早期生涯与创业</strong></p>
+            <p>毕业于国内顶尖院校计算机科学专业，曾任职于多家外资科技公司。2003年，张景瞄准国内互联网内容爆发式增长背后的数据价值蓝海，毅然辞职创业，于2004年正式创立瞰世科技。公司早期业务主要为网络信息收集与基础分析。</p>
+
+            <p><strong>2008年重大挫折与转型</strong></p>
+            <p>2008年，瞰世科技遭遇创立以来最大危机。其位于市郊的原研发与办公中心因电路老化引发火灾，整栋建筑毁于一旦，大量早期硬件设备及部分未备份数据损毁。官方调查结论为意外事故，所幸事故发生于夜间，未造成人员伤亡。此次火灾一度使公司运营陷入瘫痪，外界质疑不断。</p>
+
+            <p><strong>浴火重生与业务飞跃</strong></p>
+            <p>张景凭借其极强的风险应对能力和人脉资源，在极短时间内完成融资、搬迁与业务重建。他将此次危机转化为转型契机，将业务核心从基础信息收集，升级为深度数据挖掘、智能语义分析及基于算法的网络舆情预警与干预系统。凭借更敏锐的市场嗅觉和凌厉的商业手腕，公司在2010年后迎来爆发式增长，客户涵盖金融、公关、文化娱乐及部分政府监管机构。</p>
+
+            <p><strong>近期发展</strong></p>
+            <p>近年来，张景领导瞰世科技向“全域数据智能服务商”战略转型，业务延伸至数字资产保护、在线声誉管理及基于大数据的商业情报咨询。同时，他个人及公司也开始涉足文化遗产数字化、传统文化当代化传播等领域的战略性投资，与多家知名博物馆、学术机构及文化品牌建立合作。</p>
+
+            <h2 class="section-header">主要业务领域</h2>
+            
+            <p><strong>舆情大数据监测与分析</strong></p>
+            <p>核心业务，提供全网络平台信息监测、情感分析、趋势预测及危机预警报告。</p>
+
+            <p><strong>数字风险管控</strong></p>
+            <p>为企业客户提供在线形象保护、知识产权侵权监测、反欺诈数据支持等服务。</p>
+
+            <p><strong>定制化数据解决方案</strong></p>
+            <p>为特定行业或客户提供深度数据挖掘、用户画像构建及竞争情报分析。</p>
+
+            <p><strong>文化科技投资</strong></p>
+            <p>通过旗下基金，投资于文化遗产的数字化保存、复原技术，以及将传统文化元素与现代科技、娱乐产业相结合的项目。</p>
+            
+            <div class="references">
+                <strong>词条图册：</strong><br>
+                <span style="color:#666; font-size:12px;">更多关于张景的图片、活动照片等。</span>
+            </div>
+        </div>
+
+        <div class="infobox">
+            <div class="infobox-title">张景</div>
+            <div class="infobox-image">
+                <img src="张景.jpg" alt="张景">
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">中文名</span>
+                <span class="info-value">张景</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">国籍</span>
+                <span class="info-value">中国</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">民族</span>
+                <span class="info-value">汉族</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">出生日期</span>
+                <span class="info-value">1967年10月28日</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">职业</span>
+                <span class="info-value">企业家</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">主要成就</span>
+                <span class="info-value">创立并领导瞰世科技成为行业头部企业</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">社会职务</span>
+                <span class="info-value">中国互联网协会理事<br>××大学信息管理学院客座教授等</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('wikiSearchInput');
+        
+        if(searchInput){
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        // 跳转至 search_2.html 并使用 q 参数
+                        window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+                    }
+                }
+            });
+        }
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

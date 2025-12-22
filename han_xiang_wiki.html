@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>韩响_百度百科</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 --- */
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* --- 顶部导航模拟 --- */
+        .wiki-nav {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .wiki-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin-right: 20px;
+        }
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            height: 32px;
+            border: 1px solid #ccc;
+            padding: 0 10px;
+            background: #f8f8f8;
+        }
+
+        /* --- 主容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 40px;
+            border: 1px solid #e1e1e1;
+            position: relative;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* --- 左侧内容区 --- */
+        .main-content {
+            flex: 1;
+        }
+
+        /* 标题 */
+        h1.entry-title {
+            font-size: 34px;
+            font-weight: normal;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+        .sub-title {
+            font-size: 20px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 10px;
+        }
+
+        /* 摘要 */
+        .summary {
+            background-color: #fff;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        /* 目录 */
+        h2.section-header {
+            font-size: 20px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #000;
+        }
+        .section-header::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 20px;
+            background-color: #4e6ef2; /* 百度蓝 */
+            vertical-align: middle;
+            margin-right: 8px;
+            margin-bottom: 2px;
+        }
+        h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #444;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p { margin-bottom: 15px; text-align: justify; }
+
+        /* --- 右侧信息栏 (Infobox) --- */
+        .infobox {
+            width: 280px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            font-size: 12px;
+            flex-shrink: 0;
+            height: fit-content;
+        }
+        .infobox-title {
+            background-color: #eef2fb;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #a9c6e3;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .infobox-image {
+            width: 100%;
+            height: 350px;
+            background-color: #ddd;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden;
+        }
+        .infobox-image img {
+            width: 100%; 
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.1);
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+            line-height: 1.5;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 4px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .info-value {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        th, td {
+            border: 1px solid #eee;
+            padding: 8px;
+            text-align: left;
+            font-size: 13px;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+
+
+        /* --- 链接样式 --- */
+        a { color: #136ec2; text-decoration: underline; } /* 确保链接有下划线 */
+        a:hover { text-decoration: none; }
+
+        /* --- 底部参考 --- */
+        .references {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .update-time {
+            font-style: italic;
+            margin-top: 10px;
+            display: block;
+        }
+        .ref-item {
+            margin-bottom: 5px;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e; /* 暗金色，融入背景 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container { flex-direction: column-reverse; padding: 20px; }
+            .infobox { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">18/41</div>
+
+    <div class="wiki-nav">
+        <div class="wiki-logo">BAIKE <span style="font-size:14px; font-weight:normal; color:#666;">百科</span></div>
+        <input type="text" class="search-bar" id="wikiSearchInput" placeholder="韩响">
+        <div style="margin-left: auto; color: #666; cursor: pointer;"><i class="fas fa-user"></i> 登录</div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <h1 class="entry-title">韩响 <span class="sub-title">(华语流行音乐作曲家、制作人)</span></h1>
+            
+            <div class="summary">
+                韩响（1983年10月5日－），中国著名流行音乐作曲家、制作人。其音乐风格以旋律创作上的古典韵味与现代编曲的融合见长，曾被誉为“音乐神童”。职业生涯历经早期盛名、中期沉寂与争议，后以多首热门作品再度回归公众视野，是目前业界最具话题性的创作人之一。
+            </div>
+
+            <h2 class="section-header">人物经历</h2>
+            
+            <h3>音乐神童（1997-2003）</h3>
+            <p>韩响出身音乐世家，自幼显露非凡天赋。14岁（1997年）以一首融合民乐元素的原创洞箫曲目获得全国性青少年作曲大赛金奖，崭露头角。随后数年，其作品以清新的学院派风格和超越年龄的技法受到古典与流行乐界关注，被誉为“未来大师”。</p>
+
+            <h3>瓶颈与低谷（2003-2012）</h3>
+            <p>进入20岁后，韩响的原创灵感似乎骤然枯竭，陷入漫长创作瓶颈。这段时间他的创作风格与之前产生了极大变化，且不稳定，让人难以和曾经的那个“音乐神童”联想在一起。韩响本人对这段时期的作品评价极低，甚至亲自出手将大部分demo和录音室文件从网络上删除。</p>
+
+            <h3>转折与回归（2013至今）</h3>
+            <p>2013年前后，韩响的音乐风格与个人状态发生显著转变。其作品重新获得市场认可，旋律更宏大，编曲中大量运用他自称“从东方古典艺术品中汲取的灵感”。2014年，他为迅速走红的偶像蓝锐量身打造EP《锐·变》，助其登顶，两人也因此被外界视为“音乐知己”。2015年初蓝锐去世后，韩响迅速推出悼念单曲《穿过云海》，并宣布将部分收益以蓝锐名义捐赠，此举引发广泛关注与讨论。</p>
+
+
+            <h2 class="section-header">个人生活</h2>
+            <p>韩响出身江南音乐世家，祖父为知名民乐演奏家。家中藏有一支宋代洞箫，据传为其世代相传，韩响幼时常以此练习，视若珍宝。韩响对古典艺术品收藏兴趣浓厚，但为人低调，极少接受媒体关于私生活的采访。</p>
+
+            <div style="text-align: center; margin: 20px 0; border: 1px solid #eee; padding: 10px; background-color: #fcfcfc;">
+                <img src="韩响洞箫.jpg" alt="韩响家传宋代洞箫" style="max-width: 90%; height: auto; display: block; margin: 0 auto;">
+                <span style="display: block; margin-top: 10px; font-size: 13px; color: #666;">图：韩响家传宋代洞箫</span>
+            </div>
+            
+            <h2 class="section-header">主要作品（精选）</h2>
+            
+            <h3>早期作品（1997-2002）</h3>
+            <p>《青石巷》、《少年梦》、《水墨江山》</p>
+            
+            <h3>低谷期作品</h3>
+            <p style="color: #c0392b; font-style: italic;">该时期（2003-2012）作品大部分已被韩响本人要求撤下平台，目前业界资料暂缺。</p>
+
+            <h3>回归期作品（2013至今）</h3>
+            <table>
+                <tr style="background-color: #f5f5f5;">
+                    <th style="width: 30%;">作品名称</th>
+                    <th style="width: 20%;">发行时间</th>
+                    <th>备注</th>
+                </tr>
+                <tr>
+                    <td>《遇仙》</td>
+                    <td>2013年</td>
+                    <td>个人风格转变的标志性作品</td>
+                </tr>
+                <tr>
+                    <td>EP《锐·变》</td>
+                    <td>2014年</td>
+                    <td>全碟制作，蓝锐首张个人EP</td>
+                </tr>
+                <tr>
+                    <td>电影《金陵雪》原声配乐</td>
+                    <td>2015年</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>单曲《穿过云海》</td>
+                    <td>2015年</td>
+                    <td>悼念蓝锐</td>
+                </tr>
+            </table>
+
+            <h2 class="section-header">社会活动</h2>
+            <p>2015年2月，在好友蓝锐去世后，宣布将单曲《穿过云海》部分收益用于心理健康公益，具体执行方案由其团队与相关机构接洽。</p>
+            <p>韩响自2013年开始，多次参加国学活动。同时也积极加入中国古典音乐元素与国际交响乐团的合作项目，被认为其事业正向国际化台阶迈进。</p>
+
+            <div class="references">
+                <strong>参考资料：</strong>
+                <div class="ref-item">
+                    [1] <a href="news_mainstream_hanxiang_white.html">《当东方古韵遇见西方交响：韩响与朱利安·怀特共探音乐跨界新境》</a>
+                </div>
+                
+                <strong style="margin-top: 15px; display: block;">词条信息：</strong>
+                <span class="update-time">（此词条根据公开资料、媒体报道及行业信息整理，最后更新于2015年4月。）</span>
+            </div>
+        </div>
+
+        <div class="infobox">
+            <div class="infobox-title">韩响</div>
+            <div class="infobox-image">
+                <img src="韩响.jpg" alt="韩响照片">
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">中文名</span>
+                <span class="info-value">韩响</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">外文名</span>
+                <span class="info-value">Xiang Han</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">国籍</span>
+                <span class="info-value">中国</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">民族</span>
+                <span class="info-value">汉族</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">出生日期</span>
+                <span class="info-value">1983年10月5日</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">出生地</span>
+                <span class="info-value">江南地区 (音乐世家)</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">职业</span>
+                <span class="info-value">作曲家、制作人</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">活跃年代</span>
+                <span class="info-value">1997年至今</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">代表作品</span>
+                <span class="info-value">《穿过云海》、《遇仙》</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('wikiSearchInput');
+        
+        if(searchInput){
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+                    }
+                }
+            });
+        }
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+
+</html>

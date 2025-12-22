@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资产清单 | 莲心会</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 全局设置 --- */
+        :root {
+            --text-green: #00ff41;
+            --text-red: #ff3333;
+            --bg-overlay: rgba(0, 0, 0, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto Mono', "SimSun", monospace;
+            color: var(--text-green);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: url('莲心会5.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #000;
+            cursor: crosshair;
+            overflow-x: hidden;
+        }
+
+        /* 遮罩层 */
+        .overlay-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* --- 正常页面元素 --- */
+        .page-number {
+            position: fixed; bottom: 20px; right: 30px;
+            color: var(--text-green); font-size: 14px; letter-spacing: 2px;
+            z-index: 100; pointer-events: none; opacity: 0.8;
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
+        }
+
+        .navbar {
+            width: 100%; padding: 15px 50px; display: flex; justify-content: center;
+            background: rgba(0, 0, 0, 0.95); border-bottom: 2px solid var(--text-red);
+            position: fixed; top: 0; z-index: 100; pointer-events: none;
+        }
+
+        .nav-links span {
+            color: var(--text-red); margin: 0 25px; font-size: 1.1rem;
+            letter-spacing: 1px; font-weight: bold; text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1000px; margin-top: 100px; margin-bottom: 80px; padding: 40px;
+            background-color: var(--bg-overlay); border: 1px solid var(--text-red);
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.2); text-align: left;
+        }
+
+        h1 {
+            font-size: 2rem; margin-bottom: 40px; color: var(--text-red);
+            border-bottom: 1px dashed var(--text-red); padding-bottom: 10px;
+            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+        }
+
+        /* --- 资产卡片 --- */
+        .asset-card { display: flex; gap: 20px; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 1px dotted var(--text-green); }
+        .asset-card:last-child { border-bottom: none; }
+        .asset-img-box { flex: 0 0 200px; height: 260px; border: 1px solid var(--text-green); position: relative; }
+        .asset-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.2) brightness(0.8); mix-blend-mode: luminosity; }
+        .asset-img-box::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 255, 65, 0.1); pointer-events: none; }
+        .asset-info { flex: 1; font-size: 0.95rem; }
+        .data-row { margin-bottom: 8px; }
+        .label { color: var(--text-red); font-weight: bold; margin-right: 10px; }
+        .value { color: var(--text-green); }
+
+        /* --- 弹窗样式 --- */
+        .modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.8);
+            justify-content: center; align-items: center;
+        }
+        
+        /* 修复：专门为地址弹窗设置极高的层级，确保在故障层之上 */
+        #addressModal {
+            z-index: 100000 !important; 
+        }
+
+        .modal-content {
+            background-color: #000; padding: 60px; border: 4px solid var(--text-red);
+            text-align: center; box-shadow: 0 0 50px var(--text-red);
+            max-width: 600px; position: relative;
+        }
+        .modal-text {
+            font-size: 2rem; color: #fff; letter-spacing: 2px;
+            font-family: "SimSun", serif; margin-bottom: 30px;
+        }
+        .address-highlight {
+            display: block;
+            margin-top: 20px;
+            font-size: 1.8rem;
+            color: var(--text-green);
+            border: 1px solid var(--text-green);
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+            background: rgba(0,0,0,0.8);
+        }
+
+        .forever { color: var(--text-red); font-weight: bold; font-size: 2.5rem; }
+        
+        .close-btn {
+            background: transparent; border: 1px solid var(--text-red); color: var(--text-red);
+            padding: 10px 30px; font-family: 'Roboto Mono', monospace; font-size: 1rem;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .close-btn:hover { background: var(--text-red); color: #000; }
+
+        /* =========================================
+           以下为“花屏/诡异模式”样式
+           ========================================= */
+
+        #glitch-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9999; background: #000; overflow: hidden;
+            justify-content: center; align-items: center;
+        }
+        .glitch-active body { overflow: hidden; }
+
+        /* 背景扫描线 */
+        .noise-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg, rgba(0, 0, 0, 1) 0px, rgba(255, 0, 0, 0.2) 2px,
+                rgba(0, 0, 0, 1) 4px, rgba(0, 255, 0, 0.2) 6px
+            );
+            pointer-events: none; z-index: 1; opacity: 0.7;
+        }
+
+        /* 核心大字容器 */
+        .ghost-text-container {
+            position: relative; z-index: 20; text-align: center;
+            display: flex; flex-direction: column; gap: 1rem;
+            mix-blend-mode: lighten; 
+            pointer-events: none; /* 默认穿透 */
+        }
+        .main-ghost-text {
+            font-family: "SimSun", serif; font-size: 5rem; font-weight: bold;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: -5px 0 rgba(255, 0, 0, 0.8), 5px 0 rgba(0, 255, 0, 0.8);
+            line-height: 1.1;
+            transition: all 0.5s ease;
+        }
+
+        /* 最终解锁状态样式 */
+        .final-unlocked {
+            pointer-events: auto !important; /* 关键：恢复鼠标响应 */
+            cursor: pointer;
+            color: #ff3333 !important; 
+            text-shadow: 0 0 20px #ff3333, -5px 0 #fff, 5px 0 #fff !important;
+            transform: scale(1.1);
+            animation: pulse-red 1.5s infinite alternate;
+            z-index: 100 !important;
+            padding: 20px; /* 增加点击区域 */
+        }
+
+        @keyframes pulse-red {
+            from { text-shadow: 0 0 20px #ff3333; }
+            to { text-shadow: 0 0 40px #ff3333, 0 0 10px #fff; transform: scale(1.15); }
+        }
+
+        .fragment {
+            position: absolute; font-family: 'SimSun', serif; z-index: 10;
+            pointer-events: none; color: rgba(255, 255, 255, 0.5);
+            text-shadow: -2px 2px rgba(255, 0, 0, 0.5), 2px -2px rgba(0, 255, 0, 0.5);
+            white-space: nowrap; user-select: none;
+        }
+
+        /* --- 特殊链接样式 --- */
+        .special-link {
+            position: absolute; font-family: 'SimSun', serif; z-index: 15;
+            text-decoration: none; cursor: pointer; color: rgba(255, 255, 255, 0.95);
+            font-weight: bold;
+            text-shadow: -3px 0 rgba(255, 0, 0, 0.9), 3px 0 rgba(0, 255, 0, 0.9);
+            transition: all 0.5s ease;
+            white-space: nowrap;
+        }
+        
+        .special-link:hover {
+            transform: scale(1.2) !important; color: #fff; z-index: 25;
+        }
+
+        .special-link.locked {
+            opacity: 0.15; filter: blur(8px); pointer-events: none; cursor: default;
+        }
+
+        .special-link.visited {
+            color: #555; text-shadow: none; text-decoration: line-through;
+        }
+
+        @media (max-width: 768px) {
+            .asset-card { flex-direction: column; }
+            .asset-img-box { width: 100%; height: 200px; }
+            .container { padding: 20px; margin-top: 80px; }
+            .main-ghost-text { font-size: 3rem; }
+            .address-highlight { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay-bg"></div>
+    <div class="page-number">25/41</div>
+
+    <nav class="navbar">
+        <div class="nav-links">
+            <span>我们的驯化</span>
+            <span>包装流程</span>
+            <span>已完成品清单</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>资产状态概览 (部分摘录)</h1>
+        
+        <div class="asset-card">
+            <div class="asset-img-box"><img src="小雅1.jpg" alt="LHH-034-A1" class="asset-img"></div>
+            <div class="asset-info">
+                <div class="data-row"><span class="label">资产编号：</span><span class="value">LHH-034-A1</span></div>
+                <div class="data-row"><span class="label">化名/曾用代号：</span><span class="value">"小雅"</span></div>
+                <div class="data-row"><span class="label">当前信号位置：</span><span class="value">最后一次卫星信号，距菲律宾海岸线约12海里</span></div>
+                <div class="data-row"><span class="label">预期交接点：</span><span class="value">"新家园7号"接收站</span></div>
+                <div class="data-row"><span class="label">备注：</span><span class="value">该资产心理评估显示"高共情性"与"强服从性"，创伤背景使其对"庇护所"叙事接受度极高，运输过程未出现抵抗行为。</span></div>
+            </div>
+        </div>
+
+        <div class="asset-card">
+            <div class="asset-img-box"><img src="林小姐1.jpg" alt="LHH-021-B3" class="asset-img"></div>
+            <div class="asset-info">
+                <div class="data-row"><span class="label">资产编号：</span><span class="value">LHH-021-B3</span></div>
+                <div class="data-row"><span class="label">化名/曾用代号：</span><span class="value">"林小姐"</span></div>
+                <div class="data-row"><span class="label">安置地点：</span><span class="value">"正脉研修中心·西北分院"</span></div>
+                <div class="data-row"><span class="label">当前角色/用途：</span><span class="value">"艺术疗愈"展示性样本及内部创意服务。</span></div>
+                <div class="data-row"><span class="label">监控摘要：</span><span class="value">资产持续产出符合"疗愈与重生"主题的艺术品，作品用于组织公关宣传及赠予特定合作伙伴。近期生理监测显示有轻微抑郁复发迹象，已通过调整药物剂量控制。注意：需维持其创作能力与表面积极性之间的平衡。</span></div>
+            </div>
+        </div>
+
+        <div class="asset-card">
+            <div class="asset-img-box"><img src="芳芳1.jpg" alt="LHH-058-C2" class="asset-img"></div>
+            <div class="asset-info">
+                <div class="data-row"><span class="label">资产编号：</span><span class="value">LHH-058-C2</span></div>
+                <div class="data-row"><span class="label">化名/曾用代号：</span><span class="value">"芳芳"（附带子资产：LHH-058-C2C，男童，8岁）</span></div>
+                <div class="data-row"><span class="label">当前位置：</span><span class="value">拉斯维加斯</span></div>
+                <div class="data-row"><span class="label">当前状态：</span><span class="value">跨国婚姻中的妻子与继母角色。该资产被评估为具备“传统家庭观念及“强烈母性保护欲”，符合“稳定家庭服务型”输送标准。</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="finalModal" class="modal">
+        <div class="modal-content">
+            <p class="modal-text">你<span class="forever">永远</span>用不着担心这些。</p>
+            <button class="close-btn" id="closeBtn">关闭</button>
+        </div>
+    </div>
+
+    <div id="addressModal" class="modal">
+        <div class="modal-content">
+            <p class="modal-text">
+                憩园地址：
+                <span class="address-highlight">旧城厢青石路半山巷7号</span>
+            </p>
+            <button class="close-btn" id="addressCloseBtn">收到</button>
+        </div>
+    </div>
+
+    <div id="glitch-overlay">
+        <div class="noise-bg"></div>
+        <div class="ghost-text-container">
+            <div class="main-ghost-text">拜托你</div>
+            <div class="main-ghost-text" id="finalTrigger" style="font-size: 7rem; z-index: 2;">找到我</div>
+            <div class="main-ghost-text">拜托你</div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('finalModal');
+        const closeBtn = document.getElementById('closeBtn');
+        const addressModal = document.getElementById('addressModal');
+        const addressCloseBtn = document.getElementById('addressCloseBtn');
+        const glitchOverlay = document.getElementById('glitch-overlay');
+        const body = document.body;
+
+        let closeCount = 0;
+        let isGlitchActive = false;
+
+        // 1. 关闭初始弹窗
+        function closeModal(e) {
+            e.stopPropagation(); 
+            closeCount++;
+            if (closeCount >= 3) {
+                triggerGlitchMode();
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 2. 关闭地址弹窗
+        addressCloseBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            addressModal.style.display = 'none';
+        });
+
+        // 3. 触发花屏
+        function triggerGlitchMode() {
+            isGlitchActive = true;
+            modal.style.display = 'none';
+            glitchOverlay.style.display = 'flex'; 
+            body.classList.add('glitch-active');
+
+            for(let i=0; i<150; i++) {
+                createRandomText();
+            }
+
+            const specialItems = [
+                { text: "燕", url: "diary.html" }, 
+                { text: "箐", url: "diary2.html" }, 
+                { text: "卿", url: "diary3.html" } 
+            ];
+
+            specialItems.forEach((item, index) => {
+                createSpecialLink(item, index, specialItems.length);
+            });
+        }
+
+        function createRandomText() {
+            const span = document.createElement('div');
+            span.innerText = Math.random() > 0.5 ? "找到我" : "拜托你";
+            span.className = 'fragment';
+            span.style.left = (Math.random() * 100 - 10) + 'vw';
+            span.style.top = (Math.random() * 100 - 10) + 'vh';
+            span.style.fontSize = (Math.random() * 4 + 0.8) + 'rem';
+            span.style.opacity = Math.random() * 0.6 + 0.1;
+            span.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+            glitchOverlay.appendChild(span);
+        }
+
+        // 生成解锁链接
+        function createSpecialLink(item, index, totalLength) {
+            const link = document.createElement('a');
+            link.innerText = item.text;
+            link.href = item.url;
+            link.target = "_blank"; 
+            link.className = 'special-link';
+            link.id = `locked-link-${index}`;
+
+            if (index > 0) {
+                link.classList.add('locked');
+            }
+
+            link.style.left = (Math.random() * 80 + 10) + 'vw';
+            link.style.top = (Math.random() * 80 + 10) + 'vh';
+            link.style.fontSize = (Math.random() * 3 + 4) + 'rem';
+            link.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+
+            link.addEventListener('click', function(e) {
+                 e.stopPropagation(); 
+                 this.classList.add('visited');
+
+                 if (index === totalLength - 1) {
+                     // 如果是最后一个字，解锁中间的大字
+                     setTimeout(unlockFinalSecret, 800);
+                 } else {
+                     const nextIndex = index + 1;
+                     const nextLink = document.getElementById(`locked-link-${nextIndex}`);
+                     if (nextLink) {
+                         setTimeout(() => {
+                             nextLink.classList.remove('locked');
+                         }, 500); 
+                     }
+                 }
+            });
+
+            glitchOverlay.appendChild(link);
+        }
+
+        // 最终解锁逻辑
+        function unlockFinalSecret() {
+            const finalTrigger = document.getElementById('finalTrigger');
+            // 添加类，改变样式（保留此行，确保变红和闪烁效果）
+            finalTrigger.classList.add('final-unlocked');
+            
+            // 绑定点击事件
+            finalTrigger.addEventListener('click', function(e) {
+                // 确保阻止冒泡
+                e.stopPropagation();
+                
+                // --- 修改：删除了原本的 addressModal.style.display = 'flex'; ---
+                // 现在点击后不会发生任何事情，但文字依然保持红色闪烁
+            });
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+
+        document.addEventListener('click', function(event) {
+            if (isGlitchActive) return; 
+            if (modal.style.display !== 'flex') {
+                modal.style.display = 'flex';
+            }
+        });
+        
+        // 防止点击弹窗内部关闭
+        document.querySelectorAll('.modal-content').forEach(c => {
+            c.addEventListener('click', function(e){ e.stopPropagation(); });
+        });
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

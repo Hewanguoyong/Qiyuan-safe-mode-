@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吕明的心灵视界 | 个人主页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 --- */
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f5f7; /* 柔和的浅灰背景 */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- 顶部导航 --- */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            box-sizing: border-box;
+            justify-content: space-between; /* 确保内容两端对齐 */
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+        .nav-logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d8cf0; /* 心理咨询常用的冷静蓝 */
+            margin-right: 40px;
+        }
+        .nav-menu {
+            display: flex;
+        }
+        .nav-menu a {
+            padding: 0 15px; /* 增加点击区域 */
+            line-height: 60px; /* 使文字垂直居中 */
+            color: #666;
+            font-size: 15px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .nav-menu a:hover { 
+            color: #2d8cf0; 
+            background-color: #f0f7ff; /* 悬停背景色 */
+        }
+        .nav-menu a.active {
+            color: #2d8cf0;
+            border-bottom: 2px solid #2d8cf0;
+        }
+
+        /* --- 新增：搜索栏样式 --- */
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #f4f5f7; /* 与页面背景同色，制造凹陷感 */
+            border-radius: 20px; /* 圆润的形状 */
+            padding: 5px 15px;
+            border: 1px solid transparent; /* 预留边框位置 */
+            transition: all 0.3s ease;
+        }
+        .search-box:focus-within {
+            background-color: #fff;
+            border-color: #2d8cf0; /* 聚焦时显示蓝色边框 */
+            box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.1);
+        }
+        .search-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
+            color: #333;
+            width: 160px;
+        }
+        .search-input::placeholder {
+            color: #bbb;
+        }
+        .search-btn {
+            border: none;
+            background: transparent;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 8px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .search-btn:hover {
+            color: #2d8cf0;
+        }
+
+        /* --- 主布局 --- */
+        .container {
+            max-width: 1000px;
+            margin: 90px auto 40px; /* 避开顶部导航 */
+            display: flex;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        /* --- 左侧个人卡片 --- */
+        .sidebar {
+            flex: 0 0 300px;
+        }
+        .profile-card {
+            background: #fff;
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .avatar-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #f4f5f7;
+        }
+        .verified-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            color: #f5a623; /* 黄V认证色 */
+            font-size: 24px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .user-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .user-bio {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* 数据统计栏 */
+        .stats-box {
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            cursor: default;
+        }
+        /* 可点击的样式 */
+        .stat-item.clickable {
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 4px;
+        }
+        .stat-item.clickable:hover {
+            background-color: #f8f8f8;
+        }
+        .stat-num {
+            display: block;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* --- 右侧博客内容 --- */
+        .main-content {
+            flex: 1;
+        }
+        .blog-post {
+            background: #fff;
+            border-radius: 4px;
+            padding: 40px 50px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .post-meta {
+            color: #999;
+            font-size: 13px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+        .post-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        /* 信件正文样式 */
+        .letter-body {
+            font-family: "KaiTi", "STKaiti", serif; /* 使用楷体，增加信件的郑重感 */
+            font-size: 18px;
+            line-height: 2;
+            color: #222;
+        }
+        .letter-body p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        .signature {
+            text-align: right;
+            margin-top: 50px;
+            font-weight: bold;
+        }
+        .date {
+            text-align: right;
+            font-size: 16px;
+        }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            padding: 20px;
+            clear: both;
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #2d8cf0; /* 冷静蓝，与页面主题一致 */
+            font-size: 14px; 
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.7;
+            font-weight: bold;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .blog-post { padding: 20px; }
+            .navbar { padding: 0 10px; }
+            .nav-logo { margin-right: 15px; font-size: 18px; }
+            .nav-menu a { margin-right: 5px; padding: 0 5px; font-size: 14px; }
+            .search-input { width: 100px; font-size: 12px; } /* 缩小搜索框以适应手机 */
+            .search-box { padding: 5px 10px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="page-number">32/41</div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">咿呀哈博客</div>
+            <div class="nav-menu">
+                <a href="#" class="active">博客首页</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+        
+        <div class="nav-right">
+            <div class="search-box">
+                <input type="text" class="search-input" id="blogSearchInput" placeholder="搜索文章...">
+                <button class="search-btn" id="blogSearchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="profile-card">
+                <div class="avatar-box">
+                    <img src="吕明.jpg" alt="吕明" class="avatar">
+                    <i class="fas fa-check-circle verified-icon"></i>
+                </div>
+                <h1 class="user-name">吕明</h1>
+                <p class="user-bio">资深心理咨询师 | 知名情感博主<br>关注心理健康，探索人性幽微</p>
+                
+                <div class="stats-box">
+                    <div class="stat-item">
+                        <span class="stat-num">0</span>
+                        <span class="stat-label">关注</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">124</span>
+                        <span class="stat-label">文章</span>
+                    </div>
+                    <div class="stat-item clickable" onclick="window.location.href='fans_list.html'">
+                        <span class="stat-num" id="fanCount">191,357</span> 
+                        <span class="stat-label">粉丝</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <article class="blog-post">
+                <h2 class="post-title">一封致朱利安·怀特女士的公开道歉信</h2>
+                <div class="post-meta">
+                    <span>发布于 2015-04-10 20:30</span>
+                    <span style="margin-left: 20px;">阅读 10W+</span>
+                </div>
+
+                <div class="letter-body">
+                    <p>尊敬的怀特女士：</p>
+                    <p>您好。</p>
+                    <p>我，吕明，在此为我近期在部分网络言论及私下交流中，对您个人及您所致力事业的轻率批评，表示最深切的歉意。</p>
+                    <p>回顾我的一些发言，尤其是针对您融合东西方理念的疗愈工作，以及您充满勇气的人生选择的某些质疑，我深感懊悔。我未能以一名心理学工作者应有的共情与客观去理解，反而陷入了一种自以为是的专业傲慢。</p>
+                    <p>我必须承认受到了当前网络环境中一种不良风气的影响——即通过树立一个靶子来进行批判，以此博取关注。我警惕到了这股潮流，却可悲地发现自己也可能在无意中被其裹挟，利用您作为话题，来为自己的声音增加所谓“深度”和“流量”。</p>
+                    <p>您的工作，无论是在法律领域为弱势群体发声，还是通过“莲叶舟”等项目为深陷创伤的女性提供心灵庇护，其价值与难度都远非我这样一个外行人可以妄加评判。</p>
+                    <p>我为我所有可能对您造成伤害或困扰的言论，郑重道歉。我已删除相关的不当发言，并会在未来的公开表达中，更加恪守专业与尊重的底线。</p>
+                    <p>再次表达我最诚恳的歉意。</p>
+
+                    <div class="signature">吕明 谨上</div>
+                    <div class="date">2015年4月10日</div>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <footer class="footer">
+        © 2015 All Rights Reserved.
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById('blogSearchInput');
+        const searchBtn = document.getElementById('blogSearchBtn');
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                // 核心点：这里是 search_2.html?q=关键词
+                window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        if(searchBtn) {
+            searchBtn.addEventListener('click', performSearch);
+        }
+        
+        if(searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

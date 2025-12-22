@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>当东方古韵遇见西方交响：韩响与朱利安·怀特共探音乐跨界新境</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基础设置 --- */
+        body {
+            font-family: "Microsoft YaHei", "SimSun", serif;
+            background-color: #f5f8fa; /* 浅灰蓝背景 */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        a {
+            text-decoration: none;
+            color: #1769aa;
+        }
+
+        /* --- 顶部导航/报头模拟 --- */
+        .header-site {
+            background-color: #fff;
+            border-bottom: 4px solid #1769aa; /* 权威蓝色 */
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Logo 和搜索框两端对齐 */
+            padding: 0 20px; /* 增加左右内边距，防止贴边 */
+            gap: 20px; /* 【修改点】增加间距，防止Logo和搜索框“打架”互相遮挡 */
+        }
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0; /* 防止Logo被挤压 */
+        }
+        .site-logo {
+            font-family: 'Roboto', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1769aa;
+            margin-right: 10px;
+        }
+        .site-name {
+            font-size: 18px;
+            color: #666;
+            border-left: 1px solid #ddd;
+            padding-left: 10px;
+            white-space: nowrap; /* 防止文字换行 */
+        }
+
+        /* 新增：搜索框样式 */
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0; /* 防止搜索框被挤压 */
+        }
+        .news-search-input {
+            padding: 5px 10px;
+            border: 1px solid #1769aa;
+            border-right: none;
+            height: 32px;
+            font-size: 14px;
+            outline: none;
+            width: 150px;
+            color: #333;
+        }
+        .news-search-btn {
+            height: 32px;
+            padding: 0 15px;
+            background-color: #1769aa;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        .news-search-btn:hover {
+            background-color: #0f4c7a;
+        }
+
+        /* --- 文章主体 --- */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            min-height: 80vh;
+        }
+
+        /* 标题和元数据 */
+        .article-title {
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .article-meta {
+            color: #999;
+            font-size: 13px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .meta-source {
+            font-weight: bold;
+            color: #666;
+            margin-right: 15px;
+        }
+
+        /* 图片样式 */
+        .article-image {
+            width: 100%;
+            height: auto;
+            margin: 25px 0;
+            display: block;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        /* 正文段落 */
+        .article-body p {
+            text-indent: 2em;
+            margin-bottom: 1.5em;
+            text-align: justify;
+        }
+
+        strong {
+            /* font-weight: 700; */
+            /* color: #1a1a1a; */
+        }
+
+        /* 底部信息 */
+        .article-footer {
+            margin-top: 40px;
+            color: #999;
+            font-size: 14px;
+            text-align: right;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e; /* 暗金色，融入背景 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* 响应式 */
+        @media (max-width: 840px) {
+            .article-container {
+                margin: 0;
+                padding: 20px;
+            }
+            .article-title {
+                font-size: 24px;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 15px; /* 增加手机端垂直间距 */
+                align-items: flex-start; /* 手机端左对齐看起来更整齐 */
+            }
+            .search-wrapper {
+                width: 100%; /* 手机端搜索框占满宽度 */
+            }
+            .news-search-input {
+                flex-grow: 1; /* 输入框自动伸缩 */
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">19/41</div>
+
+    <header class="header-site">
+        <div class="header-content">
+            <div class="logo-wrapper">
+                <div class="site-logo">GLOBAL NEWS</div>
+                <div class="site-name">环球要闻</div>
+            </div>
+            
+            <div class="search-wrapper">
+                <input type="text" id="newsSearchInput" class="news-search-input" placeholder="Search...">
+                <button id="newsSearchBtn" class="news-search-btn">搜索</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="article-container">
+
+        <h1 class="article-title">当东方古韵遇见西方交响：韩响与朱利安·怀特共探音乐跨界新境</h1>
+
+        <div class="article-meta">
+            <span class="meta-source">本报讯</span>
+            <span>2015年4月10日</span>
+        </div>
+
+        <img src="交响乐报道.jpg" alt="韩响与朱利安·怀特会面" class="article-image">
+
+        <div class="article-body">
+            <p>近日，作曲家韩响与著名国际人权律师、艺术赞助人朱利安·怀特（Julian White）举行私人会晤，双方围绕 “中国国学精神在现代音乐创作中的转译” 这一主题进行了深入交流。</p>
+
+            <p>据悉，韩响在会谈中阐述了他近年来从《道德经》等经典中汲取灵感，探索音乐中“气韵”与“留白”的创作理念。朱利安·怀特（Julian White）对此深表认同，并分享了他对东方哲学中内省与和谐特质的理解，认为其为当代世界提供了独特的精神资源。</p>
+
+            <p>基于理念的共鸣，双方初步探讨了一项名为 “东方意象” 的合作计划，旨在创作一套融合中国古典哲学意境与西方交响乐形式的系列作品。朱利安·怀特（Julian White）表示，愿利用其国际资源，为项目联络顶尖交响乐团及全球演出平台。</p>
+
+            <p>此次会面被视为中国当代作曲家寻求更深层文化表达与国际对话的一次积极尝试。韩响近期作品已显露出明确的国风转向，而朱利安·怀特（Julian White）长期致力于推动跨文化艺术项目，两者的合作动向值得业界关注。</p>
+        </div>
+
+        <div class="article-footer">
+            （2015年4月10日 电）
+        </div>
+
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('newsSearchInput');
+        const searchBtn = document.getElementById('newsSearchBtn');
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                // 修改为 search_2.html?q=关键词
+                window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

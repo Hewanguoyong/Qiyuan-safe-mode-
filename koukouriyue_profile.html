@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>口口日月的主页 | 咿呀哈博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 (保持平台原本的青春活泼风格) --- */
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f5f7; /* 柔和背景 */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- 顶部导航 --- */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            box-sizing: border-box;
+            justify-content: space-between;
+        }
+        .nav-left { display: flex; align-items: center; }
+        .nav-logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d8cf0;
+            margin-right: 40px;
+        }
+        .nav-menu { display: flex; }
+        .nav-menu a {
+            padding: 0 15px;
+            line-height: 60px;
+            color: #666;
+            font-size: 15px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .nav-menu a:hover { color: #2d8cf0; background-color: #f0f7ff; }
+
+        /* --- 主布局 --- */
+        .container {
+            max-width: 1000px;
+            margin: 90px auto 40px;
+            display: flex;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        /* --- 左侧个人卡片 --- */
+        .sidebar { flex: 0 0 300px; }
+        .profile-card {
+            background: #fff;
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .avatar-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+        }
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #f4f5f7;
+        }
+        .user-name {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #222;
+        }
+        .user-bio {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace; /* 稍微怪异的字体 */
+        }
+        
+        .stats-box {
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .stat-item { flex: 1; text-align: center; }
+        .stat-num { display: block; font-weight: bold; font-size: 18px; color: #333; }
+        .stat-label { font-size: 12px; color: #999; }
+
+        /* --- 右侧内容区 (文本墙) --- */
+        .main-content { flex: 1; }
+        .blog-post {
+            background: #fff;
+            border-radius: 4px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            min-height: 800px; /* 保证足够的高度来展示疯狂 */
+            overflow: hidden;
+        }
+        
+        /* 疯癫文本容器 */
+        #madness-container {
+            word-wrap: break-word;
+            line-height: 1.2; /* 紧凑一点 */
+            color: #000;
+        }
+        
+        /* 文本样式基础 */
+        .mad-text {
+            font-size: 20px; /* 这里的要求：大小相同 */
+            margin-right: 5px; /* 字间距 */
+            display: inline-block;
+        }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            padding: 20px;
+            clear: both;
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #2d8cf0; /* 冷静蓝，与主题一致 */
+            font-size: 14px; 
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.7;
+            font-weight: bold;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .navbar { padding: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">EX</div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">咿呀哈博客</div>
+            <div class="nav-menu">
+                <a href="luming_blog.html">博客首页</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="profile-card">
+                <div class="avatar-box">
+                    <img src="sword%20with%20blood.jpg" alt="口口日月" class="avatar">
+                </div>
+                <h1 class="user-name">口口日月</h1>
+                <p class="user-bio">......</p>
+                
+                <div class="stats-box">
+                    <div class="stat-item">
+                        <span class="stat-num">1</span>
+                        <span class="stat-label">关注</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">1</span>
+                        <span class="stat-label">文章</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">0</span>
+                        <span class="stat-label">粉丝</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <article class="blog-post">
+                <div id="madness-container">
+                    </div>
+            </article>
+        </main>
+    </div>
+
+    <footer class="footer">
+        © 2015 All Rights Reserved.
+    </footer>
+
+    <script>
+        const container = document.getElementById('madness-container');
+        
+        // 核心词汇
+        const phrases = ["对不起", "为什么", "原谅我"];
+        
+        // 不同的字体库 (保持大小一致，但风格迥异)
+        const fonts = [
+            "'SimSun', serif",              // 宋体
+            "'Microsoft YaHei', sans-serif", // 黑体
+            "'KaiTi', serif",               // 楷体
+            "'FangSong', serif",            // 仿宋
+            "'Courier New', monospace",     // 等宽代码体
+            "'Impact', sans-serif",         // 粗黑
+            "'Georgia', serif",             // 西文衬线
+            "'Verdana', sans-serif"         // 西文无衬线
+        ];
+
+        // 生成 3000 个词汇填满页面
+        const totalWords = 3000;
+
+        // 构建 HTML 字符串以提高性能
+        let htmlContent = '';
+
+        for (let i = 0; i < totalWords; i++) {
+            // 随机选择词汇
+            const text = phrases[Math.floor(Math.random() * phrases.length)];
+            // 随机选择字体
+            const font = fonts[Math.floor(Math.random() * fonts.length)];
+            
+            // 偶尔插入换行符，打破整齐感
+            const lineBreak = Math.random() > 0.95 ? '<br>' : '';
+            
+            // 拼接 span 标签
+            htmlContent += `<span class="mad-text" style="font-family: ${font};">${text}</span>${lineBreak}`;
+        }
+
+        container.innerHTML = htmlContent;
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

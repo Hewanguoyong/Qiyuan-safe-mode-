@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>谢谢</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 全局设置 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* --- 选项A：淡粉色主题 (当前激活) --- */
+            background-color: #fff0f3; /* 樱花粉背景 */
+            color: #5e3a40;            /* 玫瑰褐文字，温柔且清晰 */
+            
+            font-family: 'Noto Serif SC', 'Songti SC', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            transition: background-color 0.5s ease;
+        }
+
+        /* --- 主容器 --- */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            /* 纯白背景卡片，更能衬托粉色氛围 */
+            background-color: #ffffff;
+            padding: 60px 50px;
+            /* 圆润的边角 */
+            border-radius: 24px;
+            /* 粉色的柔和阴影 */
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* --- 照片区域 --- */
+        .photo-wrapper {
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            /* 照片边框 */
+            border: 10px solid #fff;
+            border-radius: 4px; /* 稍微方一点，像拍立得 */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* 照片本身的投影 */
+            overflow: hidden;
+            transform: rotate(-1deg); /* 微微倾斜，增加生活感 */
+            transition: transform 0.3s ease;
+        }
+
+        .photo-wrapper:hover {
+            transform: rotate(0deg) scale(1.01);
+        }
+
+        .photo-wrapper img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            max-height: 550px; 
+            object-fit: cover;
+        }
+
+        /* --- 照片下方的说明文字 --- */
+        .caption {
+            font-size: 1.1rem;
+            /* 稍微浅一点的文字颜色 */
+            color: #9e7e85; 
+            
+            margin-bottom: 45px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            font-style: italic;
+        }
+
+        /* --- 主要内容区域 --- */
+        .main-content p {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            font-weight: bold;
+            /* 增加一点字间距 */
+            letter-spacing: 2px; 
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #5e3a40; /* 玫瑰褐，与页面主色调一致 */
+            font-size: 14px; 
+            font-family: 'Noto Serif SC', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+            font-weight: bold;
+        }
+
+        /* --- 响应式调整 --- */
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 20px;
+            }
+            .photo-wrapper {
+                border-width: 6px;
+            }
+            .main-content p {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">EX</div>
+
+    <div class="container">
+        <div class="photo-wrapper">
+            <img src="我的新家.jpg" alt="我的新家">
+        </div>
+        
+        <p class="caption">哥哥、妈妈、妹妹</p>
+        
+        <div class="main-content">
+            <p>错了，但谢谢你记得妹妹。她还在那里。</p>
+        </div>
+    </div>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

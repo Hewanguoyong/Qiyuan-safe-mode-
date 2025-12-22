@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我</title>
+    <style>
+        /* --- 基础设置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'SimSun', 'Songti SC', serif; /* 宋体，档案感 */
+            background-color: #0a0a0a; /* 纯黑背景 */
+            color: #e4dccf; /* 哑光金文字 */
+            line-height: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* --- 金色葫芦水印 --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -10px;
+            right: 10px;
+            width: 120px;
+            height: 180px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #e4dccf; /* 暗米色，与页面文字一致 */
+            font-size: 14px; 
+            font-family: 'SimSun', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            max-width: 680px;
+            width: 100%;
+            z-index: 1;
+            animation: fadeIn 2s ease;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            font-size: 1.1rem;
+        }
+
+        /* 强调文字 */
+        .highlight {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* --- 返回按钮 --- */
+        .back-nav {
+            margin-top: 60px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .back-link {
+            color: #8a8a8a;
+            text-decoration: none;
+            font-size: 1rem;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            color: #e4dccf;
+            border-bottom: 1px solid #e4dccf;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">39/41</div>
+
+    <div class="article-container">
+        <p>没错，我是李振，在你看到的报道里，那个“因电路老化起火的员工办公室”的主人，也是那个“不存在”的伤亡人员。</p>
+        
+        <p class="highlight">火灾不是意外。</p>
+        
+        <p>2008年7月20日深夜，我因为赶一个项目留在公司。凌晨，我闻到焦糊味——不是从我的设备，而是从走廊天花板的主电路管道。我很快就采取了行动，但整层楼的喷淋系统全部失效。我冲向楼梯时，发现通往天台和安全通道的门都被电子锁意外“加固”了。</p>
+        
+        <p>是张景亲手锁的门。</p>
+        <p>我太了解了。</p>
+        <p>他需要一场完美火灾——烧掉那些服务器，烧掉我经手的所有原始日志。</p>
+        <p>最重要的是，烧掉我这个知道太多的人。</p>
+        
+        <p>我为他处理了太多脏事——数据篡改、入侵竞争对手服务器、清除对他不利的网络痕迹。他知道我手里有什么，更知道我一旦出事，那些备份在别处的证据会流向哪里。一个知道太多且无法被完全控制的“工具”，最好的归宿就是和旧服务器一起化成灰。</p>
+        
+        <p>但我没死成。</p>
+        <p>通风管道、提前摸清的监控死角——这些是一个总替别人擦屁股的人，迟早会为自己留的后路。</p>
+        <p>但我的面部还是被烧毁，还失去了一条腿，或许这就是我最好的下场吧。</p>
+    </div>
+
+    <div class="back-nav">
+        <a href="three_articles.html" class="back-link">← 返回</a>
+    </div>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

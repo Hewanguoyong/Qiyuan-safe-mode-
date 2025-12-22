@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <style>
+        :root {
+            --primary-color: #2d3436; /* 深色主调 */
+            --accent-color: #0984e3;  /* 蓝色强调色 */
+            --bg-color: #f0f2f5;      /* 浅灰背景 */
+            --card-bg: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 顶部 Logo 区域 (可选) */
+        .logo-area {
+            margin-top: 80px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #b2bec3;
+            user-select: none;
+        }
+
+        /* 搜索框容器 */
+        .search-wrapper {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .input-group {
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .input-group:focus-within {
+            box-shadow: var(--hover-shadow);
+        }
+
+        input[type="text"] {
+            flex: 1;
+            border: none;
+            padding: 18px 25px;
+            font-size: 16px;
+            outline: none;
+            background: transparent;
+        }
+
+        button {
+            background: transparent;
+            border: none;
+            padding: 0 25px;
+            cursor: pointer;
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+
+        button:hover {
+            color: #0056b3;
+        }
+
+        /* 搜索结果列表 */
+        .results-container {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 40px;
+            padding: 0 20px;
+            box-sizing: border-box;
+            padding-bottom: 50px;
+        }
+
+        /* 结果卡片样式 */
+        .result-card {
+            background: var(--card-bg);
+            margin-bottom: 15px;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            display: block; /* 让a标签变成块级元素，铺满卡片 */
+            position: relative;
+            overflow: hidden;
+            opacity: 0; /* 动画初始状态 */
+            animation: fadeIn 0.5s forwards;
+        }
+
+        /* 鼠标悬停效果 */
+        .result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        /* 左侧装饰条 (增加设计感) */
+        .result-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent-color);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .result-card:hover::before {
+            opacity: 1;
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #2d3436;
+            margin: 0;
+        }
+        
+        /* 针对特定警告页面的特殊样式 (曹院长) */
+        .result-card.warning::before {
+            background: #d63031; /* 红色 */
+        }
+        .result-card.warning .result-title {
+            color: #d63031;
+        }
+
+        /* 状态文字 */
+        .status-text {
+            text-align: center;
+            color: #b2bec3;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* 简单的淡入动画 */
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="logo-area">SEARCH</div>
+
+    <div class="search-wrapper">
+        <div class="input-group">
+            <input type="text" id="searchInput" placeholder="Type to search..." autocomplete="off" onkeypress="handleEnter(event)">
+            <button onclick="performSearch()">GO</button>
+        </div>
+    </div>
+
+    <div id="resultsContainer" class="results-container">
+    </div>
+
+    <script>
+        // === 数据库配置 (严格关键词匹配模式) ===
+        // 与上一页面保持数据一致
+        const database = [
+            // --- 蓝锐相关 ---
+            { 
+                keywords: ["蓝锐"], 
+                title: "蓝锐 个人百科", 
+                url: "lan_rui_wiki.html" 
+            },
+            { 
+                keywords: ["蓝锐"], 
+                title: "当红偶像蓝锐寓所内离世", 
+                url: "news_wula_lanrui.html" 
+            },
+
+            // --- 韩响相关 ---
+            { 
+                keywords: ["韩响"], 
+                title: "韩响 个人百科", 
+                url: "han_xiang_wiki.html" 
+            },
+            { 
+                keywords: ["韩响"], 
+                title: "天才陨落？还是年轻人的风格尝试", 
+                url: "news_yiyaha_hanxiang.html" 
+            },
+
+            // --- 音乐作品 ---
+            { 
+                keywords: ["穿过云海"], 
+                title: "穿过云海", 
+                url: "song_chuan_guo_yun_hai.html" 
+            },
+
+            // --- Julian White (整合变体) ---
+            { 
+                keywords: ["julian_white", "Julian White", "Julian white", "朱利安", "朱利安·怀特", "朱利安 怀特"], 
+                title: "Julian White 个人主页", 
+                url: "julian_white_profile.html" 
+            },
+
+            // --- 莲叶舟 ---
+            { 
+                keywords: ["莲叶舟心灵疗愈项目"], 
+                title: "莲叶舟心灵疗愈项目", 
+                url: "help.html" 
+            },
+
+            // --- 国学研究院 ---
+            { 
+                keywords: ["钟鼎", "正脉国学研究院"], 
+                title: "华夏正脉国学研究院", 
+                url: "academy_home.html" 
+            },
+
+            // --- 吕明 ---
+            { 
+                keywords: ["吕明"], 
+                title: "吕明 个人博客", 
+                url: "luming_blog.html" 
+            },
+
+            // --- 张景 ---
+            { 
+                keywords: ["张景"], 
+                title: "张景 个人百科", 
+                url: "zhang_jing_wiki.html" 
+            },
+            { 
+                keywords: ["张景"], 
+                title: "瞰世科技原研发中心火灾原因锁定：员工办公室电路老化", 
+                url: "news_fire_report_2008.html" 
+            },
+
+            // --- 曹院长 (警告) ---
+            { 
+                keywords: ["曹院长"], 
+                title: "《不要点开》", 
+                url: "404_warning.html", 
+                isWarning: true 
+            } 
+        ];
+
+        function performSearch() {
+            const input = document.getElementById('searchInput');
+            const query = input.value.trim().toLowerCase(); // 转小写
+            const container = document.getElementById('resultsContainer');
+
+            // 动画效果：先清空，瞬间重绘
+            container.innerHTML = '';
+            
+            if (!query) return;
+
+            // 更新URL
+            const newUrl = `${window.location.pathname}?q=${encodeURIComponent(query)}`;
+            window.history.pushState({path: newUrl}, '', newUrl);
+
+            // 筛选结果 (严格匹配逻辑)
+            const matches = database.filter(item => {
+                // 检查 item.keywords 数组中是否有一个完全匹配用户输入
+                return item.keywords.some(k => k.toLowerCase() === query);
+            });
+
+            if (matches.length > 0) {
+                matches.forEach((item, index) => {
+                    // 创建卡片链接
+                    const card = document.createElement('a');
+                    card.href = item.url;
+                    // 如果是警告类内容，添加 warning 类
+                    card.className = item.isWarning ? 'result-card warning' : 'result-card';
+                    
+                    // 设置动画延迟，让结果逐个弹出来，更有质感
+                    card.style.animationDelay = `${index * 0.1}s`;
+
+                    card.innerHTML = `<h3 class="result-title">${item.title}</h3>`;
+                    container.appendChild(card);
+                });
+            } else {
+                container.innerHTML = `<div class="status-text">未找到相关结果</div>`;
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') performSearch();
+        }
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get('q');
+            if (query) {
+                document.getElementById('searchInput').value = query;
+                performSearch();
+            }
+        };
+    </script>
+</body>
+</html>

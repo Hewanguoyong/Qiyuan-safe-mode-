@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>穿过云海 - 韩响 | 乐动青春</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 全局设置 --- */
+        body {
+            font-family: "Microsoft YaHei", "Arial", sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e0f2f7 0%, #ffebee 100%); /* 明亮的渐变背景 */
+            color: #333;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4A90E2; /* 链接颜色 */
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #FF6B6B; /* 鼠标悬停链接颜色 */
+        }
+
+        /* --- 顶部导航栏 --- */
+        .navbar {
+            background-color: #fff;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF6B6B; /* 亮粉色 */
+        }
+        .nav-links a {
+            margin-left: 30px;
+            font-size: 17px;
+            font-weight: 500;
+            color: #555;
+        }
+        .nav-links a:hover {
+            color: #FF6B6B;
+        }
+
+        /* --- 主内容区 --- */
+        .main-content {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        /* 左侧歌曲信息和播放器 */
+        .song-player-section {
+            flex: 2;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+
+        .song-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .cover-art {
+            /* 保持容器尺寸和圆角 */
+            width: 250px;
+            height: 250px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            /* 移除占位符样式 */
+            background-color: transparent; 
+            display: block; /* 确保 img 独占一行 */
+        }
+        /* 确保图片自适应容器 */
+        .cover-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .song-title {
+            font-size: 38px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .artist-name, .writer-info {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .artist-name a {
+            color: #888;
+            font-weight: 600;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-top: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .player-controls button {
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .player-controls button:hover {
+            color: #FF6B6B;
+            transform: scale(1.1);
+        }
+        .player-controls .play-pause {
+            font-size: 55px;
+            color: #FF6B6B;
+        }
+        .player-controls .play-pause:hover {
+            transform: scale(1.05);
+        }
+
+        .lyrics-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .lyrics-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .lyrics-content {
+            max-height: 400px; /* 限制歌词高度，可滚动 */
+            overflow-y: auto;
+            padding-right: 15px; /* 留出滚动条空间 */
+            text-align: center;
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+        }
+        .lyrics-content p {
+            margin-bottom: 1em;
+        }
+        .lyrics-content strong {
+            color: #FF6B6B; /* 歌词中的强调 */
+        }
+        .lyrics-content em {
+            font-style: italic;
+            color: #888;
+        }
+
+
+        /* 右侧评论区 */
+        .comment-section {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+        .comment-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .comment-input-area {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .comment-input-area textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: "Microsoft YaHei", sans-serif;
+            font-size: 15px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .comment-input-area button {
+            background-color: #FF6B6B;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            align-self: flex-end; /* 按钮靠右 */
+        }
+        .comment-input-area button:hover {
+            background-color: #e74c3c;
+        }
+
+        .comment-list .comment-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .comment-list .comment-item:last-child {
+            border-bottom: none;
+        }
+        .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4A90E2; /* 默认头像背景 */
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .comment-user-info {
+            flex-grow: 1;
+        }
+        .comment-username {
+            font-weight: bold;
+            color: #4A90E2;
+            font-size: 15px;
+        }
+        .comment-time {
+            font-size: 12px;
+            color: #999;
+        }
+        .comment-content {
+            font-size: 15px;
+            color: #444;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            color: #888;
+            font-size: 14px;
+            background-color: #fff;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #FF6B6B; /* 亮粉色，与页面主色调一致 */
+            font-size: 14px; 
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.8;
+            font-weight: bold;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .main-content { flex-direction: column; }
+            .song-player-section { order: 1; }
+            .comment-section { order: 2; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-number">EX</div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">乐动青春</div>
+            <div class="nav-links">
+                <a href="#">发现音乐</a>
+                <a href="#">我的音乐</a>
+                <a href="#">朋友</a>
+                <a href="#">商城</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="song-player-section">
+            <div class="song-info">
+                <div class="cover-art">
+                    <img src="云海.jpg" alt="穿过云海 专辑封面">
+                </div>
+                <h1 class="song-title">穿过云海</h1>
+                <p class="artist-name">歌手：<a href="#">韩响</a></p>
+                <p class="writer-info">词/曲：韩响</p>
+            </div>
+
+            <div class="player-controls">
+                <button><i class="fas fa-step-backward"></i></button>
+                <button class="play-pause"><i class="fas fa-play-circle"></i></button>
+                <button><i class="fas fa-step-forward"></i></button>
+            </div>
+
+            <div class="lyrics-section">
+                <h2>歌词</h2>
+                <div class="lyrics-content">
+                    <p>(主歌1)</p>
+                    <p>骤光 在某个午夜爬上他的肩膀</p>
+                    <p>从此镜头与目光 织成无形的网</p>
+                    <p>他学着对世界 展出碎瓷般绚烂的伤</p>
+                    <p>说那是青春 最昂贵的妆</p>
+                    <br>
+                    <p>(主歌2)</p>
+                    <p>都说他像飞鸟 借来了凤凰的翅膀</p>
+                    <p>在最高的枝头 唱众人想听的渴望</p>
+                    <p>直到那片羽毛 重得变成了霜</p>
+                    <p>才发现 有些飞翔 名字叫流浪</p>
+                    <br>
+                    <p>(预副歌)</p>
+                    <p>他告别得匆忙 像一首歌 停在最喧哗的副歌上</p>
+                    <p>留下未完成的飞升 和一句 透明的“请原谅”</p>
+                    <br>
+                    <p>(副歌)</p>
+                    <p>穿过云海 穿过那些 注视与钟爱</p>
+                    <p>穿过短暂却像永恒的 欢呼人海</p>
+                    <p>你是否终于抵达 那片绝对的纯白</p>
+                    <p>把沉重的王冠 轻轻摘下 轻轻放开</p>
+                    <p>穿过云海 穿过所有 虚构的期待</p>
+                    <p>穿过再无人能伤害 你的地带</p>
+                    <p>如果彼岸有光 请你替我看看</p>
+                    <p>那是否只是 另一座 需要微笑的舞台</p>
+                    <br>
+                    <p>(间奏)</p>
+                    <em>（器乐部分，以清冷的钢琴与箫声主导，营造空寂、遥远的氛围）</em>
+                    <br>
+                    <p>(主歌3)</p>
+                    <p>我们曾玩笑般 勾勒传世的乐章</p>
+                    <p>说要把浮名 都淬炼成诗行</p>
+                    <p>如今我独坐 这空荡的录音房</p>
+                    <p>把褪色的承诺 写成隔世的回响</p>
+                    <br>
+                    <p>(预副歌)</p>
+                    <p>他告别得安静 像一颗星 滑入自己燃烧的轨迹</p>
+                    <p>留我在地上仰望 那团名为“失去”的灰烬</p>
+                    <br>
+                    <p>(副歌)</p>
+                    <p>穿过云海 穿过那些 燃烧的宠爱</p>
+                    <p>穿过将你高高捧起 又轻轻摔碎的时代</p>
+                    <p>你是否终于找到 一间沉默的房</p>
+                    <p>能容下你所有 不必美丽的模样</p>
+                    <p>穿过云海 穿过所有 善意的阻拦</p>
+                    <p>穿过所有“为你好”的 甜蜜负担</p>
+                    <p>如果飞翔是本能 为何给你锁链</p>
+                    <p>又为何为你 备下这 万人瞩目的祭坛</p>
+                    <br>
+                    <p>(桥段)</p>
+                    <p>我写下这旋律 作渡你的船</p>
+                    <p>纸钱太轻 而音符或许能抵达彼岸</p>
+                    <p>原谅我 只能用这方式消费你的永远</p>
+                    <p>在每一声“怀念”里 偷偷赎回我的平安</p>
+                    <br>
+                    <p>(尾声)</p>
+                    <p>穿过云海…</p>
+                    <p>愿你真的离开。</p>
+                    <p>这片我们曾一起做梦、也一起溺毙的…</p>
+                    <p>人造星海。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="comment-section">
+            <h2>评论</h2>
+            <div class="comment-input-area">
+                <textarea placeholder="写下你的评论..."></textarea>
+                <button>发布评论</button>
+            </div>
+            <div class="comment-list">
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-avatar" style="background-color:#FF6B6B;">歌迷</div>
+                        <div class="comment-user-info">
+                            <div class="comment-username">云海追光者</div>
+                            <div class="comment-time">2024-03-08 14:30</div>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        听到这首歌真的泪崩了... 韩老师把所有想说的都写进去了，歌词句句扎心。希望蓝锐真的能穿过云海，找到属于他的宁静。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-avatar" style="background-color:#4CAF50;">乐评</div>
+                        <div class="comment-user-info">
+                            <div class="comment-username">深度乐评人</div>
+                            <div class="comment-time">2024-03-08 15:00</div>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        这首歌的词曲深邃且富有力量，不仅仅是悼念，更是对浮华娱乐圈的深刻反思。“人造星海”这个词真是点睛之笔。值得反复聆听。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-avatar" style="background-color:#9C27B0;">路人</div>
+                        <div class="comment-user-info">
+                            <div class="comment-username">路过听者</div>
+                            <div class="comment-time">2024-03-08 15:45</div>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        好久没听到这么打动人心的歌了。每个人都在追逐光，但有时光太亮也会灼伤。愿逝者安息，愿生者珍重。
+                    </div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <div class="comment-avatar" style="background-color:#FFD700; color:#333;">星粉</div>
+                        <div class="comment-user-info">
+                            <div class="comment-username">蓝锐的星星</div>
+                            <div class="comment-time">2024-03-08 16:10</div>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        想他。每句歌词都在眼前浮现出他的笑容和疲惫。韩老师谢谢你，帮我们把心里的痛唱出来了。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2024 乐动青春. All Rights Reserved.
+    </footer>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[0x8B0000] || .DAT_END_211</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 核心：红黑肃杀主题 --- */
+        body {
+            font-family: 'Roboto Mono', monospace, "Microsoft YaHei", sans-serif; /* 档案/数字字体 */
+            background-color: #000; /* 纯黑背景 */
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            font-size: 14px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ccc; 
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        /* --- 红色蜡烛装饰 (使用图片文件) --- */
+        .candle-flame-left, .candle-flame-right {
+            position: fixed;
+            top: 0;
+            width: 60px; /* 宽度增大 */
+            height: 100vh;
+            /* 使用本地图片文件 candle.jpg */
+            background-image: url('candle.jpg'); 
+            background-repeat: repeat-y; 
+            background-size: contain; 
+            z-index: -1;
+            filter: blur(0.5px);
+        }
+        .candle-flame-left {
+            left: 0;
+            border-right: 4px solid #CC0000; /* 边框增大 */
+        }
+        .candle-flame-right {
+            right: 0;
+            border-left: 4px solid #CC0000; /* 边框增大 */
+        }
+
+        /* --- 葫芦水印 (金色) --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -20px; right: 10px; width: 150px; height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-size: contain; opacity: 0.12; z-index: 9999; pointer-events: none; mix-blend-mode: screen;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e; /* 暗金色，与水印呼应 */
+            font-size: 14px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.8; /* 在黑底上稍微不透明一点以便阅读 */
+        }
+        
+        /* --- 顶部工具栏 (内容全部删除) --- */
+        .forum-header {
+            background-color: #000;
+            padding: 10px 0;
+            border-bottom: 3px solid #CC0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            height: 50px; /* 确保黑条存在 */
+        }
+        .header-content {
+            max-width: 900px;
+            margin: 0 auto;
+            /* 确保内容为空 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        /* --- 主内容区 (血色档案) --- */
+        .forum-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #8B0000; /* 深红背景 */
+            color: #f0f0f0; /* 浅白文字 */
+            border-radius: 0;
+            border: 5px solid #000;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 帖子标题 - 艺术字 */
+        .post-title {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #fff;
+            text-align: center;
+            line-height: 1.1;
+        }
+        .post-title span {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* 主帖和回复样式 */
+        .post-item, .comment-item {
+            background-color: #A00000; /* 略浅的红色，用于区分 */
+            border: 1px solid #fff;
+            border-radius: 0;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #f0f0f0;
+        }
+
+        .post-header, .comment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* 头像取消 */
+        .avatar {
+            display: none; 
+        }
+
+        .user-info {
+            flex-grow: 1;
+        }
+        /* 乱码用户名 */
+        .username {
+            font-weight: 700;
+            color: #fff; 
+            font-size: 16px;
+        }
+        .post-time {
+            font-size: 12px;
+            color: #ccc;
+            margin-top: 3px;
+        }
+
+        .post-content {
+            font-size: 16px;
+            color: #f0f0f0;
+        }
+        .post-content img {
+            max-width: 90%;
+            display: block;
+            margin: 15px auto; /* 图片居中 */
+            border: 3px solid #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        /* 核心：扭曲的幸福感 */
+        .op-caption {
+            font-style: italic;
+            color: #FFD700; /* 金色，突出其扭曲性 */
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            text-shadow: 0 0 5px #000;
+        }
+
+        /* 评论区样式 */
+        .comment-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        /* 幽灵回复内容 */
+        .comment-content p {
+            color: #f0f0f0;
+            font-weight: bold;
+            text-shadow: 0 0 1px #000;
+        }
+        
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 13px;
+            background-color: #000;
+            color: #ccc;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="candle-flame-left"></div>
+    <div class="candle-flame-right"></div>
+    
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">17/41</div>
+
+    <header class="forum-header">
+        <div class="header-content"></div>
+    </header>
+
+    <div class="forum-container">
+        <h1 class="post-title">
+            <span style="font-size: 2.2em;">蓝</span><span style="font-size: 1.5em;">锐</span>
+            <span style="font-size: 1.2em;">最</span><span style="font-size: 2.5em;">后</span>
+            <span style="font-size: 1.8em;">演</span><span style="font-size: 1.2em;">出</span>
+            <span style="font-size: 2em;">返</span><span style="font-size: 1.4em;">图</span>
+        </h1>
+
+        <div class="post-item">
+            <div class="post-header">
+                <div class="user-info">
+                    <div class="username" style="color: #FFD700;">[DATA_ERASED_0xF4]</div>
+                    <div class="post-time">RECORD TIMESTAMP 2015-02-10 19:30 | ID: #1</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <img src="献花.jpg" alt="蓝锐拿着鲜花">
+                
+                <p class="op-caption">他拿着我送的花拍照欸，好幸福。</p>
+            </div>
+        </div>
+
+        <div class="comment-section">
+            <h3>ANOMALY LOGS (6)</h3>
+
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="user-info">
+                        <div class="username" style="color: #c0392b;">0x82F4_F4F4</div>
+                        <div class="post-time">RESPONSE @ 20:15 | ID: #2</div>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p>送你的鲜花喜欢吗？</p>
+                </div>
+            </div>
+            
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="user-info">
+                        <div class="username" style="color: #555;">??\a\n</div>
+                        <div class="post-time">RESPONSE @ 21:01 | ID: #3</div>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p>送你的鲜花喜欢吗？</p>
+                </div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="user-info">
+                        <div class="username" style="color: #666;">z#~@!</div>
+                        <div class="post-time">RESPONSE @ 21:30 | ID: #4</div>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p>送你的鲜花喜欢吗？</p>
+                </div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="user-info">
+                        <div class="username" style="color: #555;">/k*y@^l</div>
+                        <div class="post-time">RESPONSE @ 2015-02-11 00:00 | ID: #5</div>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p>送你的鲜花喜欢吗？</p>
+                </div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="user-info">
+                        <div class="username" style="color: #c0392b;">|/m=l</div>
+                        <div class="post-time">RESPONSE @ 08:30 | ID: #6</div>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p>送你的鲜花喜欢吗？</p>
+                </div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-header">
+                    <div class="user-info">
+                        <div class="username" style="color: #666;">?/\a\n</div>
+                        <div class="post-time">RESPONSE @ 12:00 | ID: #7</div>
+                    </div>
+                </div>
+                <div class="comment-content">
+                    <p>送你的鲜花喜欢吗？</p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        ARCHIVAL TIMESTAMP: 2015-02-11 12:00 Z<br>
+        &copy; 2015 送你的鲜花喜欢吗？
+    </footer>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

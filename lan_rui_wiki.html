@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蓝锐_百度百科</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 --- */
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* --- 顶部导航模拟 --- */
+        .wiki-nav {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .wiki-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            margin-right: 20px;
+        }
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            height: 32px;
+            border: 1px solid #ccc;
+            padding: 0 10px;
+            background: #f8f8f8;
+        }
+
+        /* --- 主容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 40px;
+            border: 1px solid #e1e1e1;
+            position: relative;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* --- 左侧内容区 --- */
+        .main-content {
+            flex: 1;
+        }
+
+        /* 标题 */
+        h1.entry-title {
+            font-size: 34px;
+            font-weight: normal;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+        .sub-title {
+            font-size: 20px;
+            color: #666;
+            font-weight: normal;
+            margin-left: 10px;
+        }
+
+        /* 摘要 */
+        .summary {
+            background-color: #fff;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        /* 目录 */
+        h2.section-header {
+            font-size: 20px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #000;
+        }
+        .section-header::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 20px;
+            background-color: #4e6ef2; /* 百度蓝 */
+            vertical-align: middle;
+            margin-right: 8px;
+            margin-bottom: 2px;
+        }
+
+        p { margin-bottom: 15px; }
+
+        /* --- 右侧信息栏 (Infobox) --- */
+        .infobox {
+            width: 280px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            font-size: 12px;
+            flex-shrink: 0;
+            height: fit-content;
+        }
+        .infobox-title {
+            background-color: #eef2fb;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #a9c6e3;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .infobox-image {
+            width: 100%;
+            height: 350px;
+            background-color: #ddd;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden;
+        }
+        .infobox-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.1); 
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+            line-height: 1.5;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 4px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .info-value {
+            color: #333;
+        }
+
+        /* --- 链接样式 --- */
+        a { color: #136ec2; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* --- 底部参考 --- */
+        .references {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .ref-item { margin-bottom: 5px; }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e; /* 暗金色，融入背景 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container { flex-direction: column-reverse; padding: 20px; }
+            .infobox { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">13/41</div>
+
+    <div class="wiki-nav">
+        <div class="wiki-logo">BAIKE <span style="font-size:14px; font-weight:normal; color:#666;">百科</span></div>
+        <input type="text" class="search-bar" id="wikiSearchInput" placeholder="蓝锐">
+        <div style="margin-left: auto; color: #666; cursor: pointer;"><i class="fas fa-user"></i> 登录</div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <h1 class="entry-title">蓝锐 <span class="sub-title">(华语流行乐男歌手、演员)</span></h1>
+            
+            <div class="summary">
+                蓝锐（Larry，1993年8月19日－2015年2月11日），本名贾宏，出生于中国，华语流行乐男歌手、影视演员。
+                <br><br>
+                2011年，以网络歌手身份发表作品初露头角，随后签约经纪公司正式出道。2013年起，因其独特的中性化视觉风格、颈部标志性的花卉纹身以及充满“破碎感”的舞台表现力而迅速走红，成为当时备受瞩目的新生代偶像之一。
+                <br><br>
+                2014年发行首张个人EP《锐·变》，并参演热门网络剧。2015年2月11日，蓝锐被发现在寓所内离世，年仅21岁。
+            </div>
+
+            <h2 class="section-header">人物经历</h2>
+            
+            <p><strong>早年与出道 (1993-2011)</strong></p>
+            <p>1993年8月19日，蓝锐（本名贾宏）出生于一个普通家庭。自幼表现出对音乐的浓厚兴趣，并在青少年时期开始系统学习声乐。2011年，18岁的他开始在网络平台发布翻唱作品，凭借独特的声线积累了初期人气。同年，被星探发掘成为练习生，随后签约经纪公司，正式开启演艺生涯。</p>
+
+            <p><strong>风格确立与走红 (2012-2014)</strong></p>
+            <p>2012年后，经纪团队根据其个人特质，为其打造了模糊性别界限的视觉形象。在当时的主流审美中，蓝锐以一种忧郁、脆弱且精致的气质脱颖而出。</p>
+            <p>2013年，蓝锐发布多首原创单曲，其颈部右侧的复杂花纹纹身逐渐显露，成为其最为显著的个人标志，被粉丝称为“荆棘之花”。舞台上，他常以极具故事感和张力的表演风格著称，被媒体评价为“自带破碎感的歌者”。</p>
+            <p>2014年，首张个人EP《锐·变》正式发行，收录了包括《空茧》、《雾霭》在内的代表作。同年，他涉足影视圈，在一部热门悬疑网剧中饰演重要角色，演技颇受好评，成功跻身当年新生代顶流艺人之列。</p>
+
+            <p><strong>离世 (2015)</strong></p>
+            <p>2015年2月11日凌晨，蓝锐被发现在其位于城市高层的公寓内身亡。警方初步勘查现场符合自杀特征，排除了他杀可能。随后，其经纪公司发布正式声明，证实蓝锐生前长期遭受严重失眠与重度抑郁症的困扰，并一直在接受治疗。其离世的消息震惊了华语娱乐圈，无数歌迷自发举行了悼念活动。</p>
+
+            <h2 class="section-header">个人生活</h2>
+            <p>蓝锐生前行事低调，除工作外的私生活鲜少曝光。据身边工作人员回忆，他性格内向敏感，喜好独处，常在深夜进行创作。他生前酷爱收藏具有年代感的器物，曾表示这能带给他“超越时间的安宁感”。</p>
+
+            <h2 class="section-header">主要作品</h2>
+            
+            <p><strong>音乐作品</strong></p>
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; border-color: #eee; font-size: 13px;">
+                <tr style="background-color: #f5f5f5;">
+                    <th>作品名称</th>
+                    <th>发行时间</th>
+                    <th>备注</th>
+                </tr>
+                <tr>
+                    <td>《空茧》</td>
+                    <td>2013年</td>
+                    <td>单曲，成名作</td>
+                </tr>
+                <tr>
+                    <td>《雾霭》</td>
+                    <td>2013年</td>
+                    <td>单曲</td>
+                </tr>
+                <tr>
+                    <td>EP《锐·变》</td>
+                    <td>2014年</td>
+                    <td>包含《独白》、《夜行》等4首歌曲</td>
+                </tr>
+            </table>
+
+            <h2 class="section-header">人物评价</h2>
+            <p>“蓝锐是一颗划过夜空的流星，短暂却极其耀眼。他的音乐里有一种同龄人少有的悲悯与孤独，他的离去是乐坛的损失。” —— <em>某知名乐评人</em></p>
+            <p>“他总是很安静，像个易碎的瓷器。我们在片场很少看到他笑，但他一入戏，眼睛里就有光。” —— <em>合作导演</em></p>
+
+            <div class="references">
+                <strong>参考资料：</strong>
+                <div class="ref-item">[1] 歌手蓝锐家中身亡 经纪公司证实死讯．乌拉娱乐 [引用日期2015-2-11]</div>
+                <div class="ref-item">[2] 蓝锐EP《锐·变》首发 独特风格引热议．咿呀哈娱乐 [引用日期2014-05-12]</div>
+                <div class="ref-item">[3] 逝去的青春：回顾蓝锐短暂而辉煌的一生．噗噜噜娱乐 [引用日期2015-2-25]</div>
+            </div>
+        </div>
+
+        <div class="infobox">
+            <div class="infobox-title">蓝锐</div>
+            <div class="infobox-image">
+                <img src="蓝锐.jpg" alt="蓝锐生前照片">
+            </div>
+            
+            <div class="info-row">
+                <span class="info-label">中文名</span>
+                <span class="info-value">蓝锐 (艺名) / 贾宏 (本名)</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">外文名</span>
+                <span class="info-value">Larry</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">国籍</span>
+                <span class="info-value">中国</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">民族</span>
+                <span class="info-value">汉族</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">出生日期</span>
+                <span class="info-value">1993年8月19日</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">逝世日期</span>
+                <span class="info-value">2015年2月11日</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">星座</span>
+                <span class="info-value">狮子座</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">职业</span>
+                <span class="info-value">歌手、演员</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">经纪公司</span>
+                <span class="info-value">星河娱乐 (2011-2015)</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">代表作品</span>
+                <span class="info-value">《空茧》、《雾霭》</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">主要成就</span>
+                <span class="info-value">2013年度新锐歌手奖</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('wikiSearchInput');
+        
+        if(searchInput){
+            searchInput.addEventListener('keypress', function(e) {
+                // 当用户按下回车键时触发
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        // 使用 q 参数进行查询
+                        window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+                    }
+                }
+            });
+        }
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

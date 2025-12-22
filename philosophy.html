@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>憩园理念 | 致知音</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SimSun', 'KaiTi', 'STKaiti', serif;
+            background-color: #0a0a0a;
+            color: #e4dccf;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* --- 背景水墨 --- */
+        .ink-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(168, 148, 118, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 20% 80%, rgba(50, 50, 50, 0.1) 0%, transparent 40%);
+            z-index: -2; opacity: 0.6;
+            animation: breathe 15s infinite alternate;
+        }
+        @keyframes breathe { 0% { opacity: 0.5; } 100% { opacity: 0.8; } }
+
+        /* --- 核心：金色葫芦水印 --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -20px; right: 10px; width: 150px; height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-size: contain; opacity: 0.12; z-index: 9999; pointer-events: none; mix-blend-mode: screen;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e;
+            font-size: 14px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* --- 导航栏 --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+        .main-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid rgba(168, 148, 118, 0.3); }
+        .nav-links { display: flex; }
+        .nav-link { color: #a89476; text-decoration: none; margin-left: 3rem; font-size: 0.9rem; letter-spacing: 2px; position: relative; transition: color 0.3s ease; }
+        .nav-link:hover { color: #e4dccf; }
+        .nav-link.active { color: #e4dccf; }
+        .nav-link.active::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 1px; background: #a89476; }
+        
+        .search-container { position: relative; width: 220px; }
+        .search-box { width: 100%; padding: 0.5rem 2.5rem 0.5rem 1rem; background-color: rgba(26, 26, 26, 0.8); border: 1px solid rgba(168, 148, 118, 0.4); border-radius: 2px; color: #e4dccf; font-family: 'SimSun', 'STKaiti', serif; font-size: 0.9rem; letter-spacing: 1px; transition: all 0.3s ease; }
+        .search-box:focus { outline: none; border-color: #a89476; }
+        .search-icon { position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); color: #a89476; cursor: pointer; }
+
+        /* --- 书信页面布局 --- */
+        .letter-container {
+            max-width: 800px;
+            margin: 4rem auto 6rem;
+            padding: 4rem;
+            background: linear-gradient(135deg, rgba(168, 148, 118, 0.03), transparent);
+            border: 1px solid rgba(168, 148, 118, 0.1);
+            position: relative;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .page-header { text-align: center; margin-bottom: 4rem; }
+        .page-title { font-size: 2rem; color: #a89476; letter-spacing: 10px; font-weight: normal; margin-bottom: 0.5rem; }
+        .page-subtitle { font-family: 'Georgia', serif; font-style: italic; color: #5a5244; font-size: 0.9rem; letter-spacing: 2px; }
+
+        .letter-content {
+            font-family: 'KaiTi', 'STKaiti', serif;
+            font-size: 1.2rem;
+            color: #e4dccf;
+            line-height: 2.2;
+            text-align: justify;
+        }
+        .letter-content p { margin-bottom: 1.5rem; }
+        
+        .signature-block { margin-top: 4rem; text-align: right; }
+        .signature-name { font-size: 1.4rem; color: #a89476; display: block; margin-bottom: 0.5rem; }
+        
+        .deco-line {
+            width: 1px; height: 100px; background: linear-gradient(to bottom, #a89476, transparent);
+            margin: 0 auto 3rem; display: block;
+        }
+
+        .footer {
+            text-align: center; padding: 3rem 0 1.5rem; color: #5a5244; font-size: 0.85rem; letter-spacing: 1px; border-top: 1px solid rgba(168, 148, 118, 0.2);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .letter-container { padding: 2rem; margin: 2rem auto; width: 90%; }
+            .letter-content { font-size: 1.1rem; }
+            .main-nav { flex-direction: column; align-items: flex-start; }
+            .search-container { width: 100%; margin-bottom: 1.5rem; }
+            .nav-links { width: 100%; justify-content: space-between; flex-wrap: wrap; }
+            .nav-link { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg"></div>
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">7/41</div>
+
+    <div class="container">
+        <nav class="main-nav">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="" id="searchInput">
+                <div class="search-icon" id="searchBtn"><i class="fas fa-search"></i></div>
+            </div>
+            <div class="nav-links">
+                <a href="home.html" class="nav-link">首页</a>
+                <a href="collection.html" class="nav-link">藏品</a>
+                <a href="philosophy.html" class="nav-link active">憩园理念</a>
+                <a href="appointment.html" class="nav-link">预约咨询</a>
+            </div>
+        </nav>
+
+        <div class="deco-line"></div>
+
+        <div class="letter-container">
+            <header class="page-header">
+                <h1 class="page-title">致 知 音</h1>
+                <p class="page-subtitle">A Letter from Qiyuan</p>
+            </header>
+
+            <div class="letter-content">
+                <p>您好，</p>
+                <p>见字如晤。</p>
+                <p>我是燕筠竹，憩园的主人。请原谅我的冒昧，以这样的方式与您交谈。</p>
+                <p>憩园，与其说是一家古董店，倒更像是我为自己，也为与我有相似心境的朋友，开辟的一处休憩之所。</p>
+                <p>我总相信，物与人是讲求缘分的。</p>
+                <p>一件木器，一轴古画，或是一枚玉石，沉默千百年，总也会等到能读懂它的那个人。我的工作，便是守护这份等待，作诸君邂逅的见证者。</p>
+                <p>因此，“憩园”时常会与一些钻研传统文化的专家大拿合作，举办些小型的雅集、鉴赏会或讲座。这些并非多么了不得的盛会，若您恰巧对这些也有兴趣，或许我们会在此类活动中，有一面之缘。</p>
+                <p>于我而言，真正的收藏，不在于占有。而在于此时此刻，恰如其分。</p>
+                <p>无论缘起为何，既然您能看到这里，我便诚挚地视您为一位未谋面的知音。</p>
+                <p>憩园的门，始终为懂得的人虚掩。若他日您得闲暇，心中生起一丝“看看”的念头，我随时在此，愿为您斟上一杯清茶。</p>
+                <p>静候您至。</p>
+
+                <div class="signature-block">
+                    <span class="signature-name">燕筠竹 谨上</span>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>憩园 · 仅供预约访客 | 地址不载于公共图册</p>
+            <p>© 2015 Qiyuan. All Serenity Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- 核心修改：统一跳转参数为 q ---
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        function performRedirect() {
+            const query = searchInput.value.trim();
+            // 修改：将 keyword 改为 q，确保跳转后 search.html 能直接显示结果
+            if (query) window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+        }
+        searchBtn.addEventListener('click', performRedirect);
+        searchInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') performRedirect(); });
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

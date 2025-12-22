@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The End</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基础设置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Serif SC', "SimSun", serif;
+            /* 浅蓝与粉色的渐变背景，象征自由与黎明 */
+            background: linear-gradient(135deg, #e0f7fa 0%, #fce4ec 100%);
+            color: #546e7a; /* 柔和的深蓝灰色文字 */
+            line-height: 2.2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* --- 内容容器 --- */
+        .container {
+            max-width: 650px;
+            width: 100%;
+            position: relative;
+            opacity: 0;
+            animation: floatUp 4s ease forwards; /* 缓慢浮现 */
+        }
+
+        p {
+            margin-bottom: 2rem;
+            text-align: justify;
+            font-size: 1.1rem;
+        }
+
+        /* 对话样式 */
+        .dialogue {
+            color: #37474f;
+            font-weight: bold;
+        }
+
+        /* 旁白/背景音 */
+        .ambient-sound {
+            font-size: 0.95rem;
+            color: #90a4ae;
+            font-style: italic;
+            background: rgba(255,255,255,0.4);
+            padding: 10px 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        /* 结局文字 */
+        .the-end {
+            margin-top: 80px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #d81b60; /* 玫红色，对应粉色背景 */
+            letter-spacing: 5px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 20px;
+            opacity: 0;
+            animation: fadeInEnd 3s ease 3s forwards; /* 延迟显示 */
+        }
+
+        .end-sub {
+            display: block;
+            font-size: 1rem;
+            color: #888;
+            margin-top: 10px;
+            font-family: 'Noto Serif SC', serif;
+            font-style: normal;
+            letter-spacing: 10px;
+        }
+
+        /* 动画 */
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInEnd {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <p>燕箐卿果然很了解她的母亲，如果没有燕筠竹的默许，当然，还有李振的帮助。你们是不可能在古董店收拾上一大堆细软，回你家带上护照，最后还畅通无阻地登上游轮的。</p>
+
+        <p>海风吹拂着你们的脸，作为出逃未免太过惬意。<br>
+        长年独居的你就连宠物都不曾养过一只，但燕箐卿不一样，你不知道那种突然意识到无家可归的错愕会不会找上她。<br>
+        不过你也要开始适应拥有家人的感觉。</p>
+
+        <p>你撑着脑袋看着燕箐卿的侧脸，在明媚的阳光下，那些关于八仙的阴暗场面还会浮现在你眼前。<br>
+        她笑得越是灿然，你似乎就越能理解燕筠竹，要留在那样的母亲身边，或许只能成为第九仙。</p>
+
+        <div class="ambient-sound">
+            “欸，那个张景你知道吧，瞰世科技那个，就是开发兜兜那个软件的老总，前几天死了···woc···”
+        </div>
+        
+        <p>你听见旁边的人谈天的声音，思绪才回到当下。</p>
+
+        <p><span class="dialogue">“怎么了？”</span>燕箐卿凑近问道。</p>
+        <p><span class="dialogue">“我在想晚餐吃什么。”</span></p>
+
+        <div class="the-end">
+            The End
+            <span class="end-sub">过海</span>
+        </div>
+    </div>
+
+</body>
+</html>

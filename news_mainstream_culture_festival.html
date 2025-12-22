@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古韵今声，融汇东西：恭都国学文化节呈现传统文化当代活力</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基础设置 (延续主流新闻风格) --- */
+        body {
+            font-family: "Microsoft YaHei", "SimSun", serif;
+            background-color: #f5f8fa; /* 浅灰蓝背景 */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        a {
+            text-decoration: none;
+            color: #1769aa;
+        }
+
+        /* --- 顶部导航/报头模拟 --- */
+        .header-site {
+            background-color: #fff;
+            border-bottom: 4px solid #1769aa; /* 权威蓝色 */
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Logo 和搜索框两端对齐 */
+            /* 【优化】增加间距和内边距，防止遮挡 */
+            padding: 0 20px; 
+            gap: 20px;
+        }
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0; /* 防止 Logo 被压缩 */
+        }
+        .site-logo {
+            font-family: 'Roboto', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1769aa;
+            margin-right: 10px;
+        }
+        .site-name {
+            font-size: 18px;
+            color: #666;
+            border-left: 1px solid #ddd;
+            padding-left: 10px;
+            white-space: nowrap;
+        }
+        
+        /* 新增：搜索框样式 */
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0; /* 防止搜索框被压缩 */
+        }
+        .news-search-input {
+            padding: 5px 10px;
+            border: 1px solid #1769aa;
+            border-right: none;
+            height: 32px;
+            font-size: 14px;
+            outline: none;
+            width: 150px;
+            color: #333;
+        }
+        .news-search-btn {
+            height: 32px;
+            padding: 0 15px;
+            background-color: #1769aa;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        .news-search-btn:hover {
+            background-color: #0f4c7a;
+        }
+
+        /* --- 文章主体 --- */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            min-height: 80vh;
+        }
+
+        /* 标题和元数据 */
+        .article-title {
+            font-size: 30px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .article-meta {
+            color: #999;
+            font-size: 13px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .meta-source {
+            font-weight: bold;
+            color: #666;
+            margin-right: 15px;
+        }
+
+        /* 图片样式 */
+        .article-image {
+            width: 100%;
+            height: auto;
+            margin: 25px 0;
+            display: block;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        /* --- 新增：用于缩小图片的辅助类 --- */
+        .small-pic {
+            width: 50% !important; /* 强制设置宽度为50% */
+            margin-left: auto !important; /* 强制居中 */
+            margin-right: auto !important;
+        }
+
+        .image-caption {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: -20px;
+            margin-bottom: 25px;
+        }
+
+        /* 正文段落 */
+        .article-body p {
+            text-indent: 2em;
+            margin-bottom: 1.5em;
+            text-align: justify;
+        }
+
+        /* 小标题 */
+        .sub-heading {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1769aa;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #1769aa;
+            padding-left: 10px;
+        }
+
+        /* 底部信息 */
+        .article-footer {
+            margin-top: 40px;
+            color: #999;
+            font-size: 14px;
+            text-align: right;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e; /* 暗金色，融入背景 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* 响应式 */
+        @media (max-width: 840px) {
+            .article-container {
+                margin: 0;
+                padding: 20px;
+            }
+            .article-title {
+                font-size: 24px;
+            }
+            /* 在小屏幕上让小图稍微大一点，避免太小看不清 */
+            .small-pic {
+                width: 70% !important;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            .search-wrapper {
+                width: 100%;
+            }
+            .news-search-input {
+                flex-grow: 1;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">22/41</div>
+
+    <header class="header-site">
+        <div class="header-content">
+            <div class="logo-wrapper">
+                <div class="site-logo">GLOBAL NEWS</div>
+                <div class="site-name">环球要闻</div>
+            </div>
+            
+            <div class="search-wrapper">
+                <input type="text" id="newsSearchInput" class="news-search-input" placeholder="Search...">
+                <button id="newsSearchBtn" class="news-search-btn">搜索</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="article-container">
+
+        <h1 class="article-title">古韵今声，融汇东西：恭都国学文化节呈现传统文化当代活力</h1>
+
+        <div class="article-meta">
+            <span class="meta-source">本报讯</span>
+            <span>2015年3月20日</span>
+        </div>
+
+        <div class="article-body">
+            <p>阳春三月，为期三天的“恭都国学文化节”圆满落幕。本届文化节以“守正创新，美美与共”为主题，不仅集中展示了经典研读、礼仪复原、古乐欣赏等传统项目，更通过一系列创新论坛与跨界对话，展现了国学在当代社会的多元面向与融合活力，吸引了大批学者、艺术家与公众参与。在开幕当天，还看见了曹院长的身影。</p>
+
+            <p>文化节的重头戏之一“国学当代价值高峰论坛”上，知名学者、华夏正脉国学研究院院长钟鼎先生发表了演讲。他提出，国学的生命力在于“活态传承”，其“仁爱”、“中庸”、“天人合一”等核心理念，能为现代人的心灵安顿、家庭伦理乃至生态观念提供深层滋养。</p>
+
+            <p>论坛的跨界对话环节尤为引人注目。国际知名人权律师、艺术赞助人朱利安·怀特女士分享了她的观察。“在中国古典哲学中，我看到了与普世人权精神相通的深刻关怀——对个体修养的重视、对和谐秩序的追求、对不同声音‘和而不同’的包容，”怀特表示，“这种从自身修养推及社会关怀的路径，为全球对话提供了宝贵视角。</p>
+
+            <p>传统文化节期间，“古韵新绎”音乐会成为另一亮点。作曲家韩响带领团队，演绎了数首他以《诗经》、《楚辞》意象为灵感创作的新编室内乐作品。他将箫、古琴等传统乐器音色置于现代作曲框架之中，试图捕捉古典文本的气韵而非简单复现古调。</p>
+
+            
+            <img src="四人合影.jpg" alt="嘉宾合影" class="article-image">
+            <div class="image-caption">图：钟鼎先生、朱利安·怀特女士、燕筠竹女士与韩响先生（从左至右）在论坛间隙合影</div>
+
+            <p>值得注意的是，本次文化节的顺利举办，得益于多方支持。在论坛间隙，记者拍摄到一张很有意义的合影：钟鼎、朱利安·怀特、韩响与知名文化空间“憩园”的主人燕筠竹女士并肩而立。燕筠竹女士作为本届文化节的重要赞助方之一，一直致力于推动雅致生活美学与传统文化传承的结合。她表示：“‘憩园’的使命便是搭建一座桥梁，连接物的历史与人的当下。支持这样的文化节，正是让经典智慧走出书房，在更广阔的公共空间中‘活’起来。”</p>
+
+            <div class="sub-heading">心理与文化的创新结合</div>
+
+            <p>除了宏观讨论，文化节也关注个体的心灵建设。在“国学与当代心理疗愈”工作坊中，知名心理咨询师吕明博士展示了如何将传统文化与现代减压技术相结合，发展出一套有助于缓解焦虑、提升情绪韧性的本土化心理辅助方法。现场参与者体验了结合书法冥想与呼吸调节的环节，反响积极。</p>
+
+            
+            <img src="吕明心理学.jpg" alt="吕明博士在工作坊" class="article-image small-pic">
+            <div class="image-caption">图：吕明博士在工作坊现场指导学员</div>
+
+            <p>吕明博士指出：“文化是我们的‘心理土壤’。从自身文化根源中汲取安顿身心的资源，往往更具亲和力与持久性。”</p>
+
+            <p>本届恭都国学文化节通过学术、艺术、实践等多个维度的呈现，生动诠释了传统文化并非凝固的遗产，而是可以不断与时代对话、与世界对话、与个体生命对话的活水之源。它正以一种更开放、更融合的姿态，参与到当代文化的构建与社会精神的塑造之中。</p>
+        </div>
+
+        <div class="article-footer">
+            （2015年3月20日 电）
+        </div>
+
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('newsSearchInput');
+        const searchBtn = document.getElementById('newsSearchBtn');
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                // 使用 q 参数跳转
+                window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

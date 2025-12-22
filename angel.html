@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你是我的天使</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 全局设置 (红绿配色 / 数据档案风) --- */
+        :root {
+            --text-green: #00ff41; /* 黑客绿/终端绿 */
+            --text-red: #ff3333;   /* 警告红 */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto Mono', "SimSun", monospace;
+            color: var(--text-green);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            cursor: crosshair;
+            position: relative;
+        }
+
+        /* --- 核心大字 --- */
+        .main-message {
+            font-size: 5vw;
+            font-weight: 700;
+            color: var(--text-red);
+            text-align: center;
+            letter-spacing: 5px;
+            margin: 0;
+            padding: 20px;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.5), 0 0 20px rgba(255, 51, 51, 0.3);
+            z-index: 100; /* 确保文字在所有图片之上 */
+            animation: textFlicker 3s infinite alternate;
+        }
+
+        @keyframes textFlicker {
+            0% { opacity: 0.8; text-shadow: 0 0 8px rgba(255, 51, 51, 0.4); }
+            50% { opacity: 1; text-shadow: 0 0 15px rgba(255, 51, 51, 0.7); }
+            100% { opacity: 0.8; text-shadow: 0 0 8px rgba(255, 51, 51, 0.4); }
+        }
+
+        /* --- 散落图片样式 --- */
+        .image-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-image {
+            position: absolute;
+            object-fit: cover;
+            border: 5px solid var(--text-red); /* 加粗红色边框 */
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
+            filter: grayscale(80%) contrast(1.1) brightness(0.9);
+            transition: transform 0.5s ease-out;
+            z-index: 5;
+            /* 移除 float 动画，使用固定的旋转 */
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: var(--text-red); /* 警告红，与核心大字一致 */
+            font-size: 14px; 
+            font-family: 'Roboto Mono', monospace; /* 保持等宽字体风格 */
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.8;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); /* 红色发光 */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-number">EX</div>
+
+    <h1 class="main-message">你是我的天使。</h1>
+
+    <div class="image-container" id="imageContainer">
+    </div>
+
+    <script>
+        const imageFiles = [
+            "偷拍1.jpg", "偷拍2.jpg", "偷拍3.jpg", "偷拍4.jpg",
+            "偷拍5.jpg", "偷拍6.jpg", "偷拍7.jpg", "偷拍8.jpg", "偷拍9.jpg"
+        ];
+        const imageContainer = document.getElementById('imageContainer');
+
+        // 修改点：固定尺寸和预设的非重叠位置
+        const imagePositions = [
+            // 格式: { x: 'left%', y: 'top%', w: width, h: height, r: rotate_degree }
+            { x: '2%', y: '3%', w: 350, h: 280, r: -7 },   // Top Left
+            { x: '20%', y: '60%', w: 320, h: 400, r: 2 },  // Mid Left-Bottom
+            { x: '12%', y: '30%', w: 250, h: 320, r: 10 }, // Mid-Left Center
+            
+            { x: '35%', y: '75%', w: 300, h: 200, r: -5 }, // Low Center
+            { x: '40%', y: '40%', w: 380, h: 250, r: 6 },  // Mid-Center Right
+            
+            { x: '50%', y: '15%', w: 300, h: 350, r: -10 }, // Top Mid-Right
+            { x: '68%', y: '5%', w: 280, h: 200, r: 15 },  // Top Right Corner
+            
+            { x: '80%', y: '50%', w: 300, h: 350, r: -2 }, // Far Right
+            { x: '75%', y: '75%', w: 250, h: 300, r: 8 }   // Bottom Right
+        ];
+        
+        imageFiles.forEach((file, index) => {
+            const img = document.createElement('img');
+            img.src = file;
+            img.alt = `偷拍照片 ${index + 1}`;
+            img.classList.add('floating-image');
+
+            const pos = imagePositions[index];
+
+            // 修改点：应用固定的尺寸和位置
+            img.style.width = `${pos.w}px`;
+            img.style.height = `${pos.h}px`;
+            img.style.left = pos.x;
+            img.style.top = pos.y;
+            img.style.transform = `rotate(${pos.r}deg)`;
+            
+            imageContainer.appendChild(img);
+        });
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

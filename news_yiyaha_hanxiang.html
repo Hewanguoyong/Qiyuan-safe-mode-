@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天才陨落？还是年轻人的风格尝试 | 咿呀哈娱乐</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 --- */
+        body {
+            font-family: 'Georgia', 'Microsoft YaHei', serif; /* 使用衬线体增加杂志感 */
+            background-color: #f3f0f5;
+            color: #222;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        a {
+            text-decoration: none;
+            color: #6a1b9a;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            color: #d500f9;
+            background-color: #fff9c4;
+        }
+
+        /* --- 顶部导航 (YiYaHa 风格) --- */
+        .header {
+            background-color: #4a148c; /* 深紫色 */
+            color: #fff;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(74, 20, 140, 0.3);
+        }
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        .logo {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 28px;
+            letter-spacing: -1px;
+            color: #ffeb3b; /* 活力黄 */
+            text-transform: uppercase;
+            font-style: italic;
+            margin-right: 30px;
+        }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .nav-menu a {
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .nav-menu a:hover {
+            color: #ffeb3b;
+            background: none;
+        }
+
+        /* --- 新增：搜索框样式 --- */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 5px 15px;
+        }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            outline: none;
+            width: 150px;
+        }
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .search-btn {
+            background: transparent;
+            border: none;
+            color: #ffeb3b;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0;
+            margin-left: 5px;
+        }
+        .search-btn:hover {
+            color: #fff;
+        }
+
+        /* --- 主内容区 --- */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 2.5fr 1fr; /* 左宽右窄 */
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* 文章卡片 */
+        .article-card {
+            background-color: #fff;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 5px solid #ffeb3b; /* 顶部黄色装饰条 */
+        }
+
+        /* 标题区 */
+        .category-tag {
+            background-color: #6a1b9a;
+            color: #fff;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .article-headline {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        .article-meta {
+            font-family: 'Arial', sans-serif;
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .meta-left span {
+            margin-right: 15px;
+        }
+
+        /* 正文样式 */
+        .article-content p {
+            margin-bottom: 25px;
+            font-size: 17px;
+            text-align: justify;
+        }
+        
+        /* 引用样式 */
+        .pull-quote {
+            border-left: 4px solid #ffeb3b;
+            padding-left: 20px;
+            font-size: 20px;
+            font-style: italic;
+            color: #4a148c;
+            margin: 30px 0;
+            font-weight: bold;
+            background-color: #fafafa;
+            padding: 20px;
+        }
+
+        /* 图片样式 */
+        .article-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 侧边栏 */
+        .sidebar-widget {
+            background-color: #fff;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        .widget-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: 900;
+            color: #4a148c;
+            text-transform: uppercase;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .trend-list {
+            list-style: none;
+            padding: 0;
+        }
+        .trend-list li {
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 10px;
+        }
+        .trend-list li span {
+            color: #ffeb3b;
+            font-weight: bold;
+            margin-right: 10px;
+            -webkit-text-stroke: 1px #6a1b9a; /* 描边效果 */
+        }
+
+        /* 底部 */
+        .footer {
+            background-color: #222;
+            color: #666;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            font-size: 12px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #4a148c; /* 使用 YiYaHa 主题深紫色 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; align-items: flex-start; }
+            .nav-menu { flex-wrap: wrap; margin-top: 10px; }
+            .search-container { margin-top: 10px; width: 100%; }
+            .search-input { width: 100%; }
+            .container { grid-template-columns: 1fr; }
+            .article-card { padding: 25px; }
+            .article-headline { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">20/41</div>
+
+    <header class="header">
+        <div class="header-container">
+            <div style="display:flex; align-items:center;">
+                <div class="logo">YiYaHa! <span style="font-size: 12px; font-weight: normal; color: #fff;">Entertainment</span></div>
+                <nav class="nav-menu">
+                    <a href="#">八卦</a>
+                    <a href="#">音乐</a>
+                    <a href="#">影视</a>
+                    <a href="#">独家</a>
+                </nav>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" id="yiyahaSearchInput" placeholder="Search...">
+                <button class="search-btn" id="yiyahaSearchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <article class="article-card">
+            <span class="category-tag">深度观察 / Deep Focus</span>
+            <h1 class="article-headline">天才陨落？还是年轻人的风格尝试</h1>
+            
+            <div class="article-meta">
+                <div class="meta-left">
+                    <span>来源：咿呀哈娱乐</span>
+                    <span>发布于 2010-01-15</span>
+                </div>
+                <div class="meta-right">
+                    <i class="far fa-eye"></i> 10W+
+                </div>
+            </div>
+
+            <img src="韩响手持洞箫.jpg" alt="韩响手持洞箫" class="article-image">
+
+            <div class="article-content">
+                <p>在音乐界，韩响的名字总与“天才”和“突变”相连。出身百年音乐世家的他，14岁以《青石巷》惊艳业界，被誉为“神童”；20岁后却陷入漫长沉寂，灵感枯竭，甚至卷入代笔丑闻，至2008年前后近乎销声匿迹，如今那段时间的作品被他完全删除，不知是否正是在掩盖这一点。</p>
+
+                <p>有网友曾表示，自己在拉斯维加斯偶遇过韩响，但并没有得到当事人的回应，当时普遍的声音是认为韩响将成为当代的“伤仲永”悲剧。然而，2009年起，韩响携全新风格强势回归。作品一改早年清新学院风，转向宏大深邃的“东方哲思”音响。他为顶流偶像蓝锐打造的EP大获成功，近期更是频繁出席国内国际的大型国学推广活动。</p>
+
+                <div class="pull-quote">
+                    业界对其“重生”褒贬不一。认可者视其为深入传统后的顿悟涅槃；质疑者则指出，其转型过于彻底迅速。有评论隐晦形容，这仿佛“一夜之间更换了脑中的‘音乐细胞’”。
+                </div>
+
+                <p>从神童陨落到凭“国学密码”重登巅峰，韩响的轨迹核心，究竟是内心苦修的灯塔，还是某种幽暗的“馈赠”？其音乐中那份陌生的辉煌，至今仍是一个萦绕在旋律之上的悬问。</p>
+            </div>
+        </article>
+
+        <aside>
+            <div class="sidebar-widget">
+                <div class="widget-title">热门话题 / Trending</div>
+                <ul class="trend-list">
+                    <li><span>01</span> <a href="#">《穿过云海》销量打破记录</a></li>
+                    <li><span>02</span> <a href="#">蓝锐粉丝前往星河娱乐悼念</a></li>
+                    <li><span>03</span> <a href="#">盘点：那些突然风格大变的制作人</a></li>
+                    <li><span>04</span> <a href="#">拉斯维加斯：名利场的另一面</a></li>
+                    <li><span>05</span> <a href="#">古典乐与流行乐的跨界狂欢</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-widget" style="background-color: #6a1b9a; color: #fff;">
+                <div class="widget-title" style="color: #ffeb3b; border-color: rgba(255,255,255,0.2);">编辑推荐</div>
+                <p style="font-size: 14px; line-height: 1.6;">关注我们，获取更多娱乐圈深层内幕。不仅仅是八卦，更是行业的风向标。</p>
+            </div>
+        </aside>
+    </div>
+
+    <footer class="footer">
+        &copy; 2015 YiYaHa! Entertainment. All Rights Reserved.
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById('yiyahaSearchInput');
+        const searchBtn = document.getElementById('yiyahaSearchBtn');
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                // 修改为跳转到 search_2.html?q=关键词
+                window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藏品 | 憩园</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 基础与字体 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SimSun', 'KaiTi', 'STKaiti', serif;
+            background-color: #0a0a0a;
+            color: #e4dccf;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        /* 背景水墨动画 */
+        .ink-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(26, 65, 48, 0.15) 2%, transparent 8%),
+                radial-gradient(circle at 80% 70%, rgba(74, 54, 41, 0.1) 3%, transparent 7%);
+            z-index: -2;
+            opacity: 1;
+            background-size: 200% 200%;
+            animation: inkFlow 25s ease-in-out infinite alternate;
+        }
+        @keyframes inkFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* 金色葫芦水印 */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -20px;
+            right: 10px;
+            width: 150px;
+            height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.12;
+            z-index: 9999;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        /* 页码样式 */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e;
+            font-size: 14px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 顶部导航 */
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(168, 148, 118, 0.3);
+        }
+        .nav-links { display: flex; }
+        .nav-link {
+            color: #a89476;
+            text-decoration: none;
+            margin-left: 3rem;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover { color: #e4dccf; }
+        .nav-link.active { color: #e4dccf; }
+        .nav-link.active::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 1px; background: #a89476;
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px; background: #a89476; transition: width 0.5s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+        
+        /* 搜索区域样式 */
+        .search-container { position: relative; width: 220px; }
+        .search-box {
+            width: 100%; padding: 0.5rem 2.5rem 0.5rem 1rem;
+            background-color: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(168, 148, 118, 0.4);
+            border-radius: 2px; color: #e4dccf;
+            font-family: 'SimSun', 'STKaiti', serif; font-size: 0.9rem; letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .search-box:focus { outline: none; border-color: #a89476; box-shadow: 0 0 10px rgba(168, 148, 118, 0.2); }
+        .search-icon {
+            position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%);
+            color: #a89476; cursor: pointer; transition: color 0.3s ease;
+        }
+        .search-icon:hover { color: #e4dccf; }
+        
+        /* 藏品页头部 */
+        .collection-header { padding: 8rem 0 4rem; text-align: center; position: relative; }
+        .collection-header::before {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100px; height: 1px; background: linear-gradient(90deg, transparent, #a89476, transparent);
+        }
+        .collection-title {
+            font-size: 4rem; font-weight: normal; margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #a89476, #d4b483, #a89476);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            display: inline-block; letter-spacing: 5px;
+        }
+        .collection-subtitle {
+            font-family: 'Georgia', serif; font-style: italic; font-size: 1.1rem;
+            color: #8a7f6e; letter-spacing: 2px; max-width: 600px; margin: 0 auto; line-height: 1.6;
+        }
+        
+        /* 分类导航 */
+        .category-nav {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem;
+            margin-bottom: 5rem; padding: 2rem 0;
+            border-top: 1px solid rgba(168, 148, 118, 0.2);
+            border-bottom: 1px solid rgba(168, 148, 118, 0.2);
+        }
+        .category-btn {
+            background: transparent; border: 1px solid rgba(168, 148, 118, 0.3);
+            color: #a89476; padding: 0.8rem 2rem;
+            font-family: 'SimSun', 'STKaiti', serif; font-size: 0.9rem; letter-spacing: 2px;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .category-btn:hover, .category-btn.active {
+            background-color: rgba(168, 148, 118, 0.1); color: #e4dccf; border-color: #a89476;
+        }
+        
+        /* 藏品网格 */
+        .collection-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin-bottom: 8rem;
+        }
+        .collection-item {
+            position: relative; overflow: hidden; cursor: pointer; border-radius: 1px; transition: all 0.5s ease;
+        }
+        .collection-item:hover { transform: translateY(-10px); }
+        .collection-img {
+            width: 100%; height: 400px; object-fit: cover; transition: transform 6s ease;
+            filter: sepia(0.3) brightness(0.9);
+        }
+        .collection-item:hover .collection-img { transform: scale(1.05); filter: sepia(0.1) brightness(1); }
+        .item-info {
+            padding: 1.5rem; background: rgba(10, 10, 10, 0.9); border-top: 1px solid rgba(168, 148, 118, 0.2);
+        }
+        .item-title { font-size: 1.3rem; letter-spacing: 2px; margin-bottom: 0.5rem; color: #e4dccf; }
+        .item-category { font-size: 0.9rem; color: #a89476; letter-spacing: 2px; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .item-description { font-size: 0.9rem; color: #8a7f6e; line-height: 1.6; margin-top: 0.8rem; }
+        
+        /* 详情模态框 */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); z-index: 1000; opacity: 0; transition: opacity 0.5s ease;
+        }
+        .modal-overlay.active { display: block; opacity: 1; }
+        .modal-content {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 1200px; max-height: 90vh;
+            background: rgba(15, 15, 15, 0.95); border: 1px solid rgba(168, 148, 118, 0.3); overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem; background: transparent; border: none;
+            color: #a89476; font-size: 2rem; cursor: pointer; z-index: 1001; transition: color 0.3s ease;
+        }
+        .modal-close:hover { color: #e4dccf; }
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; padding: 3rem; }
+        .modal-image { width: 100%; height: 500px; object-fit: cover; filter: sepia(0.2) brightness(0.9); }
+        .modal-title { font-size: 2.5rem; color: #e4dccf; margin-bottom: 1rem; letter-spacing: 3px; }
+        .modal-subtitle { font-size: 1rem; color: #a89476; margin-bottom: 2rem; letter-spacing: 2px; }
+        .detail-item { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(168, 148, 118, 0.1); }
+        .detail-label { font-size: 0.9rem; color: #8a7f6e; display: block; margin-bottom: 0.3rem; }
+        .detail-value { font-size: 1rem; color: #e4dccf; letter-spacing: 1px; }
+        .modal-description { font-size: 1rem; line-height: 1.8; color: #8a7f6e; margin-top: 2rem; }
+        
+        /* 彩蛋模态框 */
+        .secret-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 10000;
+            opacity: 0; transition: opacity 0.5s ease;
+            align-items: center; justify-content: center;
+        }
+        .secret-modal.active { display: flex; opacity: 1; }
+        .secret-img {
+            max-width: 90%; max-height: 90vh;
+            box-shadow: 0 0 50px rgba(168, 148, 118, 0.3);
+            border: 1px solid rgba(168, 148, 118, 0.5);
+            animation: zoomIn 0.5s ease;
+        }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* 特殊交互文字 - "箐"字样式 */
+        .special-char {
+            font-size: 1.4em; /* 放大 */
+            color: #d4b483;   /* 金色高亮 */
+            cursor: pointer;  /* 手型光标 */
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;      /* 确保在顶层 */
+            font-weight: bold;
+        }
+        .special-char:hover {
+            text-shadow: 0 0 15px rgba(212, 180, 131, 0.9);
+            transform: scale(1.2) rotate(-5deg); /* 悬停时稍微旋转放大 */
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center; padding: 3rem 0 1.5rem; color: #5a5244;
+            font-size: 0.85rem; letter-spacing: 1px; border-top: 1px solid rgba(168, 148, 118, 0.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .collection-grid { grid-template-columns: repeat(2, 1fr); }
+            .modal-body { grid-template-columns: 1fr; gap: 2rem; }
+            .modal-image { height: 400px; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            .main-nav { flex-direction: column; align-items: flex-start; }
+            .search-container { width: 100%; margin-bottom: 1.5rem; }
+            .nav-links { width: 100%; justify-content: space-between; flex-wrap: wrap; margin-top: 1rem; }
+            .nav-link { margin-left: 0; margin-bottom: 0.5rem; }
+            .collection-title { font-size: 3rem; }
+            .collection-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .category-nav { gap: 1rem; }
+            .category-btn { padding: 0.6rem 1.5rem; font-size: 0.8rem; }
+            .modal-body { padding: 2rem; }
+            .modal-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg"></div>
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">6/41</div>
+
+    <div class="container">
+        <nav class="main-nav">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="" id="searchInput">
+                <div class="search-icon" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="home.html" class="nav-link">首页</a>
+                <a href="collection.html" class="nav-link active">藏品</a>
+                <a href="philosophy.html" class="nav-link">憩园理念</a>
+                <a href="appointment.html" class="nav-link">预约咨询</a>
+            </div>
+        </nav>
+        
+        <header class="collection-header">
+            <h1 class="collection-title">憩园藏品</h1>
+            <p class="collection-subtitle">每一件器物都承载着时间的痕迹，每一件藏品都诉说着历史的故事。在这里，古老与现代相遇，静待知音。</p>
+        </header>
+        
+        <div class="category-nav">
+            <button class="category-btn" data-category="ceramics">陶瓷与瓷器</button>
+            <button class="category-btn" data-category="calligraphy">字画与文房</button>
+            <button class="category-btn" data-category="woodcarving">木雕与漆器</button>
+            <button class="category-btn" data-category="bronze">青铜与金器</button>
+            <button class="category-btn" data-category="jade">玉器与石雕</button>
+        </div>
+        
+        <div class="collection-grid" id="collectionGrid"></div>
+        
+        <footer class="footer">
+            <p>憩园 · 仅供预约访客 | 地址不载于公共图册</p>
+            <p>© 2015 Qiyuan. All Serenity Reserved.</p>
+        </footer>
+    </div>
+    
+    <div class="modal-overlay" id="itemModal">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <div class="modal-content">
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <div id="secretModal" class="secret-modal" onclick="closeSecretTwo()">
+        <img src="贰.jpg" class="secret-img" alt="Secret Clue">
+    </div>
+
+    <script>
+        const collectionItems = [
+            { id: 1, title: "明代黄花梨圈椅", category: "woodcarving", description: "明代黄花梨圈椅，线条流畅优雅，榫卯结构精密。", era: "明代中期", material: "黄花梨木", dimensions: "高 98cm × 宽 62cm × 深 48cm", origin: "江南地区", image: "明代黄花梨圈椅.jpg" },
+            { id: 2, title: "绮罗遗韵瓶", category: "ceramics", description: "白釉凝脂，青花似翠，缠枝莲纹仿佛在瓷胎上恣意生长。", era: "清朝", material: "高岭土", dimensions: "高 32cm × 腹径 18cm", origin: "瓷乡镇", image: "绮罗遗韵瓶.jpg" },
+            { id: 3, title: "《溪山幽居图》", category: "calligraphy", description: "此卷属‘小青绿’山水画法，用笔工整细腻，意境清旷雅致。", era: "明代", material: "纸本设色", dimensions: "画心 30cm × 450cm", origin: "科州", image: "《溪山幽居图》.jpg" },
+            { id: 4, title: "唐·掐丝镶嵌金孔雀饰组", category: "bronze", description: "集掐丝、炸珠、锤揲等多种技艺，再现唐代贵族奢华风尚。", era: "唐", material: "金", dimensions: "高 14.5 cm × 宽 11.2 cm", origin: "安岳地区", image: "唐·掐丝镶嵌金孔雀及狩猎纹金饰组.jpg" },
+            { id: 5, title: "白玉镂雕璧", category: "jade", description: "质地温润，璧心镂空透雕双螭龙，尽显宫廷玉作风范。", era: "清代中期", material: "和田白玉", dimensions: "直径 6.5cm × 厚 0.8cm", origin: "和田", image: "白玉镂雕璧.jpg" },
+            { id: 6, title: "三彩双色釉陶仗马", category: "ceramics", description: "盛唐典型低温铅釉陶器，生动再现西域良驹肌肉张力。", era: "唐代", material: "陶胎三彩釉", dimensions: "高 58cm × 长 52cm", origin: "洛都", image: "三彩双色釉陶仗马.jpg" },
+            { id: 7, title: "黑釉银兔毫盏", category: "ceramics", description: "胎骨铁褐，釉中析出银白结晶，纹理纤细如兔毫。", era: "宋代", material: "建窑黑釉", dimensions: "高 7cm × 口径 12cm", origin: "瑾阳", image: "黑釉银兔毫盏.jpg" },
+            { id: 8, title: "明代紫檀木笔筒", category: "woodcarving", description: "木质坚密，筒身浮雕山水楼阁图案，构图深远。", era: "明代晚期", material: "紫檀木", dimensions: "高 15cm × 直径 12cm", origin: "科州", image: "明代紫檀木笔筒.jpg" },
+            { id: 9, title: "乾元八瑞", category: "woodcarving", description: "清代黄杨木雕八仙过海套系，工艺精湛，神态各异。", era: "清代乾隆年间", material: "黄杨木", dimensions: "高 28cm × 长 42cm", origin: "广东广州", image: "张果老木雕.jpg" },
+            { id: 10, title: "幽箐鸣玉", category: "jade", description: "鸟笼如幽深竹林，鸣叫清越如玉。将灵动封存于案头。", era: "宋朝", material: "青玉", dimensions: "通高：52 厘米", origin: "洛都", image: "箐.jpg" }
+        ];
+        
+        const categoryMap = { 
+            "woodcarving": "木雕与漆器", 
+            "ceramics": "陶瓷与瓷器", 
+            "calligraphy": "字画与文房", 
+            "bronze": "青铜与金器", 
+            "jade": "玉器与石雕" 
+        };
+        
+        function renderCollectionGrid(items) {
+            const grid = document.getElementById('collectionGrid');
+            grid.innerHTML = '';
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'collection-item';
+                itemElement.dataset.id = item.id;
+                
+                // --- 核心修改部分 ---
+                // 如果是 ID 为 10 的藏品，替换标题中的“箐”字
+                let displayTitle = item.title;
+                if (item.id === 10) {
+                    // 使用 span 包裹“箐”字，并添加 onclick 事件
+                    // event.stopPropagation() 非常重要，它阻止点击事件冒泡到父容器（防止打开详情页）
+                    displayTitle = displayTitle.replace('箐', '<span class="special-char" onclick="event.stopPropagation(); openSecretTwo()">箐</span>');
+                }
+
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="collection-img">
+                    <div class="item-info">
+                        <div class="item-category">${categoryMap[item.category] || item.category}</div>
+                        <h3 class="item-title">${displayTitle}</h3>
+                        <div class="item-description">${item.description.substring(0, 80)}...</div>
+                    </div>`;
+                grid.appendChild(itemElement);
+            });
+
+            document.querySelectorAll('.collection-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const itemId = parseInt(this.dataset.id);
+                    const selectedItem = collectionItems.find(i => i.id === itemId);
+                    if (selectedItem) {
+                        if (selectedItem.title === "乾元八瑞") {
+                            window.location.href = "qianyuan_collection.html";
+                        } else {
+                            openItemModal(selectedItem);
+                        }
+                    }
+                });
+            });
+        }
+        
+        function openItemModal(item) {
+            const modal = document.getElementById('itemModal');
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="modal-image">
+                <div class="modal-info">
+                    <h2 class="modal-title">${item.title}</h2>
+                    <div class="modal-subtitle">${categoryMap[item.category] || item.category}</div>
+                    <div class="modal-details">
+                        <div class="detail-item"><span class="detail-label">年代</span><span class="detail-value">${item.era}</span></div>
+                        <div class="detail-item"><span class="detail-label">材质</span><span class="detail-value">${item.material}</span></div>
+                        <div class="detail-item"><span class="detail-label">尺寸</span><span class="detail-value">${item.dimensions}</span></div>
+                        <div class="detail-item"><span class="detail-label">来源</span><span class="detail-value">${item.origin}</span></div>
+                    </div>
+                    <div class="modal-description">${item.description}</div>
+                </div>`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeItemModal() {
+            document.getElementById('itemModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function openSecretTwo() { document.getElementById('secretModal').classList.add('active'); }
+        function closeSecretTwo() { document.getElementById('secretModal').classList.remove('active'); }
+
+        function setupCategoryFilter() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const category = this.dataset.category;
+                    const filteredItems = collectionItems.filter(item => item.category === category);
+                    renderCollectionGrid(filteredItems);
+                });
+            });
+        }
+        
+        function setupSearch() {
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('searchInput');
+            function performSearchRedirect() {
+                const query = searchInput.value.trim();
+                if (query) {
+                    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+                }
+            }
+            searchBtn.addEventListener('click', performSearchRedirect);
+            searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearchRedirect(); });
+        }
+        
+        function initPage() {
+            renderCollectionGrid(collectionItems);
+            setupCategoryFilter();
+            setupSearch();
+            document.getElementById('modalClose').addEventListener('click', closeItemModal);
+            document.getElementById('itemModal').addEventListener('click', function(e) { if (e.target === this) closeItemModal(); });
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryParam = urlParams.get('category');
+            if (categoryParam && categoryParam !== 'all') {
+                const categoryBtn = document.querySelector(`.category-btn[data-category="${categoryParam}"]`);
+                if (categoryBtn) categoryBtn.click();
+            }
+
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.8s ease';
+            setTimeout(() => { document.body.style.opacity = '1'; }, 100);
+        }
+        
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于“我”</title>
+    <style>
+        /* --- 基础设置 (保持风格一致) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'SimSun', 'Songti SC', serif; /* 宋体，档案感 */
+            background-color: #0a0a0a; /* 纯黑背景 */
+            color: #e4dccf; /* 哑光金文字 */
+            line-height: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* --- 金色葫芦水印 --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -10px;
+            right: 10px;
+            width: 120px;
+            height: 180px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #e4dccf; /* 暗米色，与页面文字一致 */
+            font-size: 14px; 
+            font-family: 'SimSun', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* --- 文章容器 --- */
+        .article-container {
+            max-width: 680px;
+            width: 100%;
+            z-index: 1;
+            animation: fadeIn 2s ease;
+        }
+
+        /* --- 图片样式 --- */
+        .article-image {
+            width: 100%;
+            max-width: 400px; /* 限制最大宽度，避免过大 */
+            height: auto;
+            display: block;
+            margin: 0 auto 40px auto; /* 居中并设置底部间距 */
+            border: 1px solid #333; /* 微弱的边框 */
+            opacity: 0.9; /* 稍微降低透明度以融入暗色背景 */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8); /* 增加深邃感 */
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            font-size: 1.1rem;
+        }
+
+        /* --- 返回按钮 --- */
+        .back-nav {
+            margin-top: 60px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .back-link {
+            color: #8a8a8a;
+            text-decoration: none;
+            font-size: 1rem;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            color: #e4dccf;
+            border-bottom: 1px solid #e4dccf;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">40/41</div>
+
+    <div class="article-container">
+        <img src="手握木雕.jpg" alt="手握木雕" class="article-image">
+
+        <p>看见这个，想必你并不陌生，你的手边也有一尊。</p>
+        <p>不必惊异，祂们分别在哪儿，我都一清二楚，你估计也有些许头绪吧。</p>
+
+        <p>我这尊是“铁拐李”，至于出自哪里，你也知道，憩园。</p>
+
+        <p>而你手中那尊“张果老”，我比你更先见到祂。<br>
+        我在张景手下工作4年，亲眼目睹他如何“突然”致富，又看见他是怎样珍视这尊木雕，早在那时，我就有所怀疑。张景是个狡猾狠辣的人，我始终没有对他放下戒心，调查木雕和憩园，也是为自己留一条后路。</p>
+
+        <p>早在火灾发生三个月前，我就前往过憩园，见到了憩园主人燕筠竹。<br>
+        憩园一直以来都是预约制，但我直接过去，燕小姐却也不生气，更让人想不到是，她还给了我一枚小小的翡翠葫芦，正是“铁拐李”手中那一枚。<br>
+        只说是“有缘”。</p>
+
+        <p>可能真的是有缘吧，火灾之后，我从管道中逃出，见到的第一个人也正是她。<br>
+        她俯视着趴在地上的我，脸上没有怜悯，嘴角反而带着笑，但双眼中只有一种深潭般的平静。<br>
+        我没力气求救，更没余裕问她怎么会出现在这种荒郊野岭。<br>
+        只听见她说：“那枚葫芦，你还带着呢。”，便晕了过去。</p>
+
+        <p>后来我便留下为憩园做事，你看见的官网，也是我搭建的。我还是延续着一直以来的习惯，喜欢在自己做的页面上加葫芦水印，或许她那天说的有缘，便是指这个。<br>
+        在憩园的工作，也印证了我的猜想，拥有八仙木雕的人，确实能有如神助。比如死于2015年2月11日的当红偶像蓝锐，便是在得到蓝采和木雕后突然爆火。死于2015年4月16日的心理咨询师吕明，也是在获得吕洞宾木雕之后名声大噪，被称为能够剑斩愁丝的心理学大师的。<br>
+        包括张景在内的其他人，重获灵感，声名鹊起，如日中天，事业有成，无所顾忌，恐怕也是得利于此。</p>
+
+        <p>至于我，恐怕就是在那场火海的重生，保住了这条命。<br>
+        以及，久违地体验了拥有家人的感觉。</p>
+    </div>
+
+    <div class="back-nav">
+        <a href="three_articles.html" class="back-link">← 返回</a>
+    </div>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

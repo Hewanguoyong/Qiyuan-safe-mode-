@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>...</title>
+    <style>
+        /* --- 极简设置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'SimSun', 'Songti SC', serif; /* 使用宋体，更有文学/档案感 */
+            background-color: #0a0a0a; /* 深色背景，保持神秘感 */
+            color: #e4dccf;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative; /* 为水印定位 */
+        }
+
+        /* --- 金色葫芦水印 --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -10px;
+            right: 10px;
+            width: 120px;
+            height: 180px;
+            /* 使用之前的金色葫芦 SVG */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.08; /* 极度隐晦，保持神秘感 */
+            z-index: 0; /* 在最底层 */
+            pointer-events: none; /* 不阻挡鼠标交互 */
+            mix-blend-mode: screen; /* 更好地融入深色背景 */
+        }
+
+        .link-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem; /* 链接之间的间距 */
+            text-align: center;
+            position: relative;
+            z-index: 1; /* 确保链接在水印之上 */
+        }
+
+        .article-link {
+            display: block;
+            font-size: 1.8rem;
+            text-decoration: none;
+            color: #8a8a8a; /* 默认灰色，低调 */
+            letter-spacing: 5px;
+            transition: all 0.5s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* 悬停效果：变亮，微弱发光 */
+        .article-link:hover {
+            color: #e4dccf;
+            text-shadow: 0 0 10px rgba(228, 220, 207, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* 简单的淡入动画 */
+        .link-container {
+            animation: fadeIn 2s ease;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #e4dccf; /* 暗米色，与页面文字一致 */
+            font-size: 14px; 
+            font-family: 'SimSun', serif; /* 保持宋体风格 */
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">38/41</div>
+
+    <div class="link-container">
+        <a href="about_me.html" class="article-link">关于我</a>
+        
+        <a href="about_quote_me.html" class="article-link">关于“我”</a>
+        
+        <a class="article-link" onclick="checkCycle()">关于你</a>
+    </div>
+
+    <script>
+        function checkCycle() {
+            // 弹出输入框
+            const answer = prompt("一个周期是（ ）天");
+            
+            // 验证答案
+            if (answer && answer.trim() === "64") {
+                // 答案正确，跳转
+                window.location.href = "final_secret.html";
+            } else if (answer !== null) {
+                // 答案错误（用户点了取消不会触发）
+                alert("...");
+            }
+        }
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

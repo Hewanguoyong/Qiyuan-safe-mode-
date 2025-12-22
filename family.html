@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第九仙 | 家人</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基础设置 (保持一致) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Serif SC', "SimSun", serif;
+            /* 竹青色背景 */
+            background-color: #2b4f44; 
+            color: #e8f5e9; /* 极淡的青白色文字 */
+            line-height: 1.9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            overflow-x: hidden;
+            position: relative;
+            font-size: 17px;
+        }
+
+        /* --- 氛围背景 (保持一致) --- */
+        .bamboo-mist {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+                linear-gradient(to bottom, #2b4f44, #1a332b);
+            z-index: -2;
+        }
+
+        /* --- 内容容器 (保持一致) --- */
+        .container {
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: emerge 3s ease forwards; /* 浮现动画 */
+            opacity: 0;
+            padding-bottom: 50px;
+        }
+
+        p {
+            margin-bottom: 1.8rem;
+            text-align: justify;
+        }
+
+        /* 对话样式 (保持一致) */
+        .dialogue {
+            margin: 2rem 0;
+            padding-left: 15px;
+            border-left: 2px solid #789262; /* 浅竹青色边框 */
+            color: #dcedc8;
+        }
+
+        /* --- 新增：照片样式 --- */
+        .photo-container {
+            margin-top: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .photo-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #789262; /* 与对话框边框同色 */
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- 新增：结局落款样式 --- */
+        .the-end {
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Ma Shan Zheng', cursive; /* 使用已引入的书法字体 */
+            font-size: 2rem;
+            color: #a8c0a8;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+        
+        .the-end span {
+            display: block;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            margin-top: 5px;
+            letter-spacing: 5px;
+            color: #789262;
+        }
+
+        @keyframes emerge {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(2px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bamboo-mist"></div>
+    <div class="container">
+        <p>给宫灯换上一盏新的蜡烛，你坐回桌前，翻看着李振整理好的《最新动向》。</p>
+
+        <p>燕箐卿把手机音量稍微调大了一些，视频里传来“上月发生的知名企业家在办公室遭遇歹徒杀害恶性案件，凶手终于落网······”的声音，似乎是刻意在提醒你，新的64天已经过去了一半。燕箐卿枕着手臂，洗过的头发还带着水汽，向你投来猫也似的目光，试图捕捉到“真凶”的动容。最后自讨没趣地把热茶朝你推了一推。</p>
+
+        <div class="dialogue">
+            <p>“振哥，下一个就何仙姑吧，我不喜欢他。”你故意停顿，“妹妹更不喜欢。”</p>
+        </div>
+
+        <p>燕筠竹坐在房间的另一侧，头也不抬地抄着佛经，默许着你的决定。<br>
+        她允许你坐了自己曾经那把椅子，比起血缘，她更偏好灵魂的契合，于是选择你作为传承。</p>
+
+        <p>取代燕箐卿，你成为了第九仙。不再是祭品，而是分享祭坛的人。拥有了力量，拥有了安全，还会拥有了一个扭曲却堪称无限地未来。<br>
+        燕箐卿依然在憩园，她感谢过你让她脱离踩着别人成为第九仙的命运。但还是变得更沉默，更像一个背景，偶尔递上需要签字的文件，或传达一些信息，你们总是对视，但却几乎不再私下说话。</p>
+
+        <p>身为八仙之一的李振，似乎一早就接受了自己终将为了“家人”的伟业而牺牲，你们私下交谈过，他认为自己从火场逃脱之后的时日都是借来的，献祭不过是归还罢了。</p>
+
+        <p>至于燕筠竹，这个默许了你无数次，如今又给了你归处的女人。你们之间没有友情，更没有亲情，是一种更冰冷、也更牢固的纽带：一种精神的共振，对彼此特殊的理解。</p>
+
+        <p>在这里，你无需再奔跑，无需再恐惧，无需再担忧命运。你亲手用最决绝的方式，为自己赢得了这方安宁，和久违的家人。</p>
+
+        <div class="photo-container">
+            <img src="新全家福.jpg" alt="全家福">
+        </div>
+
+        <div class="the-end">
+            The End
+            <span>家人</span>
+        </div>
+    </div>
+
+</body>
+</html>

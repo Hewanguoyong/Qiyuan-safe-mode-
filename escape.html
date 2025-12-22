@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逃离</title>
+    <style>
+        /* --- 基础设置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'SimSun', 'Songti SC', serif; /* 宋体，保持叙事感 */
+            background-color: #e3f2fd; /* 浅蓝色背景，如同天空或海水 */
+            color: #37474f; /* 深蓝灰色文字，清晰且冷峻 */
+            line-height: 2.2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+            font-size: 18px; /* 保持较大字号 */
+        }
+
+        /* --- 内容容器 --- */
+        .container {
+            max-width: 650px;
+            width: 100%;
+            text-align: left;
+            opacity: 0; /* 初始隐藏 */
+            animation: emerge 4s ease forwards; /* 缓慢浮现，比黑色页面更慢一点 */
+            position: relative;
+        }
+
+        /* 标题 */
+        h1 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            color: #1a237e; /* 深邃的蓝 */
+            margin-bottom: 50px;
+            text-align: center;
+            letter-spacing: 8px;
+        }
+
+        p {
+            margin-bottom: 2rem;
+            text-align: justify;
+        }
+
+        /* 特殊段落处理 */
+        .blur-thought {
+            color: #78909c;
+            font-style: italic;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .sound-effect {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            display: block;
+            margin: 60px 0;
+            color: #0d47a1;
+            text-shadow: 0 10px 20px rgba(13, 71, 161, 0.2);
+        }
+
+        .final-line {
+            text-align: center;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* 动画定义 */
+        @keyframes emerge {
+            0% { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>你选择逃离</h1>
+
+        <p>不管要去哪里，首先要逃离那个地方。<br>
+        你下楼，开走了郑群超的车，他还真是赚了不少钱，车不止一辆，还把钥匙都丢在办公室里。</p>
+
+        <p>今天路上的车少得堪称诡异，像都在为你让路。<br>
+        一路绿灯，也没有人横穿马路，他们似乎都只是在两道为你送行。<br>
+        默念着目的地，但那串地名在脑海中还是变得模糊起来。</p>
+
+        <p class="blur-thought">要去哪里来着？</p>
+
+        <p>不过命运早已选好了终点，<br>
+        方向盘和刹车都脱离了你的控制，<br>
+        害你差点撞到一只小狗，<br>
+        还好小狗没事。</p>
+
+        <p>你松了口气，<br>
+        汽车冲出车道，飞跃于空中，对着海面掷出一道抛物线。</p>
+
+        <span class="sound-effect">“咚。”</span>
+
+        <p class="final-line">命运还算不薄，赠予了一个电影式的结局。</p>
+    </div>
+
+</body>
+</html>

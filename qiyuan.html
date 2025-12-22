@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第九仙 | 抉择</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- 基础设置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Serif SC', "SimSun", serif;
+            /* 竹青色背景 */
+            background-color: #2b4f44; 
+            color: #e8f5e9; /* 极淡的青白色文字 */
+            line-height: 1.9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            overflow-x: hidden;
+            position: relative;
+            font-size: 17px;
+        }
+
+        /* --- 氛围背景 --- */
+        .bamboo-mist {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+                linear-gradient(to bottom, #2b4f44, #1a332b);
+            z-index: -2;
+        }
+
+        /* --- 内容容器 --- */
+        .container {
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: emerge 3s ease forwards; /* 浮现动画 */
+            opacity: 0;
+        }
+
+        p {
+            margin-bottom: 1.8rem;
+            text-align: justify;
+        }
+
+        /* 对话样式 */
+        .dialogue {
+            margin: 2rem 0;
+            padding-left: 15px;
+            border-left: 2px solid #789262; /* 浅竹青色边框 */
+        }
+
+        /* 燕箐卿最后的请求 */
+        .climax {
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 40px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        /* --- 底部按钮 --- */
+        .btn-wrapper {
+            margin-top: 80px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .choice-btn {
+            background: transparent;
+            border: 1px solid #a8c0a8;
+            color: #a8c0a8;
+            padding: 15px 30px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(168, 192, 168, 0.3);
+        }
+
+        @keyframes emerge {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(2px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        
+        @media (max-width: 600px) {
+            .btn-wrapper { flex-direction: column; gap: 20px; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bamboo-mist"></div>
+
+    <div class="container">
+        <p>你选择逃离。</p>
+        <p>至于目的地，没有比这个地方更合适的了。<br>
+        为什么不去见见那个在聊天框里发出“ZhaoDaoWo”的人呢？<br>
+        况且，还有另一个人找到这里，还顺利活了下来。</p>
+
+        <p>门轴转动，你还没有走进室内，就听见一声年轻的：“赵小姐。”<br>
+        宫灯映照着陌生的脸，但你却深知她是谁。<br>
+        “我知道你会来，你找到我了。”暖黄色的光勾勒着她的轮廓有些失真，你仿佛还隔着照片看她，区别在于这次没有东西遮住她的脸了。</p>
+
+        <div class="dialogue">
+            <p>“燕箐卿。”你说，“你是第九仙，为什么要见我？”</p>
+            <p>燕箐卿说话比你想象中更加直接，“你知道‘第九仙’是什么意思，对吧？看过那些资料了？蓝锐，吕明，还有……接下来该是谁？张景？还是你？”</p>
+        </div>
+
+        <p>你们心知肚明，因为还有得选择，所以你才会出现在这里。</p>
+
+        <div class="dialogue">
+            <p>“我不想成为他们中的任何一个。”这是你的声音。</p>
+            <p>“没人想。”燕箐卿短促地笑了一下，那笑容里没有温度，“但他们最后都‘想’了。或者说，被摆弄得‘以为’自己想了。”</p>
+        </div>
+
+        <p>她站起身，朝着你的方向走近，宫灯被她挡在身后，整个人都浸在逆光里，乌黑的长发，尖削雪白的脸，明明灭灭间看不清神情。“和其他人不同，他们都是主动来的，只有我出生就在这里。没有人问过我，就把我放在了这个位置上。看着一个又一个‘仙’被填进那个循环，看着那些人……从活生生的人，变成仪式里一个会呼吸的零件。然后告诉自己，这是‘必要的’，这是‘渡海’。”</p>
+
+        <p>你能感受到她声音中压抑着的恶心和倦意，还是继续发问：“你为什么不走？”</p>
+
+        <p>“仿佛什么都逃不过我妈的眼睛。”燕箐卿一直平静的面色突然染上一些动容，“但是这次不一样，她好像···默许了你的所有行动。我相信，如果你的选择是直接离开，你也一定还能继续活下去！所以——”</p>
+        
+        <p>她的声音越来越高，越来越快，直到最后变成一声颤抖的低吟：</p>
+
+        <p class="climax">“你能不能带上我？”</p>
+
+        <div class="btn-wrapper">
+            <button class="choice-btn" onclick="location.href='sister.html'">“我还有没完成的事情。”</button>
+            <button class="choice-btn" onclick="location.href='end_escape_together.html'">“但愿你不要后悔今天的决定”</button>
+        </div>
+    </div>
+
+</body>
+</html>

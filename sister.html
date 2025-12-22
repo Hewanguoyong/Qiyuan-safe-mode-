@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>未尽之事 | 终局</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* --- 基础设置 --- */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        
+
+        body {
+
+            font-family: 'Noto Serif SC', "SimSun", serif;
+
+            /* 深绯色/凝血色背景 */
+
+            background-color: #3a0e0e; 
+
+            color: #ffeaea; /* 极淡的粉白色文字 */
+
+            line-height: 1.9;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 60px 20px;
+
+            overflow-x: hidden;
+
+            position: relative;
+
+            font-size: 17px;
+
+        }
+
+
+
+        /* --- 氛围背景：血雾 --- */
+
+        .blood-mist {
+
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
+            background: 
+
+                radial-gradient(circle at 50% 30%, rgba(255, 0, 0, 0.05) 0%, transparent 60%),
+
+                linear-gradient(to bottom, #3a0e0e, #1f0505);
+
+            z-index: -2;
+
+        }
+
+
+
+        /* --- 内容容器 --- */
+
+        .container {
+
+            max-width: 700px;
+
+            width: 100%;
+
+            position: relative;
+
+            z-index: 1;
+
+            animation: emerge 3s ease forwards;
+
+            opacity: 0;
+
+            padding-bottom: 50px;
+
+        }
+
+
+
+        p {
+
+            margin-bottom: 1.8rem;
+
+            text-align: justify;
+
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+
+        }
+
+
+
+        /* 对话样式 - 红色系 */
+
+        .dialogue {
+
+            margin: 2rem 0;
+
+            padding-left: 15px;
+
+            border-left: 3px solid #8a1c1c; /* 暗红色边框 */
+
+            background: linear-gradient(to right, rgba(138, 28, 28, 0.1), transparent);
+
+            font-style: italic;
+
+        }
+
+
+
+        /* 杀戮段落 - 视觉冲击 */
+
+        .violence-scene {
+
+            background-color: rgba(0, 0, 0, 0.3);
+
+            padding: 20px;
+
+            border-radius: 4px;
+
+            border: 1px solid #5c1818;
+
+            color: #ffcccc;
+
+            margin: 30px 0;
+
+            font-weight: 600; /* 加粗 */
+
+        }
+
+
+
+        /* --- 底部按钮 --- */
+
+        .btn-wrapper {
+
+            margin-top: 60px;
+
+            display: flex;
+
+            justify-content: center;
+
+        }
+
+
+
+        .choice-btn {
+
+            background: transparent;
+
+            border: 1px solid #ff4d4d;
+
+            color: #ff4d4d;
+
+            padding: 15px 40px;
+
+            font-family: 'Ma Shan Zheng', cursive; /* 书法字体，更具张力 */
+
+            font-size: 1.4rem;
+
+            cursor: pointer;
+
+            transition: all 0.4s;
+
+            letter-spacing: 4px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            animation: pulse 2s infinite; /* 心跳般的呼吸效果 */
+
+        }
+
+
+
+        .choice-btn:hover {
+
+            background: #ff4d4d;
+
+            color: #3a0e0e;
+
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.4);
+
+        }
+
+
+
+        @keyframes emerge {
+
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); filter: blur(2px); }
+
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+
+        }
+
+
+
+        @keyframes pulse {
+
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.4); }
+
+            70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
+
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+    <div class="blood-mist"></div>
+
+    <div class="container">
+
+        <p>“我还有没完成的事情。”你开口，声音不高，却惹得燕箐卿的瞳孔和身后火光一同颤抖起来。你以为她会抓住你的胳膊，但她只是缓缓把手放下，什么都没说。</p>
+
+
+
+        <p>她单薄的身影像一个魂灵，绕到你身后推开憩园那道沉重的木门。<br>
+
+        你快步出去，最后看见的是女孩惨白的笑容。</p>
+
+
+
+        <p>拉开车门，系上安全带，点亮播放器，一脚油门下去，让时速和音量都持平在临界线。<br>
+
+        开过一次的路显得比来时更短，没多久你就回到了那个之前急于逃离的地方——瞰世科技。<br>
+
+        车内音响刚播放到罗西尼威廉退尔序曲。</p>
+
+
+
+        <p>进入大楼，回到办公室，抓起木雕塞进挎包，接着就是直奔顶楼的CEO办公室。<br>
+
+        你在公司内的人缘和平日的干练，让这一路都畅通无阻。在顶楼和你擦身而过地钟进总监甚至还替你找了个理由：“去对接郑总留下的工作啊。”<br>
+
+        “是啊。”不就是郑群超留下的工作吗？</p>
+
+
+
+        <p>推开董事长办公室的门时，张景正背对着你，望着玻璃幕墙外的城市高楼，仿佛在等待一个结果。听到声音，他转过身，脸上是恰到好处的惊讶，随即化为一种长辈般的、略带责备的关切。</p>
+
+
+
+        <div class="dialogue">
+
+            <p>“小赵？这么晚了，你怎么……哦，核心研发组的事情，明天再说吧？我今天······”</p>
+
+            <p>“我来纠正一个错误。”你的声音平静得可怕，“你的错误。”</p>
+
+        </div>
+
+
+
+        <p>没有多余的解释，没有控诉，甚至没有给他按下警报或呼救的时间。<br>
+
+        你冲了过去。</p>
+
+
+
+        <div class="violence-scene">
+
+            <p>过程并不漫长，也不优雅。是原始的、充满钝响和疼痛的搏斗。坚硬的木雕砸断了他的鼻梁，敲裂了他的额骨。张景从震惊到反抗，再到最后的哀求和呻吟，都被厚重的落地窗隔绝在内。直到他再无反应，手中的木雕掉落，你也喘着粗气。摇摇晃晃地站起，走到沙发跟前，让自己的身体陷入其中。</p>
+
+        </div>
+
+
+
+        <p>就在这时，办公室的门被推开了。<br>
+
+        燕筠竹站在那里。</p>
+
+
+
+        <p>她没有看满地狼藉，也没有看死去的张景。她的目光，稳稳地落在你身上，落在你染血的双手上。然后，缓缓绽开了一个笑容。</p>
+
+
+
+        <p>她走进来，高跟鞋轻盈地避开血泊，伸出手，轻轻拂开你额前被汗水和血点黏住的发丝。</p>
+
+
+
+        <div class="dialogue" style="border-left-color: #ff4d4d;">
+
+            <p>“你看你，把衣服都弄脏了。”她说，“该回家了。”</p>
+
+        </div>
+
+
+
+        <div class="btn-wrapper">
+
+            <button class="choice-btn" onclick="location.href='family.html'">回家</button>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>

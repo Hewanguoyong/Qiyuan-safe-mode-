@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线咨询 | 憩园</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SimSun', 'KaiTi', 'STKaiti', serif;
+            background-color: #0a0a0a;
+            color: #e4dccf;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* 水墨背景 */
+        .ink-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(26, 65, 48, 0.15) 2%, transparent 8%),
+                         radial-gradient(circle at 80% 70%, rgba(74, 54, 41, 0.1) 3%, transparent 7%);
+            z-index: -2; opacity: 1; background-size: 200% 200%;
+            animation: inkFlow 25s ease-in-out infinite alternate;
+        }
+        @keyframes inkFlow { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+
+        /* 金色葫芦水印 */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -20px;
+            right: 10px;
+            width: 150px;
+            height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.12;
+            z-index: 9999;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e; /* 暗金色，融入背景 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6; /* 稍微透明 */
+        }
+
+        /* --- 新增：红色闪烁遮罩 --- */
+        #flash-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(200, 0, 0, 0.4); /* 暗红色半透明 */
+            z-index: 99999; pointer-events: none; opacity: 0;
+        }
+        /* 闪烁动画 */
+        @keyframes flashRed {
+            0% { opacity: 0; }
+            10% { opacity: 1; } /* 瞬间变亮 */
+            100% { opacity: 0; } /* 迅速消失 */
+        }
+        .flash-active {
+            animation: flashRed 0.5s ease-out forwards;
+        }
+
+        /* 顶部栏 */
+        .chat-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(168, 148, 118, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        .header-title { font-size: 1.2rem; letter-spacing: 2px; color: #e4dccf; }
+        .header-status { font-size: 0.8rem; color: #2ecc71; letter-spacing: 1px; }
+        .close-btn { color: #a89476; text-decoration: none; font-size: 1.5rem; transition: color 0.3s; }
+        .close-btn:hover { color: #e4dccf; }
+
+        /* 聊天区域 */
+        .chat-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            scroll-behavior: smooth;
+            position: relative; z-index: 1;
+        }
+        
+        /* 消息气泡 */
+        .message {
+            max-width: 75%;
+            padding: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.8;
+            position: relative;
+            animation: fadeIn 0.8s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* 对方（壹贰叁）的消息 */
+        .message.received {
+            align-self: flex-start;
+            background: rgba(168, 148, 118, 0.08);
+            border: 1px solid rgba(168, 148, 118, 0.3);
+            color: #e4dccf;
+            border-radius: 2px 2px 2px 2px;
+            border-left: 3px solid #a89476;
+        }
+        .message.received::before {
+            content: '壹贰叁';
+            position: absolute; top: -1.8rem; left: 0;
+            font-size: 0.8rem; color: #8a7f6e; letter-spacing: 2px;
+            font-family: 'SimSun', serif;
+        }
+        /* 消息中的链接样式 */
+        .message.received a {
+            color: #d45d5d; /* 红色链接 */
+            text-decoration: underline;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .message.received a:hover {
+            color: #fff;
+        }
+
+        /* 我（用户）的消息 */
+        .message.sent {
+            align-self: flex-end;
+            background: rgba(168, 148, 118, 0.8);
+            color: #0a0a0a;
+            border-radius: 15px 2px 15px 15px;
+            text-align: right;
+        }
+        
+        /* 输入区域 */
+        .input-area {
+            padding: 2rem;
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 1px solid rgba(168, 148, 118, 0.3);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            position: relative; z-index: 10;
+        }
+        .chat-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(168, 148, 118, 0.3);
+            padding: 0.8rem 0;
+            color: #e4dccf;
+            font-family: 'SimSun', serif;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .chat-input:focus { border-color: #e4dccf; }
+        
+        .send-btn {
+            background: transparent;
+            border: 1px solid rgba(168, 148, 118, 0.5);
+            color: #a89476;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .send-btn:hover {
+            background: #a89476; color: #0a0a0a; transform: scale(1.1);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        
+        @media (max-width: 768px) {
+            .gourd-watermark { width: 100px; height: 140px; bottom: -10px; right: 5px; }
+            .message { max-width: 90%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg"></div>
+    <div class="gourd-watermark"></div>
+    
+    <div id="flash-overlay"></div>
+
+    <div class="page-number">9/41</div>
+
+    <header class="chat-header">
+        <div>
+            <div class="header-title">壹贰叁 / Concierge</div>
+            <div class="header-status">● 连线中 / Connected</div>
+        </div>
+        <a href="appointment.html" class="close-btn">&times;</a>
+    </header>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="message received">
+            尊敬的客人，您好。<br><br>
+            关于您希望退回的<strong>《乾元八瑞》系列之“张果老”木雕</strong>，我们已收到信息并核对了存档。<br><br>
+            我们发现，您手中的这尊木雕，与当初从“憩园”售出时的原始记录存在一些差异。因此，我们暂时无法为您安排常规退货。<br><br>
+            为了便于您核对，建议您登录我们的官方网站，查看它离店时的详细档案图片和描述。<br><br>
+            请您重点对比木雕的神态、细节材质。如果确认无误，或您对差异有任何疑问，都可以回复此对话，以便我们进一步为您处理。<br><br>
+            感谢您的理解与配合。<br><br>
+            祝好，<br>
+            憩园 壹贰叁
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="在此回复..." autocomplete="off">
+        <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const flashOverlay = document.getElementById('flash-overlay');
+
+        function addMessage(text, type) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${type}`;
+            msgDiv.innerHTML = text;
+            chatContainer.appendChild(msgDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function triggerRedFlash() {
+            // 移除类以重置动画（如果之前触发过）
+            flashOverlay.classList.remove('flash-active');
+            // 强制浏览器重绘
+            void flashOverlay.offsetWidth;
+            // 添加类触发动画
+            flashOverlay.classList.add('flash-active');
+        }
+
+        function handleSend() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, 'sent');
+            chatInput.value = '';
+
+            // 检查关键词
+            if (text.includes("燕箐卿")) {
+                // 1. 触发红色闪烁
+                triggerRedFlash();
+
+                // 2. 延迟回复第一条：链接 (修改点：跳转到 lianxin_login.html)
+                setTimeout(() => {
+                    addMessage('<a href="lianxin_login.html" target="_blank">莲叶舟心灵疗愈项目</a>', 'received');
+                }, 800);
+
+                // 3. 延迟回复第二条：账号密码
+                setTimeout(() => {
+                    addMessage('用户名：JingQing 密码：ZhaoDaoWo', 'received');
+                }, 1800);
+
+            } else {
+                // 默认回复逻辑
+                setTimeout(() => {
+                    let replyText = "您好，我是<strong>壹贰叁</strong>。有什么可以帮您？";
+                    addMessage(replyText, 'received');
+                }, 1000);
+            }
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSend();
+        });
+        
+        window.onload = () => chatInput.focus();
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

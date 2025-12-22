@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瞰世科技 | 内部协同</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS 变量定义 --- */
+        :root {
+            --bg-app: #0a0c10;
+            --bg-sidebar: #161b22;
+            --bg-panel: #0d1117;
+            --bg-chat: #0a0c10;
+            --bg-input: #161b22;
+            --accent: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.3);
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --border-color: #30363d;
+            --sidebar-width: 70px;
+            --panel-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* --- 金色葫芦水印 --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -20px; right: 10px; width: 150px; height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-size: contain; opacity: 0.12; z-index: 9999; pointer-events: none; mix-blend-mode: screen;
+        }
+
+        /* --- 页码样式 (位置上调) --- */
+        .page-number {
+            position: fixed;
+            /* 修改点：向上移动，避开输入框 */
+            bottom: 120px; 
+            right: 30px;
+            color: #8a7f6e; 
+            font-size: 14px;
+            font-family: 'Georgia', serif; 
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* --- 布局结构 --- */
+        .app-container {
+            display: flex; width: 100%; height: 100%; position: relative; z-index: 1;
+        }
+
+        /* 1. 左侧导航 */
+        .sidebar-nav {
+            width: var(--sidebar-width); background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color); display: flex; flex-direction: column;
+            align-items: center; padding: 20px 0;
+        }
+        .brand-logo {
+            width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent), #0051ff);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1rem; margin-bottom: 30px;
+            box-shadow: 0 0 15px var(--accent-glow); color: #fff;
+        }
+        .nav-item {
+            width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); font-size: 1.4rem; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s ease; margin-bottom: 10px; position: relative;
+        }
+        .nav-item:hover { color: var(--accent); background: rgba(255,255,255,0.05); }
+        .nav-item.active { color: var(--accent); background: rgba(0, 242, 255, 0.1); }
+        .nav-item.active::before {
+            content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+            width: 4px; height: 24px; background: var(--accent); border-radius: 0 4px 4px 0;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* 2. 中间列表 */
+        .list-panel {
+            width: var(--panel-width); background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-color); display: flex; flex-direction: column;
+        }
+        .panel-header {
+            padding: 20px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .panel-title { font-weight: 600; letter-spacing: 0.5px; }
+        
+        .search-bar-container { padding: 15px; }
+        .search-input-wrapper {
+            position: relative; background: var(--bg-input); border-radius: 6px;
+            border: 1px solid var(--border-color); transition: border-color 0.3s;
+        }
+        .search-input-wrapper:focus-within { border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.9rem; }
+        .search-input {
+            width: 100%; padding: 10px 10px 10px 36px; background: transparent;
+            border: none; color: var(--text-primary); outline: none; font-family: inherit;
+        }
+
+        .channel-list { flex: 1; overflow-y: auto; padding: 10px; }
+        .list-group-title { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin: 15px 10px 5px; font-weight: 600; }
+        .channel-item {
+            display: flex; align-items: center; padding: 10px; border-radius: 6px;
+            cursor: pointer; transition: background 0.2s; color: var(--text-secondary); margin-bottom: 2px;
+        }
+        .channel-item:hover { background: rgba(255,255,255,0.03); color: var(--text-primary); }
+        .channel-item.active { background: rgba(0, 242, 255, 0.08); color: var(--text-primary); }
+        .channel-icon { margin-right: 10px; font-size: 1rem; }
+        
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; }
+        .status-online { background: #2ecc71; box-shadow: 0 0 5px #2ecc71; }
+        .status-busy { background: #e74c3c; }
+
+        /* 3. 右侧聊天 */
+        .chat-main {
+            flex: 1; display: flex; flex-direction: column; background-color: var(--bg-chat); position: relative;
+        }
+        .chat-header {
+            padding: 15px 25px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10, 12, 16, 0.8); backdrop-filter: blur(10px);
+        }
+        .chat-title-wrapper { display: flex; align-items: center; }
+        .chat-title { font-weight: 600; font-size: 1.1rem; color: var(--text-primary); }
+        .header-actions { color: var(--text-secondary); font-size: 1.2rem; display: flex; gap: 20px; }
+        .header-actions i { cursor: pointer; transition: color 0.3s; }
+        .header-actions i:hover { color: var(--accent); }
+
+        .messages-container {
+            flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 20px;
+        }
+        .message-group { display: flex; margin-bottom: 5px; }
+        .user-avatar {
+            width: 40px; height: 40px; border-radius: 10px; background: #333;
+            margin-right: 15px; flex-shrink: 0; background-size: cover; background-position: center;
+        }
+        .message-content { max-width: 75%; }
+        .message-meta { margin-bottom: 5px; }
+        .user-name { font-weight: 600; margin-right: 10px; color: var(--accent); }
+        .message-time { font-size: 0.8rem; color: var(--text-secondary); }
+        
+        .message-bubble {
+            padding: 12px 16px; background: var(--bg-input);
+            border-radius: 4px 16px 16px 16px; line-height: 1.6;
+            border: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem;
+        }
+        
+        .message-group.self { flex-direction: row-reverse; }
+        .message-group.self .user-avatar { margin-right: 0; margin-left: 15px; }
+        .message-group.self .message-meta { text-align: right; }
+        .message-group.self .message-bubble {
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.1), rgba(0, 81, 255, 0.1));
+            border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 16px 4px 16px 16px;
+            color: var(--text-primary);
+        }
+
+        .chat-input-area { padding: 20px; border-top: 1px solid var(--border-color); background: var(--bg-chat); }
+        .input-wrapper {
+            background: var(--bg-input); border-radius: 8px; border: 1px solid var(--border-color);
+            padding: 10px; display: flex; align-items: flex-end; transition: all 0.3s;
+        }
+        .input-wrapper:focus-within { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .input-actions-left { display: flex; gap: 10px; padding: 8px; color: var(--text-secondary); }
+        .input-actions-left i { cursor: pointer; transition: color 0.3s; }
+        .input-actions-left i:hover { color: var(--accent); }
+        
+        .main-input {
+            flex: 1; background: transparent; border: none; color: var(--text-primary);
+            resize: none; max-height: 150px; padding: 8px 10px; font-family: inherit;
+            font-size: 1rem; outline: none;
+        }
+        .send-btn {
+            width: 40px; height: 40px; background: var(--accent); border: none;
+            border-radius: 8px; color: var(--bg-app); display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            transition: all 0.3s; margin-left: 10px;
+        }
+        .send-btn:hover { background: #fff; box-shadow: 0 0 15px var(--accent); }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+    </style>
+</head>
+<body>
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">2/41</div>
+
+    <div class="app-container">
+        <nav class="sidebar-nav">
+            <div class="brand-logo">KS</div>
+            <div class="nav-item active"><i class="fas fa-comment-alt"></i></div>
+            <div class="nav-item"><i class="fas fa-users"></i></div>
+            <div class="nav-item"><i class="fas fa-folder-open"></i></div>
+            <div class="nav-item" style="margin-top: auto;"><i class="fas fa-cog"></i></div>
+        </nav>
+
+        <section class="list-panel">
+            <div class="panel-header">
+                <span class="panel-title">瞰世科技</span>
+                <i class="fas fa-edit" style="color: var(--text-secondary); cursor: pointer;" title="新消息"></i>
+            </div>
+            <div class="search-bar-container">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="搜索 (Ctrl+K)">
+                </div>
+            </div>
+            
+            <div class="channel-list">
+                <div class="list-group-title">私信 / Direct Messages</div>
+                <div class="channel-item active">
+                    <div class="status-dot status-busy"></div>
+                    <span>郑群超 (总监)</span>
+                </div>
+                <div class="channel-item">
+                    <div class="status-dot status-busy"></div>
+                    <span>庄大川 (前端开发)</span>
+                </div>
+                <div class="channel-item">
+                    <div class="status-dot status-online"></div>
+                    <span>崔蕊蕊 (饭搭子/设计部)</span>
+                </div>
+
+                <div class="list-group-title">群组 / Groups</div>
+                <div class="channel-item">
+                    <i class="fas fa-comment-dots channel-icon"></i>
+                    <span>总群 (General)</span>
+                </div>
+                <div class="channel-item">
+                    <i class="fas fa-comment-dots channel-icon"></i>
+                    <span>产品-发布会-Q4</span>
+                </div>
+                <div class="channel-item">
+                    <i class="fas fa-comment-dots channel-icon"></i>
+                    <span>核心研发组</span>
+                </div>
+                <div class="channel-item">
+                    <i class="fas fa-comment-dots channel-icon"></i>
+                    <span>AAA现摸现卖海鲜鱼市</span>
+                </div>
+            </div>
+        </section>
+
+        <main class="chat-main">
+            <header class="chat-header">
+                <div class="chat-title-wrapper">
+                    <div class="status-dot status-busy"></div>
+                    <span class="chat-title">郑群超 (总监)</span>
+                </div>
+                <div class="header-actions">
+                    <i class="fas fa-phone-alt" title="语音通话"></i>
+                    <i class="fas fa-video" title="视频通话"></i>
+                    <i class="fas fa-columns" title="侧边详情"></i>
+                </div>
+            </header>
+
+            <div class="messages-container" id="msgContainer">
+                
+                <div class="message-group">
+                    <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="message-content">
+                        <div class="message-meta">
+                            <span class="user-name" style="color: #e74c3c;">郑群超 (总监)</span>
+                            <span class="message-time">10:45 AM</span>
+                        </div>
+                        <div class="message-bubble">
+                            小赵，上午交给你的那个木雕，处理得怎么样了？
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-group self">
+                    <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="message-content">
+                        <div class="message-meta">
+                            <span class="user-name">赵轻奕</span>
+                            <span class="message-time">10:48 AM</span>
+                        </div>
+                        <div class="message-bubble">
+                            郑总，您是说那个要退回“憩园”的古董吗？东西在我这儿。我刚联系了对方，他们回复说……东西和他们记录的不太对，暂时没法走常规流程。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-group">
+                    <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="message-content">
+                        <div class="message-meta">
+                            <span class="user-name" style="color: #e74c3c;">郑群超 (总监)</span>
+                            <span class="message-time">10:50 AM</span>
+                        </div>
+                        <div class="message-bubble">
+                            不对？有什么不对的？那就是个木头雕像！老板刚才又亲自问我进度了，我告诉你，这事儿今天必须搞定。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="message-group">
+                    <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="message-content">
+                        <div class="message-meta">
+                            <span class="user-name" style="color: #e74c3c;">郑群超 (总监)</span>
+                            <span class="message-time">10:51 AM</span>
+                        </div>
+                        <div class="message-bubble">
+                            我能抽空给你处理这个？我马上要跟老板开季度复盘会！你就按他们网站要求，重新提交，把情况描述清楚。东西就是原样，能有什么问题？
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="message-group">
+                    <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="message-content">
+                        <div class="message-meta">
+                            <span class="user-name" style="color: #e74c3c;">郑群超 (总监)</span>
+                            <span class="message-time">10:52 AM</span>
+                        </div>
+                        <div class="message-bubble">
+                            别自己瞎琢磨。我知道那个憩园，他们就是规矩多，你照着做就行。关键是拿到预约成功的回执，截图发我。我等着跟老板交代。
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="message-group">
+                    <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="message-content">
+                        <div class="message-meta">
+                            <span class="user-name" style="color: #e74c3c;">郑群超 (总监)</span>
+                            <span class="message-time">10:52 AM</span>
+                        </div>
+                        <div class="message-bubble">
+                            其他任何问题，你直接跟他们沟通解决。我只看结果。
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="chat-input-area">
+                <div class="input-wrapper">
+                    <div class="input-actions-left">
+                        <i class="fas fa-plus-circle" title="添加附件"></i>
+                        <i class="fas fa-code" title="代码片段"></i>
+                        <i class="far fa-smile" title="表情"></i>
+                    </div>
+                    <textarea class="main-input" id="chatInput" placeholder="发消息给 郑群超..." rows="1"></textarea>
+                    <button class="send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const msgContainer = document.getElementById('msgContainer');
+
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+            this.style.overflowY = this.scrollHeight > 150 ? 'auto' : 'hidden';
+        });
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+            const newMsgHtml = `
+                <div class="message-group self">
+                    <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="message-content">
+                        <div class="message-meta">
+                            <span class="user-name">赵轻奕</span>
+                            <span class="message-time">${timeString}</span>
+                        </div>
+                        <div class="message-bubble">
+                            ${text.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            msgContainer.insertAdjacentHTML('beforeend', newMsgHtml);
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+            chatInput.value = '';
+            chatInput.style.height = 'auto';
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        window.onload = () => {
+             msgContainer.scrollTop = msgContainer.scrollHeight;
+             chatInput.focus();
+        }
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script></body>
+</html>

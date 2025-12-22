@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>憩园 - A Harbor for the Wandering Soul</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 基础与字体 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SimSun', 'KaiTi', 'STKaiti', serif;
+            background-color: #0a0a0a;
+            color: #e4dccf;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        /* 背景水墨动画 */
+        .ink-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(26, 65, 48, 0.15) 2%, transparent 8%),
+                radial-gradient(circle at 80% 70%, rgba(74, 54, 41, 0.1) 3%, transparent 7%);
+            z-index: -2;
+            opacity: 1;
+            background-size: 200% 200%;
+            animation: inkFlow 20s ease-in-out infinite alternate;
+        }
+        @keyframes inkFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* --- 金色葫芦水印 --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -20px;
+            right: 10px;
+            width: 150px;
+            height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            opacity: 0.12;
+            z-index: 9999;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8a7f6e;
+            font-size: 14px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 导航栏样式 */
+        .main-nav {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(168, 148, 118, 0.3);
+        }
+        .nav-links { display: flex; }
+        .nav-link {
+            color: #a89476;
+            text-decoration: none;
+            margin-left: 3rem;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover { color: #e4dccf; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 1px;
+            background: #a89476;
+            transition: width 0.5s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* 搜索框样式 */
+        .search-container { position: relative; width: 220px; }
+        .search-box {
+            width: 100%;
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            background-color: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(168, 148, 118, 0.4);
+            border-radius: 2px;
+            color: #e4dccf;
+            font-family: 'SimSun', 'STKaiti', serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: #a89476;
+            box-shadow: 0 0 10px rgba(168, 148, 118, 0.2);
+        }
+        .search-icon {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a89476;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .search-icon:hover { color: #e4dccf; }
+
+        /* 主标题区 */
+        .hero { text-align: center; padding: 8rem 0 5rem; }
+        .site-title {
+            font-size: 5.5rem;
+            font-weight: normal;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #a89476, #d4b483, #a89476);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+        }
+        .site-title::before {
+            content: '憩园';
+            position: absolute;
+            top: 0; left: 0;
+            background: transparent;
+            color: transparent;
+            z-index: -1;
+            text-shadow: 0 0 25px rgba(168, 148, 118, 0.4);
+        }
+        .tagline {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #8a7f6e;
+            letter-spacing: 1px;
+            margin-top: -1rem;
+        }
+        /* 图文导航区 */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin: 6rem 0;
+        }
+        .nav-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 1px;
+            transition: transform 0.8s ease;
+        }
+        .nav-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 6s ease;
+            filter: sepia(0.2) brightness(0.9);
+        }
+        .nav-card:hover img { transform: scale(1.03); }
+        .card-title {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(10, 10, 10, 0.85));
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+        }
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 3rem 0 1.5rem;
+            color: #5a5244;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(168, 148, 118, 0.2);
+        }
+
+        /* 移动端响应式适配 */
+        @media (max-width: 768px) {
+            .nav-grid { grid-template-columns: 1fr; gap: 2rem; margin: 4rem 0; }
+            .site-title { font-size: 3.5rem; }
+            .main-nav { flex-direction: column; align-items: flex-start; }
+            .search-container { width: 100%; margin-bottom: 1.5rem; }
+            .nav-links { width: 100%; justify-content: space-between; flex-wrap: wrap; }
+            .nav-link { margin-left: 0; margin-right: 1rem; }
+            .gourd-watermark { width: 100px; height: 140px; bottom: -10px; right: 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg"></div>
+    <div class="gourd-watermark"></div>
+
+    <div class="page-number">1/41</div>
+
+    <div class="container">
+        <nav class="main-nav">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="" id="homeSearchInput">
+                <div class="search-icon" id="homeSearchBtn"><i class="fas fa-search"></i></div>
+            </div>
+
+            <div class="nav-links">
+                <a href="home.html" class="nav-link">首页</a>
+                <a href="collection.html" class="nav-link">藏品</a>
+                <a href="philosophy.html" class="nav-link">憩园理念</a>
+                <a href="appointment.html" class="nav-link">预约咨询</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <h1 class="site-title">憩园</h1>
+            <p class="tagline">A Harbor for the Wandering Soul</p>
+        </header>
+
+        <div class="nav-grid">
+            <div class="nav-card" onclick="window.location.href='exhibition.html'">
+                <img src="书法主页图.jpg" alt="墨痕千年">
+                <div class="card-title">墨痕千年</div>
+            </div>
+            
+            <div class="nav-card" onclick="window.location.href='exhibition_nature.html'">
+                <img src="花鸟按钮.jpg" alt="羽鳞瞬影">
+                <div class="card-title">羽鳞瞬影</div>
+            </div>
+            
+            <div class="nav-card" onclick="window.location.href='event_music.html'">
+                <img src="箜篌.jpg" alt="唐音再引">
+                <div class="card-title">唐音再引</div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>憩园 · 仅供预约访客 | 地址不载于公共图册</p>
+            <p>© 2015 Qiyuan. All Serenity Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('homeSearchInput');
+        const searchBtn = document.getElementById('homeSearchBtn');
+
+        function performRedirect() {
+            const query = searchInput.value.trim();
+            if (query) {
+                // 关键点：统一使用 q 作为参数名，确保 search.html 能直接识别并展示结果
+                window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+        searchBtn.addEventListener('click', performRedirect);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performRedirect();
+        });
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乾元八瑞 | 憩园珍藏</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'SimSun', 'KaiTi', 'STKaiti', serif;
+            background-color: #050505;
+            color: #e4dccf;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* --- 背景水墨 --- */
+        .ink-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(101, 67, 33, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(168, 148, 118, 0.05) 0%, transparent 30%);
+            z-index: -2; opacity: 0.7;
+            animation: breathe 15s infinite alternate;
+        }
+        @keyframes breathe { 0% { opacity: 0.5; } 100% { opacity: 0.8; } }
+
+        /* --- 核心：金色葫芦水印 --- */
+        .gourd-watermark {
+            position: fixed;
+            bottom: -20px; right: 10px; width: 150px; height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'%3E%3Cpath fill='%23a89476' d='M50 10c-15 0-25 12-25 30 0 15 8 25 20 28-18 5-30 20-30 42 0 25 15 45 35 45s35-20 35-45c0-22-12-37-30-42 12-3 20-13 20-28C75 22 65 10 50 10zm0-10c5 0 8 5 5 10h-10c-3-5 0-10 5-10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-size: contain; opacity: 0.12; z-index: 9999; pointer-events: none; mix-blend-mode: screen;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed; bottom: 20px; right: 30px; color: #8a7f6e; font-size: 14px; font-family: 'Georgia', serif; letter-spacing: 2px; z-index: 10000; pointer-events: none; opacity: 0.6;
+        }
+
+        /* --- 导航栏 --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        .main-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; position: fixed; top: 0; width: 100%; z-index: 100; background: linear-gradient(to bottom, rgba(5,5,5,0.9), transparent); transition: background 0.3s; }
+        .main-nav.scrolled { background: rgba(5,5,5,0.95); border-bottom: 1px solid rgba(168,148,118,0.1); }
+        .nav-links { display: flex; }
+        .nav-link { color: #a89476; text-decoration: none; margin-left: 3rem; font-size: 0.9rem; letter-spacing: 2px; position: relative; transition: color 0.3s ease; }
+        .nav-link:hover { color: #e4dccf; }
+        
+        /* 搜索框 */
+        .search-container { position: relative; display: flex; align-items: center; }
+        .search-box { 
+            background: transparent; border: none; border-bottom: 1px solid #a89476; 
+            color: #e4dccf; font-family: 'SimSun', serif; padding: 5px; width: 150px; 
+            margin-right: 10px; font-size: 0.9rem;
+            transition: width 0.3s ease;
+        }
+        .search-box:focus { outline: none; width: 200px; }
+        .search-icon { color: #a89476; cursor: pointer; font-size: 1.1rem; }
+
+        /* 1. Hero 巨幕 */
+        .wood-hero {
+            position: relative; width: 100%; height: 90vh; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-top: 2rem;
+        }
+        .hero-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; filter: brightness(0.6) sepia(0.4);
+            transform: scale(1.05); animation: slowPan 30s infinite alternate;
+        }
+        @keyframes slowPan { from { transform: scale(1.05) translateY(0); } to { transform: scale(1.1) translateY(-20px); } }
+
+        .hero-content {
+            position: relative; z-index: 2; text-align: center; border: 1px solid rgba(168, 148, 118, 0.3); padding: 3rem 5rem; background: rgba(5, 5, 5, 0.5); backdrop-filter: blur(5px);
+        }
+        .collection-tag { font-size: 0.9rem; letter-spacing: 5px; color: #a89476; text-transform: uppercase; margin-bottom: 1rem; display: block; }
+        .main-title {
+            font-size: 4.5rem; color: #e4dccf; font-weight: normal; margin: 0; letter-spacing: 15px; font-family: 'SimSun', serif; text-shadow: 0 0 30px rgba(0,0,0,0.9);
+        }
+        .sub-title { font-family: 'KaiTi', serif; font-size: 1.4rem; color: #8a7f6e; margin-top: 1rem; letter-spacing: 3px; }
+
+        /* 2. 介绍文案 */
+        .intro-section { padding: 8rem 0; text-align: center; max-width: 800px; margin: 0 auto; }
+        .intro-text { font-size: 1.1rem; color: #e4dccf; line-height: 2.2; font-family: 'KaiTi', serif; text-align: justify; text-align-last: center; }
+        .archive-note { margin-top: 3rem; color: #a89476; font-size: 0.9rem; letter-spacing: 1px; border: 1px dashed #a89476; padding: 1rem; display: inline-block; }
+
+        /* 3. 八仙展示 */
+        .gallery-section { padding-bottom: 10rem; }
+        .item-row {
+            display: flex; align-items: center; justify-content: center; min-height: 70vh; margin-bottom: 6rem; opacity: 0; transform: translateY(40px); transition: all 1s ease;
+        }
+        .item-row.visible { opacity: 1; transform: translateY(0); }
+        .item-row.reverse { flex-direction: row-reverse; }
+
+        .item-img-box { flex: 1; height: 70vh; overflow: hidden; position: relative; border: 1px solid rgba(168, 148, 118, 0.1); }
+        .item-img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s ease; filter: contrast(1.1) brightness(0.9); }
+        .item-img-box:hover .item-img { transform: scale(1.05); }
+
+        .item-text-box { flex: 0.8; padding: 4rem; text-align: left; display: flex; flex-direction: column; justify-content: center; }
+        .item-order { font-size: 3rem; color: rgba(168, 148, 118, 0.1); font-family: 'Times New Roman', serif; font-weight: bold; line-height: 1; margin-bottom: -1rem; z-index: -1; }
+        .item-name { font-size: 2rem; color: #e4dccf; margin-bottom: 1rem; font-weight: normal; letter-spacing: 5px; border-left: 3px solid #a89476; padding-left: 15px; }
+        .item-desc { font-size: 1rem; color: #8a7f6e; line-height: 1.8; margin-bottom: 1.5rem; text-align: justify; font-family: 'SimSun', serif; }
+        .item-specs { font-size: 0.85rem; color: #5a5244; letter-spacing: 1px; border-top: 1px solid rgba(168,148,118,0.15); padding-top: 1rem; }
+
+        .footer { text-align: center; padding: 3rem 0; color: #5a5244; font-size: 0.8rem; border-top: 1px solid rgba(168,148,118,0.1); }
+
+        @media (max-width: 900px) {
+            .main-title { font-size: 3rem; }
+            .item-row, .item-row.reverse { flex-direction: column; height: auto; margin-bottom: 4rem; }
+            .item-img-box { height: 50vh; width: 100%; }
+            .item-text-box { padding: 3rem 2rem; width: 100%; }
+            .main-nav { flex-direction: column; align-items: flex-start; }
+            .search-container { width: 100%; margin-top: 1rem; }
+            .nav-links { width: 100%; justify-content: space-between; flex-wrap: wrap; margin-bottom: 1rem; }
+            .nav-link { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ink-bg"></div>
+    <div class="gourd-watermark"></div>
+    <div class="page-number">11/41</div>
+
+    <nav class="main-nav" id="navbar">
+        <a href="home.html" class="nav-link" style="margin:0; font-weight:bold;">QIYUAN</a>
+        <div class="nav-links">
+            <a href="home.html" class="nav-link">首页</a>
+            <a href="collection.html" class="nav-link">藏品</a>
+            <a href="philosophy.html" class="nav-link">憩园理念</a>
+            <a href="appointment.html" class="nav-link">预约咨询</a>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput" placeholder="">
+            <div class="search-icon" id="searchBtn"><i class="fas fa-search"></i></div>
+        </div>
+    </nav>
+
+    <header class="wood-hero">
+        <img src="八仙_全家福.jpg" alt="乾元八瑞" class="hero-img">
+        <div class="hero-content">
+            <span class="collection-tag">Masterpiece Collection</span>
+            <h1 class="main-title">乾元八瑞</h1>
+            <p class="sub-title">清代黄杨木雕八仙过海套系</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="intro-section">
+            <p class="intro-text">
+                此套“乾元八瑞”木雕，取材自百年黄杨，质地温润如象牙。<br>
+                刀法圆熟，线条流畅，将八位仙人的神态刻画得入木三分。<br>
+                时光为木色镀上一层暖金包浆，抚之如玉，观之忘俗。<br>
+                这不仅是工艺的巅峰，更是那个神话与信仰共存年代的缩影。
+            </p>
+            <div class="archive-note">状态：由 [ 憩园 ] 永久建档 / 离店不可逆</div>
+        </section>
+
+        <div class="gallery-section">
+            
+            <div class="item-row">
+                <div class="item-img-box"><img src="铁拐李木雕.jpg" alt="铁拐李" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">01</div>
+                    <h2 class="item-name">铁拐李</h2>
+                    <p class="item-desc">八仙之首，借尸还魂，法相奇特而道心通明。雕工极尽细腻，刻画其背负硕大葫芦，手扶铁拐，怒目圆睁却透出济世慈悲。衣褶随风而动，葫芦口似有灵气溢出，寓意福禄双全。</p>
+                    <div class="item-specs">高 28cm / 黄杨木 / 附原配红木底座</div>
+                </div>
+            </div>
+
+            <div class="item-row reverse">
+                <div class="item-img-box"><img src="汉钟离木雕.jpg" alt="汉钟离" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">02</div>
+                    <h2 class="item-name">汉钟离</h2>
+                    <p class="item-desc">坦胸露乳，手摇芭蕉扇，神情悠然自得。匠人巧妙利用黄杨木天然纹理表现其飘逸长须，双目微眯，尽显大将之风与仙家逍遥。手中宝扇似能扇去凡尘烦恼，点石成金。</p>
+                    <div class="item-specs">高 27.5cm / 黄杨木 / 扇柄处微修 / 包浆厚重</div>
+                </div>
+            </div>
+
+            <div class="item-row">
+                <div class="item-img-box"><img src="张果老木雕.jpg" alt="张果老" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">03</div>
+                    <h2 class="item-name">张果老</h2>
+                    <p class="item-desc">倒骑毛驴心不惊，渔鼓道情醒世人。此尊造像面容沧桑，长须飘逸，不仅是长寿之相，更显看透红尘的通达。手持渔鼓，神态诙谐，木质纹理与老人皱纹完美融合，巧夺天工。饰品可以拆卸。</p>
+                    <div class="item-specs">高 28.5cm / 黄杨木 / 渔鼓细节完好</div>
+                </div>
+            </div>
+
+            <div class="item-row reverse">
+                <div class="item-img-box"><img src="吕洞宾木雕.jpg" alt="吕洞宾" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">04</div>
+                    <h2 class="item-name">吕洞宾</h2>
+                    <p class="item-desc">纯阳剑仙，风度翩翩。背负七星宝剑，手持拂尘，既有书生之儒雅，又有剑侠之英气。刀法刚柔并济，刻画出斩妖除魔的威严与浩气长存的意境，是八仙中最为俊朗的一尊。</p>
+                    <div class="item-specs">高 29cm / 黄杨木 / 剑穗雕工极细</div>
+                </div>
+            </div>
+
+            <div class="item-row">
+                <div class="item-img-box"><img src="何仙姑木雕.jpg" alt="何仙姑" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">05</div>
+                    <h2 class="item-name">何仙姑</h2>
+                    <p class="item-desc">巧笑倩兮，步步生莲。作为八仙中唯一的女性，此作在硬朗的木材上刻画出极致的柔美。手持荷花，衣带当风，神情温婉端庄。荷花寓意出淤泥而不染，整体造型清丽脱俗。</p>
+                    <div class="item-specs">高 26.5cm / 黄杨木 / 底部有"清赏"二字印</div>
+                </div>
+            </div>
+
+            <div class="item-row reverse">
+                <div class="item-img-box"><img src="蓝采和木雕.jpg" alt="蓝采和" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">06</div>
+                    <h2 class="item-name">蓝采和</h2>
+                    <p class="item-desc">踏歌而行，狂放不羁。手提花篮，内盛奇花异草，寓意四季平安。神态天真烂漫，似醉非醉，于市井中参透造化玄机。衣衫褴褛中透着仙风道骨，极具艺术张力。</p>
+                    <div class="item-specs">高 27cm / 黄杨木 / 花篮透雕工艺</div>
+                </div>
+            </div>
+
+            <div class="item-row">
+                <div class="item-img-box"><img src="韩湘子木雕.jpg" alt="韩湘子" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">07</div>
+                    <h2 class="item-name">韩湘子</h2>
+                    <p class="item-desc">紫箫吹度千波静。文质彬彬，玉树临风。轻抚长笛，似有仙乐飘渺于耳际。神情专注，尽显名士风流。木质色泽如陈年古玉，与文人气质相得益彰。</p>
+                    <div class="item-specs">高 28cm / 黄杨木 / 箫身有轻微冰裂纹</div>
+                </div>
+            </div>
+
+            <div class="item-row reverse">
+                <div class="item-img-box"><img src="曹国舅木雕.jpg" alt="曹国舅" class="item-img"></div>
+                <div class="item-text-box">
+                    <div class="item-order">08</div>
+                    <h2 class="item-name">曹国舅</h2>
+                    <p class="item-desc">玉板声清，官运亨通。身着官服，手执阴阳板，腰束玉带。神态端庄肃穆，不同于他仙的野逸，自有一股富贵威严之气。冠帽与官服纹饰雕刻精细，一丝不苟。</p>
+                    <div class="item-specs">高 28.5cm / 黄杨木 / 品相完美</div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            <p>憩园 · 仅供预约访客 | 地址不载于公共图册</p>
+            <p>© 2015 Qiyuan. All Serenity Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // 导航栏滚动变色
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) { nav.classList.add('scrolled'); } 
+            else { nav.classList.remove('scrolled'); }
+        });
+
+        // 搜索跳转逻辑
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        function performRedirect() {
+            const query = searchInput.value.trim();
+            if (query) window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+        }
+        searchBtn.addEventListener('click', performRedirect);
+        searchInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') performRedirect(); });
+
+        // 滚动显现动画
+        document.addEventListener("DOMContentLoaded", function() {
+            const items = document.querySelectorAll('.item-row');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            items.forEach(item => observer.observe(item));
+        });
+    </script>
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>慈善活动 | 朱利安·怀特</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 全局设置 (与 profile 保持一致) --- */
+        :root {
+            --primary-text: #2c3e50;
+            --secondary-text: #596e79;
+            --accent-color: #8e6e53; /* 优雅的棕褐色/古铜色 */
+            --bg-color: #fdfbf7; 
+            --section-bg: rgba(255, 255, 255, 0.95); /* 内容区微透明白 */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Serif SC', "Songti SC", serif;
+            color: var(--primary-text);
+            line-height: 1.9;
+            font-size: 16px;
+            /* 背景同步 profile 页面 */
+            background-image: url('白莲花背景.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        a { text-decoration: none; color: var(--accent-color); transition: opacity 0.3s; }
+        a:hover { opacity: 0.7; }
+
+        /* --- 布局容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+            background-color: var(--section-bg);
+            box-shadow: 0 0 50px rgba(0,0,0,0.05);
+            min-height: 100vh;
+        }
+
+        /* --- 头部 (与 profile 一致) --- */
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            position: relative; /* 关键：为绝对定位的搜索框提供参照 */
+        }
+
+        /* --- 新增：搜索框样式 (参照 Profile 页面) --- */
+        .search-container {
+            position: absolute;
+            top: 20px;
+            right: 0;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            border: none;
+            border-bottom: 1px solid var(--accent-color);
+            background: transparent;
+            padding: 5px;
+            font-family: 'Noto Serif SC', serif;
+            color: var(--primary-text);
+            width: 150px;
+            font-size: 14px;
+            outline: none;
+            transition: width 0.3s ease;
+        }
+        .search-input:focus {
+            width: 200px;
+        }
+        .search-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 16px;
+        }
+
+        .name-en {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        .name-cn {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .tagline {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-color);
+            margin-top: 15px;
+        }
+
+        /* --- 导航 (与 profile 一致) --- */
+        nav {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+        }
+        nav a {
+            margin: 0 15px;
+            color: #999;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        nav a.active { color: var(--primary-text); border-bottom: 1px solid var(--primary-text); }
+
+        /* --- 慈善项目通用样式 --- */
+        .charity-section {
+            padding: 40px 0 80px;
+        }
+
+        .project-card {
+            display: flex;
+            align-items: stretch;
+            margin-bottom: 80px;
+            gap: 40px;
+            border-bottom: 1px dashed #ddd;
+            padding-bottom: 60px;
+        }
+        /* 最后一个不需要边框 */
+        .project-card:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        /* 图片区域 */
+        .project-image {
+            flex: 1;
+            min-width: 350px;
+        }
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 2px;
+            box-shadow: 10px 10px 0px rgba(142, 110, 83, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        /* 文本区域 */
+        .project-text {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* 偶数项反转布局 (图右文左) */
+        .project-card.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary-text);
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .project-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+            margin-top: 10px;
+        }
+
+        /* 标语/引言样式 */
+        .project-quote {
+            font-style: italic;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 15px;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 15px;
+            line-height: 1.6;
+        }
+        /* 特殊引言块 (针对莲叶舟) */
+        .personal-quote-block {
+            background-color: #fdfbf7;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            font-size: 14px;
+            color: #555;
+            font-style: italic;
+        }
+
+        .project-desc {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .project-activities ul {
+            list-style: none;
+            padding: 0;
+        }
+        .project-activities li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        .project-activities li::before {
+            content: '•';
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .activities-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- 图片查看器模态框 (Modal) --- */
+        #imageModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+            max-height: 90vh;
+            object-fit: contain;
+            border: 2px solid #fff;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .close-btn:hover, .close-btn:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* --- 页脚 --- */
+        footer {
+            border-top: 1px solid #eee;
+            padding: 40px 0;
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #8e6e53; /* 使用页面的主色调 */
+            font-size: 14px; /* 小巧精致 */
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.8; /* 稍微透明 */
+            font-weight: bold;
+        }
+
+        /* 响应式 */
+        @media (max-width: 800px) {
+            .container { padding: 0 20px; }
+            /* 手机端搜索框调整 */
+            .search-container { position: static; margin-bottom: 20px; justify-content: center; }
+            .project-card, .project-card.reverse { flex-direction: column; }
+            .project-image { min-width: 100%; height: 250px; }
+            .name-en { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">23/41</div>
+
+    <div id="imageModal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="search-container">
+                <input type="text" class="search-input" id="julianSearchInput" placeholder="Search...">
+                <button class="search-btn" id="julianSearchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="name-en">Julian White</div>
+            <div class="name-cn">朱利安·怀特</div>
+            <div class="tagline">权利、尊严与跨文化理解 | 律师 · 倡议者 · 桥梁建造者</div>
+        </header>
+
+        <nav>
+            <a href="julian_white_profile.html">简介</a>
+            <a href="julian_white_profile.html#cases">经典案例</a>
+            <a href="julian_white_profile.html#news">最新动态</a>
+            <a href="#" class="active">慈善活动</a>
+        </nav>
+
+        <div class="charity-section">
+            
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="卿.jpg" alt="莲叶舟心灵疗愈项目" style="cursor: pointer;" onclick="openModal('叁.jpg')" title="点击查看详情">
+                </div>
+                <div class="project-text">
+                    <h2 class="project-title">莲叶舟心灵疗愈项目</h2>
+                    
+                    <div class="personal-quote-block">
+                        “才来到这里时，我遇到了一个天使一般的女孩，她深深治愈了我，我想将这份治愈分享给更多人。我决定在1月9日启动这个项目来纪念这份邂逅。”
+                    </div>
+
+                    <p class="project-desc">
+                        <strong>宗旨：从创伤的淤泥中，生长出重塑自我的力量。</strong><br>
+                        专为经历过重大创伤的女性，提供长期、深度且免费的心理支持与团体疗愈。我们融合西方临床心理学与东方正念哲学，帮助参与者将痛苦转化为内在资源，最终达到“与过去和解，为未来掌舵”的疗愈目标。
+                    </p>
+
+                    <div class="project-activities">
+                        <div class="activities-title">活动形式</div>
+                        <ul>
+                            <li><strong>封闭式疗愈周末：</strong>每季度一次，在环境静谧的场所进行。</li>
+                            <li>包含正念冥想、表达性艺术治疗（绘画、音乐）。</li>
+                            <li>叙事疗法小组与深度共情对话。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reverse">
+                <div class="project-image">
+                    <img src="微光.jpg" alt="微光计划">
+                </div>
+                <div class="project-text">
+                    <h2 class="project-title">微光计划</h2>
+                    
+                    <div class="project-quote">
+                        “赋予一点微光，照亮自立之路。”
+                    </div>
+
+                    <p class="project-desc">
+                        <strong>宗旨：</strong>为贫困地区、都市边缘或逃离暴力的女性提供启动资金、技能培训及商业辅导，帮助她们建立可持续的小微生意，实现经济独立。
+                    </p>
+
+                    <div class="project-activities">
+                        <div class="activities-title">活动形式</div>
+                        <ul>
+                            <li>提供无息小额贷款，降低创业门槛。</li>
+                            <li>开设编织、烘焙、基础数码技能等职业技能培训班。</li>
+                            <li>链接本地市场与电商平台，帮助销售产品。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="她的声音.jpg" alt="她的声音工作坊">
+                </div>
+                <div class="project-text">
+                    <h2 class="project-title">“她的声音”数字故事工作坊</h2>
+                    <h3 style="font-size: 16px; color: #666; margin-bottom: 10px; font-weight: normal;">Her Voice Digital Storytelling Workshop</h3>
+                    
+                    <div class="project-quote">
+                        “Reclaim your narrative，重写你的生命故事。”
+                    </div>
+
+                    <p class="project-desc">
+                        <strong>宗旨：</strong>帮助女性（尤其是幸存者）通过写作、播客、短视频等数字媒介，学习讲述自己的故事。旨在打破沉默，对抗污名化，并建立支持性的线上社群。
+                    </p>
+
+                    <div class="project-activities">
+                        <div class="activities-title">活动形式</div>
+                        <ul>
+                            <li>举办线上/线下媒体技能与叙事工作坊。</li>
+                            <li>运营一个安全的匿名故事分享平台。</li>
+                            <li>与当地媒体合作，推送优秀作品，放大女性声音。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2015 Julian White Office. All Rights Reserved.<br>
+        London • New York • Hong Kong
+    </footer>
+
+    <script>
+        function openModal(imgSrc) {
+            var modal = document.getElementById("imageModal");
+            var modalImg = document.getElementById("modalImg");
+            modal.style.display = "flex"; // 使用flex居中
+            modal.style.justifyContent = "center";
+            modal.style.alignItems = "center";
+            modalImg.src = imgSrc;
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("imageModal");
+            modal.style.display = "none";
+        }
+
+        // 点击遮罩层也可以关闭
+        window.onclick = function(event) {
+            var modal = document.getElementById("imageModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // --- 搜索功能逻辑 ---
+        const searchInput = document.getElementById('julianSearchInput');
+        const searchBtn = document.getElementById('julianSearchBtn');
+
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (query) {
+                // 跳转到 search_2.html，并使用 q 参数
+                window.location.href = `search_2.html?q=${encodeURIComponent(query)}`;
+            }
+        }
+
+        if(searchBtn) {
+            searchBtn.addEventListener('click', performSearch);
+        }
+        
+        if(searchInput) {
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') performSearch();
+            });
+        }
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

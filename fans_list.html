@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吕明 | 粉丝列表</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* --- 基础设置 (延续 luming_blog.html 风格) --- */
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: #f4f5f7; /* 柔和的浅灰背景 */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- 顶部导航 --- */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            box-sizing: border-box;
+            justify-content: space-between;
+        }
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+        .nav-logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d8cf0;
+            margin-right: 40px;
+        }
+        .nav-menu {
+            display: flex;
+        }
+        .nav-menu a {
+            padding: 0 15px;
+            line-height: 60px;
+            color: #666;
+            font-size: 15px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .nav-menu a:hover { 
+            color: #2d8cf0; 
+            background-color: #f0f7ff;
+        }
+        .nav-menu a.active {
+            color: #2d8cf0;
+            border-bottom: 2px solid #2d8cf0;
+        }
+
+        /* --- 主布局 (针对粉丝列表调整) --- */
+        .container {
+            max-width: 800px; /* 调整宽度以适应粉丝列表 */
+            margin: 90px auto 40px;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            background: #fff;
+            border-radius: 4px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            border-left: 5px solid #2d8cf0;
+        }
+
+        /* --- 粉丝列表样式 --- */
+        .fans-list {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .fan-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        .fan-item:last-child {
+            border-bottom: none;
+        }
+        .fan-item:hover:not(.not-clickable) { /* 只有可点击项有悬停效果 */
+            background-color: #f9f9f9;
+        }
+
+        .fan-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #eee;
+        }
+        .fan-info {
+            flex-grow: 1;
+        }
+        .fan-name {
+            font-size: 17px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .fan-bio {
+            font-size: 13px;
+            color: #999;
+        }
+        .fan-action {
+            font-size: 14px;
+            color: #2d8cf0;
+            cursor: pointer;
+            padding: 8px 15px;
+            border: 1px solid #2d8cf0;
+            border-radius: 4px;
+            margin-left: 20px;
+            transition: all 0.3s;
+        }
+        .fan-action:hover {
+            background-color: #2d8cf0;
+            color: #fff;
+        }
+
+        /* 不可点击粉丝的样式 */
+        .fan-item.not-clickable .fan-name,
+        .fan-item.not-clickable .fan-avatar {
+            cursor: default;
+        }
+        .fan-item.not-clickable .fan-name {
+            color: #666; /* 稍微暗一点 */
+        }
+
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            padding: 20px;
+            clear: both;
+        }
+        
+        /* --- 页码样式 --- */
+        .page-number {
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            color: #2d8cf0; /* 冷静蓝 */
+            font-size: 14px; 
+            font-family: 'Georgia', serif;
+            letter-spacing: 2px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0.7;
+            font-weight: bold;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .container { padding: 0 10px; }
+            .navbar { padding: 0 10px; }
+            .nav-logo { margin-right: 10px; }
+            .nav-menu a { padding: 0 8px; font-size: 14px; }
+            .page-header { font-size: 20px; padding: 15px 20px; }
+            .fan-item { padding: 10px 0; }
+            .fan-avatar { width: 40px; height: 40px; margin-right: 10px; }
+            .fan-name { font-size: 16px; }
+            .fan-bio { font-size: 12px; }
+            .fan-action { padding: 6px 10px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-number">EX</div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">咿呀哈博客</div>
+            <div class="nav-menu">
+                <a href="luming_blog.html">博客首页</a>
+                <a href="#" class="active">粉丝</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+        <div class="nav-right">
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">粉丝列表</div>
+
+        <div class="fans-list">
+            
+            <div class="fan-item clickable">
+                <a href="koukouriyue_profile.html" style="display: flex; align-items: center; flex-grow: 1;">
+                    <img src="sword with blood.jpg" alt="口口日月头像" class="fan-avatar">
+                    <div class="fan-info">
+                        <div class="fan-name">口口日月</div>
+                        <div class="fan-bio">星辰与大海的探寻者 | 情感与哲思的记录者</div>
+                    </div>
+                </a>
+                <span class="fan-action">关注</span>
+            </div>
+
+            <div class="fan-item not-clickable">
+                <img src="https://i.pravatar.cc/150?img=68" alt="李明头像" class="fan-avatar">
+                <div class="fan-info">
+                    <div class="fan-name">李明</div>
+                    <div class="fan-bio">独立思考者，热衷生活艺术</div>
+                </div>
+                <span class="fan-action">关注</span>
+            </div>
+
+            <div class="fan-item not-clickable">
+                <img src="https://i.pravatar.cc/150?img=47" alt="王芳头像" class="fan-avatar">
+                <div class="fan-info">
+                    <div class="fan-name">王芳</div>
+                    <div class="fan-bio">插画师 | 用色彩记录心情</div>
+                </div>
+                <span class="fan-action">关注</span>
+            </div>
+
+            <div class="fan-item not-clickable">
+                <img src="https://i.pravatar.cc/150?img=12" alt="张华头像" class="fan-avatar">
+                <div class="fan-info">
+                    <div class="fan-name">张华</div>
+                    <div class="fan-bio">咖啡爱好者，寻找城市中的小确幸</div>
+                </div>
+                <span class="fan-action">关注</span>
+            </div>
+
+            <div class="fan-item not-clickable">
+                <img src="https://i.pravatar.cc/150?img=24" alt="陈丽头像" class="fan-avatar">
+                <div class="fan-info">
+                    <div class="fan-name">陈丽</div>
+                    <div class="fan-bio">瑜伽修行者，追求身心平衡</div>
+                </div>
+                <span class="fan-action">关注</span>
+            </div>
+
+            <div class="fan-item not-clickable">
+                <img src="https://i.pravatar.cc/150?img=59" alt="刘伟头像" class="fan-avatar">
+                <div class="fan-info">
+                    <div class="fan-name">刘伟</div>
+                    <div class="fan-bio">科技宅，关注人工智能前沿</div>
+                </div>
+                <span class="fan-action">关注</span>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer class="footer">
+        © 2015 All Rights Reserved.
+    </footer>
+
+    <script>
+        // 确保粉丝导航项高亮
+        document.querySelector('.nav-menu a[href="#"]').classList.remove('active');
+        document.querySelector('.nav-menu a.active').classList.remove('active');
+        document.querySelector('.nav-menu a[href="luming_blog.html"]').classList.remove('active');
+        
+        const fanLink = document.querySelector('.nav-menu a:nth-child(2)'); 
+        if(fanLink) fanLink.classList.add('active');
+    </script>
+
+<script>
+    (function() {
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const pageInfo = {
+            title: document.title || '未知页面', 
+            url: window.location.href,
+            time: new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute:'2-digit'})
+        };
+
+        let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        
+        // 防止瞬间重复刷新
+        if (history.length === 0 || history[history.length - 1].url !== pageInfo.url) {
+            history.push(pageInfo);
+            
+            // 【注意】这里不再限制数量了，有多少存多少
+            // 只要硬盘（localStorage）没满，它就会一直记
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+    })();
+</script>
+</body>
+</html>

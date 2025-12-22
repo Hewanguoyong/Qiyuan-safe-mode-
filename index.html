@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>序章</title>
+    <style>
+        /* --- 全局设置 --- */
+        :root {
+            --theme-orange: #ff6b00;       
+            --theme-orange-light: #fff5eb; 
+            --text-dark: #2c3e50;          
+            --text-gray: #546e7a;          
+            --bg-page: #f7f9fb;            
+            --bg-paper: #ffffff;           
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            line-height: 1.9;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            border-top: 4px solid var(--theme-orange);
+        }
+
+        .container {
+            max-width: 760px;
+            width: 100%;
+            background-color: var(--bg-paper);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            padding: 50px;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 30px 20px; }
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 45px;
+            font-weight: 700;
+            position: relative;
+            padding-left: 18px;
+        }
+
+        h1::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 5px; bottom: 5px;
+            width: 6px;
+            background-color: var(--theme-orange);
+            border-radius: 4px;
+        }
+
+        p {
+            margin-bottom: 28px;
+            font-size: 1.08rem;
+            text-align: justify;
+            letter-spacing: 0.02em;
+        }
+
+        strong {
+            font-weight: bold;
+            color: var(--theme-orange);
+            background-color: var(--theme-orange-light);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin: 0 2px;
+        }
+
+        a {
+            color: var(--theme-orange);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: rgba(255, 107, 0, 0.05);
+        }
+        a:hover {
+            color: #fff;
+            background-color: var(--theme-orange);
+        }
+
+        .object-image {
+            display: block;
+            max-width: 100%;
+            width: auto;
+            max-height: 450px; 
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            transition: transform 0.3s ease;
+        }
+        .object-image:hover { transform: translateY(-5px); }
+
+        .ending-note {
+            margin-top: 60px;
+            padding: 25px 30px;
+            background-color: var(--theme-orange-light);
+            border-radius: 12px;
+            color: #d35400;
+            font-size: 1.05rem;
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+        }
+        .ending-note::before {
+            content: '📝';
+            font-size: 1.4rem;
+            margin-right: 15px;
+            line-height: 1.2;
+        }
+        .ending-note a {
+            background-color: transparent;
+            color: #d35400;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            padding: 0;
+        }
+        .ending-note a:hover {
+            background-color: transparent;
+            color: var(--theme-orange);
+        }
+
+        /* --- 浏览记录样式 --- */
+        .history-section {
+            margin-top: 50px;
+            border-top: 2px dashed #eee;
+            padding-top: 30px;
+        }
+        .history-title {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #ccc;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        a.history-link {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            background-color: transparent;
+            padding: 0;
+            flex-grow: 1;
+        }
+        a.history-link:hover {
+            color: var(--theme-orange);
+            text-decoration: underline;
+            background-color: transparent;
+        }
+
+        .history-time {
+            font-size: 0.75rem;
+            color: #999;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        .empty-msg {
+            color: #aaa;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* --- 按钮区域样式 --- */
+        .history-controls {
+            display: flex;
+            justify-content: space-between; /* 两端对齐：左边是清除，右边是展开 */
+            align-items: center;
+            margin-top: 15px;
+            padding: 0 5px;
+        }
+
+        .text-btn {
+            font-size: 0.85rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px 0;
+            transition: color 0.2s;
+        }
+
+        .clear-btn {
+            color: #999;
+            text-decoration: underline;
+        }
+        .clear-btn:hover { color: #ff4d4f; /* 清除按钮变红 */ }
+
+        .toggle-btn {
+            color: var(--theme-orange);
+            font-weight: 600;
+            display: none; /* 默认隐藏，有数据才显示 */
+        }
+        .toggle-btn:hover { opacity: 0.8; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <h1>今天是 2015年6月19日，星期五。</h1>
+        
+        <p>你叫 <strong>赵轻奕</strong>，一家科技公司的普通员工。</p>
+        
+        <p>你上司 <strong>郑群超</strong> 上午塞给你一个麻烦事：帮公司 CEO 把一尊看上去就价值不菲的 <strong>张果老木雕</strong>，退给一家叫“憩园”的古董店。东西现在就在你手边。</p>
+        
+        <p>你已经按他给的网址，在“憩园”的网站上填了退货预约。但那网站规矩多，必须提前预约才能前往，问得也特别细。这还不算完，你刚收到回复，说你这木雕“和记录对不上”，暂时不能提供退货服务。
+            <a href="chat.html" target="_blank">点击查看回复</a>
+        </p>
+        
+        <p>郑群超一直在催，说老板也在催，今天非要拿到预约成功的回执不可。哪怕再发消息恐怕也不会搭理你了。
+            <a href="work_chat.html" target="_blank">点击查看消息</a>
+        </p>
+        
+        <img src="张果老赝品.jpg" alt="张果老木雕" class="object-image">
+
+        <div class="ending-note">
+            <span>
+                看样子你今天非得拿出个解决方法来，但现在你手头只有这个木雕，和憩园古董店的<a href="home.html" target="_blank">官方网站</a>。
+            </span>
+        </div>
+
+        <div class="history-section">
+            <div class="history-title">System Log / 访问足迹</div>
+            
+            <ul id="historyList" class="history-list">
+            </ul>
+
+            <div class="history-controls">
+                <button onclick="clearHistory()" class="clear-btn">清除所有记录</button>
+                <button id="toggleBtn" onclick="toggleHistory()" class="text-btn toggle-btn">
+                    展开更多记录 ▼
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 核心逻辑 ---
+
+        const STORAGE_KEY = 'qiyuan_browsing_history';
+        const DISPLAY_LIMIT = 10; // 单页最大显示数量
+
+        // 状态变量
+        let allHistoryData = [];
+        let isExpanded = false; // 默认是折叠状态
+
+        // 1. 初始化：读取数据
+        function init() {
+            allHistoryData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            renderHistory();
+        }
+
+        // 2. 渲染列表（核心逻辑）
+        function renderHistory() {
+            const listEl = document.getElementById('historyList');
+            const toggleBtn = document.getElementById('toggleBtn');
+            listEl.innerHTML = ''; 
+
+            if (!allHistoryData || allHistoryData.length === 0) {
+                listEl.innerHTML = '<li class="empty-msg">暂无记录...</li>';
+                toggleBtn.style.display = 'none'; // 没数据时不显示展开按钮
+                return;
+            }
+
+            // A. 决定显示哪些数据
+            // 先把数据倒序（新的在上面）
+            const reversedData = [...allHistoryData].reverse();
+            
+            // 如果折叠状态，只取前10条；如果是展开状态，取全部
+            const displayData = isExpanded ? reversedData : reversedData.slice(0, DISPLAY_LIMIT);
+
+            // B. 生成 HTML
+            displayData.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <a href="${item.url}" class="history-link" target="_blank">${item.title}</a>
+                    <span class="history-time">${item.time}</span>
+                `;
+                listEl.appendChild(li);
+            });
+
+            // C. 处理“展开/收起”按钮的显示状态
+            if (allHistoryData.length > DISPLAY_LIMIT) {
+                toggleBtn.style.display = 'block'; // 数据超过10条才显示按钮
+                if (isExpanded) {
+                    toggleBtn.innerHTML = '收起记录 ▲';
+                } else {
+                    const hiddenCount = allHistoryData.length - DISPLAY_LIMIT;
+                    toggleBtn.innerHTML = `展开更多记录 (${hiddenCount}) ▼`;
+                }
+            } else {
+                toggleBtn.style.display = 'none'; // 少于10条不需要展开按钮
+            }
+        }
+
+        // 3. 切换 展开/收起
+        function toggleHistory() {
+            isExpanded = !isExpanded; // 状态取反
+            renderHistory(); // 重新渲染
+        }
+
+        // 4. 清除功能
+        function clearHistory() {
+            localStorage.removeItem(STORAGE_KEY);
+            allHistoryData = [];
+            isExpanded = false;
+            renderHistory(); 
+        }
+
+        // 启动
+        init();
+
+    </script>
+</body>
+</html>
